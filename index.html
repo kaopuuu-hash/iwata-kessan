@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="磐田市令和7年度決算をわかりやすくまとめた超軽量ページ。3つのお財布・病院の赤字・借金と貯金を解説。">
+<title>磐田市 令和7年度決算まとめ | 超軽量ページ</title>
+<style>
+:root{--fg:#222;--bg:#fff;--muted:#666;--line:#e5e5e5;--accent:#0a6c2e;--max:720px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.8;font-size:16px}
+header{border-bottom:1px solid var(--line)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 0;flex-wrap:wrap;gap:8px}
+.nav a{color:var(--fg);text-decoration:none}
+.nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+main{padding:24px 0 48px}
+h1{font-size:1.5rem;line-height:1.4;margin:16px 0}
+h2{font-size:1.2rem;margin-top:32px;border-left:4px solid var(--accent);padding-left:10px}
+.card{border:1px solid var(--line);padding:16px;margin:16px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.95rem}
+th,td{border:1px solid var(--line);padding:8px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+.note{color:var(--muted);font-size:0.9rem}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padding:16px 0 32px}
+@media(max-width:560px){.wrap{padding:0 12px}table{font-size:0.85rem}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap nav">
+<a href="#top"><strong>磐田市 令和7年度決算</strong></a>
+<nav aria-label="メニュー">
+<ul>
+<li><a href="#gaiyo">全体像</a></li>
+<li><a href="#suji">数字</a></li>
+<li><a href="#kadai">課題</a></li>
+<li><a href="#shakkin">借金と貯金</a></li>
+<li><a href="#yasashii">やさしいまとめ</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<main id="top" class="wrap">
+<h1>磐田市のお財布、令和7年度はどうだった？</h1>
+<p>市の決算書をもとに、むずかしい数字をかみくだいてまとめました。まず安心してください。すぐに困る状況ではありません。でも市立病院の赤字という大きな課題があります。</p>
+<p class="note">このページは index.html 1つだけ。外部通信・画像・広告・解析なし。JSなしでも読めます。</p>
+
+<section id="gaiyo" aria-labelledby="gaiyo-h">
+<h2 id="gaiyo-h">全体像：3つのお財布</h2>
+<div class="card">
+<p><strong>1. くらしのお財布（一般会計）</strong><br>教育・福祉・道路・消防など。表面は黒字だけど、貯金の切り崩しを除いた本当のやりくりは持ち出しが続いています。</p>
+<p><strong>2. 保険料のお財布（事業会計）</strong><br>国保・介護・後期高齢者医療。保険料と国からのお金で回り、比較的安定しています。</p>
+<p><strong>3. 水道・病院のお財布（公営企業会計）</strong><br>水道・下水道・市立病院。全体で大きな赤字。とくに市立病院の赤字が市全体を圧迫しています。</p>
+</div>
+</section>
+
+<section id="suji" aria-labelledby="suji-h">
+<h2 id="suji-h">数字で見る（実質収支）</h2>
+<table>
+<tr><th>お財布</th><th>実質収支</th></tr>
+<tr><td>くらし（一般会計）</td><td>+19.5億円</td></tr>
+<tr><td>保険料（事業会計）</td><td>+8.2億円</td></tr>
+<tr><td>水道・病院（公営企業）</td><td>▲54.4億円</td></tr>
+<tr><td><strong>市全体の合計</strong></td><td><strong>▲26.7億円</strong></td></tr>
+</table>
+<p class="note">一般会計の歳入840.9億・歳出818.5億。公営企業の赤字を他が補いきれない構造です。出典：市政報告書 第1表・第2表（数値照合表より）。</p>
+<h2>どこにお金が出ていった？（繰出金 85.4億円）</h2>
+<table>
+<tr><th>行き先</th><th>金額</th></tr>
+<tr><td>下水道へ</td><td>26.4億円</td></tr>
+<tr><td>病院へ</td><td>18.1億円</td></tr>
+<tr><td>水道へ</td><td>2.8億円</td></tr>
+<tr><td>介護・国保・後期高齢者などへ</td><td>38.1億円</td></tr>
+</table>
+</section>
+
+<section id="kadai" aria-labelledby="kadai-h">
+<h2 id="kadai-h">課題：市立病院の赤字がいちばん大きい</h2>
+<p>病院では診療にかかる経費（人件費・薬品代など）が収入を上回っています。水道・下水道も設備の更新や過去の借金返済で持ち出しがあります。</p>
+<table>
+<tr><th>会計</th><th>実質収支</th></tr>
+<tr><td>水道</td><td>▲12.3億円</td></tr>
+<tr><td>下水道</td><td>▲13.5億円</td></tr>
+<tr><td>病院</td><td>▲28.6億円</td></tr>
+</table>
+<p class="note">赤字が大きくなると、福祉や教育など他のサービスに影響が出るおそれがあります。今のうちに皆で話し合って整える必要があります。</p>
+</section>
+
+<section id="shakkin" aria-labelledby="shakkin-h">
+<h2 id="shakkin-h">借金と貯金・指標</h2>
+<table>
+<tr><th>項目</th><th>令和7年度</th></tr>
+<tr><td>借金残高（全会計）</td><td>969.6億円（前年より+49.2億円）</td></tr>
+<tr><td>うち一般会計分</td><td>617.0億円</td></tr>
+<tr><td>貯金（基金残高）</td><td>123.7億円（うち財政調整基金67.9億円）</td></tr>
+<tr><td>財政力指数</td><td>0.801</td></tr>
+<tr><td>経常収支比率</td><td>93.9%</td></tr>
+<tr><td>実質公債費比率</td><td>0.2%（返済負担は軽い）</td></tr>
+<tr><td>将来負担比率</td><td>7.8%</td></tr>
+</table>
+<p class="note">借金の返済負担は軽く、災害への備えの貯金も一定あります。出典：第3表・第12表。</p>
+</section>
+
+<section id="yasashii" aria-labelledby="yasashii-h">
+<h2 id="yasashii-h">やさしいまとめ</h2>
+<ul>
+<li>すぐに困ることはありません</li>
+<li>市立病院の赤字が大きな課題です</li>
+<li>皆で話し合って、未来に向けた見直しを進めています</li>
+</ul>
+<p class="note">もっとやさしい版（数字なし・高齢者向け）は手持ちレポートにあります。数字の出典はすべて市政報告書の原本までたどれます（数値照合表）。</p>
+<p><a href="#top">ページ上部へ戻る</a></p>
+</section>
+</main>
+
+<footer>
+<div class="wrap">
+<p>© 2026 超軽量サイト | 出典：磐田市「令和7年度 市政報告書」・数値照合表・人間主義的分析レポート | 単一HTML構成</p>
+</div>
+</footer>
+</body>
+</html>
