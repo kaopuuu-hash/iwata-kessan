@@ -6,7 +6,7 @@
 <meta name="description" content="磐田市令和7年度決算をわかりやすくまとめた超軽量ページ。3つのお財布・病院の赤字・借金と貯金を解説。">
 <title>磐田市 令和7年度決算まとめ | 超軽量ページ</title>
 <style>
-:root{--fg:#222;--bg:#fff;--muted:#666;--line:#e5e5e5;--accent:#0a6c2e;--max:720px}
+:root{--fg:#222;--bg:#fff;--muted:#666;--line:#e5e5e5;--accent:#14365e;--navy:#14365e;--navy-pale:#eef2f7;--max:720px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.8;font-size:16px}
 header{border-bottom:1px solid var(--line)}
@@ -23,10 +23,29 @@ th,td{border:1px solid var(--line);padding:8px;text-align:right}
 th:first-child,td:first-child{text-align:left}
 .note{color:var(--muted);font-size:0.9rem}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padding:16px 0 32px}
+th{background:var(--navy-pale)}
+.gnav{background:var(--navy);color:#fff}
+.gnav .wrap{display:flex;flex-wrap:wrap;gap:2px}
+.gnav a{color:#fff;text-decoration:none;font-size:.85rem;padding:9px 10px}
+.gnav a:hover{background:rgba(255,255,255,.14)}
+.gnav a[aria-current="page"]{background:rgba(255,255,255,.2);font-weight:700}
+.more{font-size:.9rem;margin-top:16px}
+.more a{color:var(--accent);font-weight:600}
 @media(max-width:560px){.wrap{padding:0 12px}table{font-size:0.85rem}th,td{padding:6px}}
 </style>
 </head>
 <body>
+<nav class="gnav" aria-label="サイト共通メニュー">
+<div class="wrap">
+<a href="index.html">トップ</a>
+<a href="cyber-space.html">cyber-space</a>
+<a href="kessan.html" aria-current="page">決算概要</a>
+<a href="analysis.html">財政分析</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="method.html">分析手法</a>
+<a href="sources.html">出典・参考資料</a>
+</div>
+</nav>
 <header>
 <div class="wrap nav">
 <a href="#top"><strong>磐田市 令和7年度決算</strong></a>
@@ -88,6 +107,7 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padd
 <tr><td>病院</td><td>▲28.6億円</td></tr>
 </table>
 <p class="note">赤字が大きくなると、福祉や教育など他のサービスに影響が出るおそれがあります。今のうちに皆で話し合って整える必要があります。</p>
+<p class="more">▶ 分析の詳細は <a href="analysis.html">財政分析ページ</a> にまとめています。</p>
 </section>
 
 <section id="shakkin" aria-labelledby="shakkin-h">
@@ -103,6 +123,7 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padd
 <tr><td>将来負担比率</td><td>7.8%</td></tr>
 </table>
 <p class="note">借金の返済負担は軽く、災害への備えの貯金も一定あります。出典：第3表・第12表。</p>
+<p class="more">▶ 指標の見方は <a href="analysis.html">財政分析ページ</a> と <a href="method.html">分析手法ページ</a> にまとめています。</p>
 </section>
 
 <section id="yasashii" aria-labelledby="yasashii-h">
