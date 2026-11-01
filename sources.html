@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="磐田市オープンデータ分析サイトの各ページに表記されている出典（市政報告書・数値照合表・オープンデータ等）を集約したページ。">
+<title>出典・参考資料 | 磐田市オープンデータ分析</title>
+<style>
+:root{--fg:#222;--bg:#fff;--muted:#666;--line:#e5e5e5;--accent:#14365e;--navy:#14365e;--navy-pale:#eef2f7;--max:720px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.8;font-size:16px}
+header{border-bottom:1px solid var(--line)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 0;flex-wrap:wrap;gap:8px}
+.nav a{color:var(--fg);text-decoration:none}
+.nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+main{padding:24px 0 48px}
+h1{font-size:1.5rem;line-height:1.4;margin:16px 0}
+h2{font-size:1.2rem;margin-top:32px;border-left:4px solid var(--accent);padding-left:10px}
+.card{border:1px solid var(--line);padding:16px;margin:16px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.95rem}
+th,td{border:1px solid var(--line);padding:8px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+.note{color:var(--muted);font-size:0.9rem}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padding:16px 0 32px}
+th{background:var(--navy-pale)}
+.gnav{background:var(--navy);color:#fff}
+.gnav .wrap{display:flex;flex-wrap:wrap;gap:2px}
+.gnav a{color:#fff;text-decoration:none;font-size:.85rem;padding:9px 10px}
+.gnav a:hover{background:rgba(255,255,255,.14)}
+.gnav a[aria-current="page"]{background:rgba(255,255,255,.2);font-weight:700}
+.more{font-size:.9rem;margin-top:16px}
+.more a{color:var(--accent);font-weight:600}
+@media(max-width:560px){.wrap{padding:0 12px}table{font-size:0.85rem}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<nav class="gnav" aria-label="サイト共通メニュー">
+<div class="wrap">
+<a href="index.html">トップ</a>
+<a href="cyber-space.html">cyber-space</a>
+<a href="kessan.html">決算概要</a>
+<a href="analysis.html">財政分析</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="method.html">分析手法</a>
+<a href="sources.html" aria-current="page">出典・参考資料</a>
+</div>
+</nav>
+<header>
+<div class="wrap nav">
+<a href="index.html"><strong>磐田市オープンデータ分析</strong></a>
+</div>
+</header>
+
+<main id="top" class="wrap">
+<h1>出典・参考資料</h1>
+<p>このサイトの各ページに実際に表記されている出典を集めたページです。既存ページに出典のURL表記がないため、ここでも名称のみを掲載します（URLは新たに作りません）。</p>
+<p class="note">このページは sources.html 1つだけ。外部通信・画像・広告・解析なし。JSなしでも読めます。</p>
+
+<section id="kessan-sources" aria-labelledby="kessan-sources-h">
+<h2 id="kessan-sources-h">決算概要・財政分析の出典</h2>
+<table>
+<tr><th>出典</th><th>使われている場所</th></tr>
+<tr><td>磐田市「令和7年度 市政報告書」</td><td>決算数値の原典。第1表・第2表（実質収支・繰出金）、第3表・第12表（借金と貯金・指標）</td></tr>
+<tr><td>数値照合表</td><td>市政報告書の数値を照合した表。決算概要ページの注記に「数字の出典はすべて市政報告書の原本までたどれます（数値照合表）」と記載</td></tr>
+<tr><td>人間主義的分析レポート</td><td>決算概要ページのフッターに記載された分析資料</td></tr>
+</table>
+<p class="more">▶ 掲載ページ：<a href="kessan.html">決算概要</a>／<a href="analysis.html">財政分析</a></p>
+</section>
+
+<section id="dashboard-sources" aria-labelledby="dashboard-sources-h">
+<h2 id="dashboard-sources-h">データDashboardの出典</h2>
+<table>
+<tr><th>出典</th><th>使われている場所</th></tr>
+<tr><td>磐田市オープンデータ (LinkData)</td><td>Dashboardのヘッダーに記載された出典表記</td></tr>
+<tr><td>磐田市公式ウェブサイト</td><td>Dashboardのフッターと、埋め込みデータの出典表記</td></tr>
+</table>
+<p class="more">▶ 掲載ページ：<a href="dashboard.html">データDashboard</a></p>
+</section>
+
+<section id="asof" aria-labelledby="asof-h">
+<h2 id="asof-h">データの時点</h2>
+<table>
+<tr><th>データ</th><th>時点（ページ内の表記どおり）</th></tr>
+<tr><td>人口データ</td><td>令和8年9月末現在（「2026年9月末」とも表記）</td></tr>
+<tr><td>避難所データ</td><td>令和8年4月1日現在（「2026年4月時点」とも表記）</td></tr>
+</table>
+<p class="note">Dashboardの注意書きにもあるとおり、最新情報は磐田市HPで確認してください。</p>
+</section>
+
+<p class="more">▶ 関連ページ：<a href="method.html">分析手法</a>／<a href="kessan.html">決算概要</a>／<a href="dashboard.html">データDashboard</a></p>
+</main>
+
+<footer>
+<div class="wrap">
+<p>© 2026 超軽量サイト | 出典は各項目に記載 | 単一HTML構成</p>
+</div>
+</footer>
+</body>
+</html>
