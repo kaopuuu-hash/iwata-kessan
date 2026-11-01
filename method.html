@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="磐田市オープンデータ分析サイトで使っている数字の見方（3つの会計区分・実質収支・繰出金・財政指標・Dashboardの集計方法）を整理したページ。">
+<title>分析手法 | 磐田市オープンデータ分析</title>
+<style>
+:root{--fg:#222;--bg:#fff;--muted:#666;--line:#e5e5e5;--accent:#14365e;--navy:#14365e;--navy-pale:#eef2f7;--max:720px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.8;font-size:16px}
+header{border-bottom:1px solid var(--line)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 0;flex-wrap:wrap;gap:8px}
+.nav a{color:var(--fg);text-decoration:none}
+.nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+main{padding:24px 0 48px}
+h1{font-size:1.5rem;line-height:1.4;margin:16px 0}
+h2{font-size:1.2rem;margin-top:32px;border-left:4px solid var(--accent);padding-left:10px}
+.card{border:1px solid var(--line);padding:16px;margin:16px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.95rem}
+th,td{border:1px solid var(--line);padding:8px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+.note{color:var(--muted);font-size:0.9rem}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padding:16px 0 32px}
+th{background:var(--navy-pale)}
+.gnav{background:var(--navy);color:#fff}
+.gnav .wrap{display:flex;flex-wrap:wrap;gap:2px}
+.gnav a{color:#fff;text-decoration:none;font-size:.85rem;padding:9px 10px}
+.gnav a:hover{background:rgba(255,255,255,.14)}
+.gnav a[aria-current="page"]{background:rgba(255,255,255,.2);font-weight:700}
+.more{font-size:.9rem;margin-top:16px}
+.more a{color:var(--accent);font-weight:600}
+@media(max-width:560px){.wrap{padding:0 12px}table{font-size:0.85rem}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<nav class="gnav" aria-label="サイト共通メニュー">
+<div class="wrap">
+<a href="index.html">トップ</a>
+<a href="cyber-space.html">cyber-space</a>
+<a href="kessan.html">決算概要</a>
+<a href="analysis.html">財政分析</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="method.html" aria-current="page">分析手法</a>
+<a href="sources.html">出典・参考資料</a>
+</div>
+</nav>
+<header>
+<div class="wrap nav">
+<a href="index.html"><strong>磐田市オープンデータ分析</strong></a>
+</div>
+</header>
+
+<main id="top" class="wrap">
+<h1>分析手法：数字の読み方</h1>
+<p>このサイトで使っている数字の見方を、既存ページの記載に基づいて整理したページです。ここに書かれていない手法は使っていません。</p>
+<p class="note">このページは method.html 1つだけ。外部通信・画像・広告・解析なし。JSなしでも読めます。</p>
+
+<section id="wallet" aria-labelledby="wallet-h">
+<h2 id="wallet-h">1. 3つのお財布に分けて見る</h2>
+<p>決算は1つにまとめず、一般会計（くらしのお財布）・事業会計（保険料のお財布）・公営企業会計（水道・病院のお財布）の3つに分けて整理します。会計ごとに収支を比べることで、どこに余りがあり、どこが持ち出しているかを見ます。</p>
+<p class="more">▶ 根拠：<a href="kessan.html#gaiyo">決算概要「全体像：3つのお財布」</a></p>
+</section>
+
+<section id="jisshitsu" aria-labelledby="jisshitsu-h">
+<h2 id="jisshitsu-h">2. 実質収支で比べる</h2>
+<p>表面の黒字・赤字だけでは判断しません。決算概要ページが「貯金の切り崩しを除いた本当のやりくり」と表現しているとおり、貯金（基金）の切り崩し分を除いた実質収支で、会計の持ち出し・余りを判断します。市全体の合計（▲26.7億円）も実質収支ベースです。</p>
+<p class="more">▶ 根拠：<a href="kessan.html#suji">決算概要「数字で見る（実質収支）」</a></p>
+</section>
+
+<section id="kuridashi" aria-labelledby="kuridashi-h">
+<h2 id="kuridashi-h">3. 繰出金の行き先を追う</h2>
+<p>一般会計から他の会計へ出ていったお金（繰出金）は、行き先別に内訳を確認します。令和7年度は合計85.4億円で、下水道・病院・水道・介護や国保など、どの分野を一般会計が支えているかを見ます。</p>
+<p class="more">▶ 根拠：<a href="kessan.html#suji">決算概要「どこにお金が出ていった？（繰出金 85.4億円）」</a></p>
+</section>
+
+<section id="shihyo" aria-labelledby="shihyo-h">
+<h2 id="shihyo-h">4. 財政指標で健全度を見る</h2>
+<p>借金残高と貯金（基金残高）に加えて、財政力指数・経常収支比率・実質公債費比率・将来負担比率の4つの指標を市政報告書の表（第3表・第12表）から引用し、返済負担の軽重や災害への備えとあわせて確認します。</p>
+<p class="more">▶ 根拠：<a href="analysis.html#shakkin">財政分析「借金と貯金・指標」</a></p>
+</section>
+
+<section id="dashboard-method" aria-labelledby="dashboard-method-h">
+<h2 id="dashboard-method-h">5. Dashboardの集計方法</h2>
+<p>データDashboardの数値は、ページ内に埋め込まれたデータ（磐田市のオープンデータ）からその場で集計しています。総人口・総世帯数は町別データ299件の合計、年齢別人口は5歳階級・男女別（21区分）、高齢化率は65歳以上の人口を総人口で割った割合、町別人口グラフは人口の多い上位15町、避難所数は指定避難所データ43件の件数です。</p>
+<p class="more">▶ 根拠：<a href="dashboard.html">データDashboard</a>（埋め込みデータと集計処理）</p>
+</section>
+
+<p class="more">▶ 関連ページ：<a href="sources.html">出典・参考資料</a>／<a href="kessan.html">決算概要</a>／<a href="analysis.html">財政分析</a></p>
+</main>
+
+<footer>
+<div class="wrap">
+<p>© 2026 超軽量サイト | 本ページは既存ページの記載に基づいて作成 | 単一HTML構成</p>
+</div>
+</footer>
+</body>
+</html>
