@@ -11,3 +11,5 @@
 - method.html：分析手法
 - sources.html：出典・参考資料
 - seisaku.html：制作手法・このサイトについて（注記）
+
+最終更新：2026年11月1日
