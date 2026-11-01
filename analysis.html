@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="磐田市の財政分析。市立病院の赤字と、借金・貯金・財政指標を令和7年度決算の数値で整理した詳細ページ。">
+<title>磐田市 財政分析 | 令和7年度決算</title>
+<style>
+:root{--fg:#222;--bg:#fff;--muted:#666;--line:#e5e5e5;--accent:#14365e;--navy:#14365e;--navy-pale:#eef2f7;--max:720px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.8;font-size:16px}
+header{border-bottom:1px solid var(--line)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 0;flex-wrap:wrap;gap:8px}
+.nav a{color:var(--fg);text-decoration:none}
+.nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+main{padding:24px 0 48px}
+h1{font-size:1.5rem;line-height:1.4;margin:16px 0}
+h2{font-size:1.2rem;margin-top:32px;border-left:4px solid var(--accent);padding-left:10px}
+.card{border:1px solid var(--line);padding:16px;margin:16px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.95rem}
+th,td{border:1px solid var(--line);padding:8px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+.note{color:var(--muted);font-size:0.9rem}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padding:16px 0 32px}
+th{background:var(--navy-pale)}
+.gnav{background:var(--navy);color:#fff}
+.gnav .wrap{display:flex;flex-wrap:wrap;gap:2px}
+.gnav a{color:#fff;text-decoration:none;font-size:.85rem;padding:9px 10px}
+.gnav a:hover{background:rgba(255,255,255,.14)}
+.gnav a[aria-current="page"]{background:rgba(255,255,255,.2);font-weight:700}
+.more{font-size:.9rem;margin-top:16px}
+.more a{color:var(--accent);font-weight:600}
+@media(max-width:560px){.wrap{padding:0 12px}table{font-size:0.85rem}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<nav class="gnav" aria-label="サイト共通メニュー">
+<div class="wrap">
+<a href="index.html">トップ</a>
+<a href="cyber-space.html">cyber-space</a>
+<a href="kessan.html">決算概要</a>
+<a href="analysis.html" aria-current="page">財政分析</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="method.html">分析手法</a>
+<a href="sources.html">出典・参考資料</a>
+</div>
+</nav>
+<header>
+<div class="wrap nav">
+<a href="index.html"><strong>磐田市オープンデータ分析</strong></a>
+</div>
+</header>
+
+<main id="top" class="wrap">
+<h1>財政分析：課題と指標を詳しく見る</h1>
+<p>このページは <a href="kessan.html">決算概要ページ</a> の分析詳細版です。「課題：市立病院の赤字」と「借金と貯金・指標」の2セクションを再編しました。数値と文章は決算概要と同一で、出典も同じ市政報告書に基づきます。概要だけ見たい方は <a href="kessan.html">決算概要ページ</a> へどうぞ。</p>
+<p class="note">このページは analysis.html 1つだけ。外部通信・画像・広告・解析なし。JSなしでも読めます。</p>
+
+<section id="kadai" aria-labelledby="kadai-h">
+<h2 id="kadai-h">課題：市立病院の赤字がいちばん大きい</h2>
+<p>病院では診療にかかる経費（人件費・薬品代など）が収入を上回っています。水道・下水道も設備の更新や過去の借金返済で持ち出しがあります。</p>
+<table>
+<tr><th>会計</th><th>実質収支</th></tr>
+<tr><td>水道</td><td>▲12.3億円</td></tr>
+<tr><td>下水道</td><td>▲13.5億円</td></tr>
+<tr><td>病院</td><td>▲28.6億円</td></tr>
+</table>
+<p class="note">赤字が大きくなると、福祉や教育など他のサービスに影響が出るおそれがあります。今のうちに皆で話し合って整える必要があります。</p>
+</section>
+
+<section id="shakkin" aria-labelledby="shakkin-h">
+<h2 id="shakkin-h">借金と貯金・指標</h2>
+<table>
+<tr><th>項目</th><th>令和7年度</th></tr>
+<tr><td>借金残高（全会計）</td><td>969.6億円（前年より+49.2億円）</td></tr>
+<tr><td>うち一般会計分</td><td>617.0億円</td></tr>
+<tr><td>貯金（基金残高）</td><td>123.7億円（うち財政調整基金67.9億円）</td></tr>
+<tr><td>財政力指数</td><td>0.801</td></tr>
+<tr><td>経常収支比率</td><td>93.9%</td></tr>
+<tr><td>実質公債費比率</td><td>0.2%（返済負担は軽い）</td></tr>
+<tr><td>将来負担比率</td><td>7.8%</td></tr>
+</table>
+<p class="note">借金の返済負担は軽く、災害への備えの貯金も一定あります。出典：第3表・第12表。</p>
+</section>
+
+<p class="more">▶ 関連ページ：<a href="method.html">分析手法</a>／<a href="sources.html">出典・参考資料</a>／<a href="dashboard.html">データDashboard</a></p>
+</main>
+
+<footer>
+<div class="wrap">
+<p>© 2026 超軽量サイト | 出典：磐田市「令和7年度 市政報告書」・数値照合表・人間主義的分析レポート | 単一HTML構成</p>
+</div>
+</footer>
+</body>
+</html>
