@@ -1,126 +1,735 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="磐田市令和7年度決算をわかりやすくまとめた超軽量ページ。3つのお財布・病院の赤字・借金と貯金を解説。">
-<title>磐田市 令和7年度決算まとめ | 超軽量ページ</title>
-<style>
-:root{--fg:#222;--bg:#fff;--muted:#666;--line:#e5e5e5;--accent:#0a6c2e;--max:720px}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.8;font-size:16px}
-header{border-bottom:1px solid var(--line)}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
-.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 0;flex-wrap:wrap;gap:8px}
-.nav a{color:var(--fg);text-decoration:none}
-.nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
-main{padding:24px 0 48px}
-h1{font-size:1.5rem;line-height:1.4;margin:16px 0}
-h2{font-size:1.2rem;margin-top:32px;border-left:4px solid var(--accent);padding-left:10px}
-.card{border:1px solid var(--line);padding:16px;margin:16px 0}
-table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.95rem}
-th,td{border:1px solid var(--line);padding:8px;text-align:right}
-th:first-child,td:first-child{text-align:left}
-.note{color:var(--muted);font-size:0.9rem}
-footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padding:16px 0 32px}
-@media(max-width:560px){.wrap{padding:0 12px}table{font-size:0.85rem}th,td{padding:6px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="1995〜2000年初期の個人ホームページ文化を完全再現したパーソナルスペース。">
+  <title>☆★ Welcome to My Cyber Space ★☆</title>
+  <style>
+    /* ==========================================================
+       1995〜2000年初期レトロ・パーソナルホームページ再現スタイル
+       （単一HTML完結・完全レトロ意匠）
+       ========================================================== */
+
+    :root {
+      --bg-color: #000033;
+      --panel-bg: #c0c0c0; /* 90年代おなじみのウィンドウグレー */
+      --window-title-bg: navy;
+      --window-title-color: #ffffff;
+      --text-color: #000000;
+      --link-color: #0000ee;
+      --visited-color: #551a8b;
+      --hover-bg: #ffff00;
+      --border-light: #ffffff;
+      --border-dark: #808080;
+      --border-shadow: #404040;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      /* 星空タイリング背景風SVG */
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'><rect width='20' height='20' fill='%23000033'/><circle cx='2' cy='2' r='1' fill='%23ffffff'/><circle cx='12' cy='15' r='0.8' fill='%238888aa'/></svg>");
+      font-family: "MS P Gothic", "ＭＳ Ｐゴシック", Osaka, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* リンクの基本設定 */
+    a { color: var(--link-color); text-decoration: underline; }
+    a:visited { color: var(--visited-color); }
+    a:hover { color: #ff0000; background-color: var(--hover-bg); }
+
+    .site-shell {
+      max-width: 980px;
+      margin: 12px auto;
+      padding: 8px;
+      background-color: #000066;
+      border: 4px ridge #ffffff;
+    }
+
+    /* ヘッダー */
+    .site-header {
+      text-align: center;
+      padding: 14px;
+      background: #ffffff;
+      border: 3px inset #808080;
+      margin-bottom: 12px;
+    }
+
+    .sparkles, .footer-sparkles {
+      color: #cc00cc;
+      font-weight: bold;
+      letter-spacing: 0.15em;
+      font-size: 0.95rem;
+    }
+
+    .blink-title {
+      margin: 6px 0;
+      color: #ff0000;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      text-shadow: 2px 2px #ffff00;
+      animation: text-blink 1.2s steps(2, start) infinite;
+    }
+
+    @keyframes text-blink {
+      to { opacity: 0.8; }
+    }
+
+    .subtitle {
+      margin: 0 0 10px 0;
+      color: #0000cc;
+      font-weight: bold;
+    }
+
+    /* アクセスカウンター（7桁・LCD基盤風） */
+    .counter-box {
+      background: #000000;
+      color: #00ff00;
+      padding: 8px;
+      display: inline-block;
+      border: 3px inset #ffffff;
+      margin: 6px 0;
+      font-weight: bold;
+    }
+
+    .counter-digits {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 1.6rem;
+      letter-spacing: 0.2em;
+      color: #ff3333;
+      background: #111111;
+      padding: 2px 8px;
+      border: 1px inset #555;
+      margin: 0 4px;
+    }
+
+    .counter-label {
+      color: #ffff00;
+    }
+
+    .kiriban-alert {
+      font-size: 0.8rem;
+      color: #00ffff;
+      margin-top: 4px;
+    }
+
+    /* 電光掲示板（Marquee） */
+    .marquee {
+      background: #000000;
+      color: #00ff00;
+      border: 2px inset #808080;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 4px 0;
+      font-family: monospace;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+    .marquee span {
+      display: inline-block;
+      min-width: 100%;
+      animation: scroll-left 20s linear infinite;
+    }
+    @keyframes scroll-left {
+      from { transform: translateX(100%); }
+      to { transform: translateX(-100%); }
+    }
+
+    .header-meta {
+      font-size: 0.8rem;
+      color: #333333;
+      margin-top: 6px;
+    }
+
+    /* レイアウト：サイドバー ＋ メイン */
+    .layout {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    /* パネル（ウィンドウ風の立体フレーム） */
+    .panel {
+      background-color: var(--panel-bg);
+      border: 3px outset var(--border-light);
+      box-shadow: 2px 2px 0px var(--border-shadow);
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .panel h2 {
+      margin: -10px -10px 10px -10px;
+      padding: 6px 10px;
+      background: var(--window-title-bg);
+      color: var(--window-title-color);
+      font-size: 1.05rem;
+      border-bottom: 2px solid var(--border-dark);
+    }
+
+    /* サイドバー */
+    .sidebar {
+      position: sticky;
+      top: 10px;
+    }
+
+    .menu-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .menu-list li {
+      padding: 4px 0;
+      border-bottom: 1px dotted #808080;
+    }
+
+    .menu-list a {
+      display: block;
+      color: #000080;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .menu-list a:hover {
+      background: #000080;
+      color: #ffffff;
+    }
+
+    /* 工事中バナー */
+    .construction-banner {
+      margin: 14px auto 8px auto;
+      padding: 8px;
+      background: repeating-linear-gradient(45deg, #ffff00, #ffff00 10px, #000000 10px, #000000 20px);
+      color: #000000;
+      text-align: center;
+      border: 3px outset #fff;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .construction-banner strong {
+      background: #ffffff;
+      padding: 2px 4px;
+    }
+    .construction-banner span {
+      background: #ffffff;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    .netscape-badge {
+      text-align: center;
+      border: 2px groove #fff;
+      padding: 4px;
+      background: #000066;
+      color: #ffcc00;
+      margin-top: 10px;
+      font-size: 0.75rem;
+    }
+
+    /* コンテンツ内各要素 */
+    .notice {
+      background: #ffffe0;
+      border: 1px dashed #ff0000;
+      padding: 6px;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+
+    .profile-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .avatar {
+      flex: 0 0 90px;
+      height: 90px;
+      background: #000080;
+      color: #00ff00;
+      border: 3px inset #fff;
+      display: grid;
+      place-content: center;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .diary-entry {
+      background: #ffffff;
+      border: 2px inset #808080;
+      padding: 8px;
+    }
+    .diary-entry h3 {
+      margin-top: 0;
+      color: #800000;
+      font-size: 0.95rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .fake-photo {
+      background: #e0e0e0;
+      border: 2px inset #fff;
+      min-height: 90px;
+      display: grid;
+      place-content: center;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #333;
+    }
+
+    /* フォーム・ボタン（90年代GUI風） */
+    .retro-btn {
+      background-color: var(--panel-bg);
+      border: 3px outset var(--border-light);
+      box-shadow: 1px 1px 0px var(--border-shadow);
+      padding: 4px 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    .retro-btn:active {
+      border-style: inset;
+    }
+
+    input, textarea {
+      background: #ffffff;
+      border: 2px inset #808080;
+      padding: 4px;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .guestbook-form {
+      display: grid;
+      gap: 6px;
+      background: #b8b8b8;
+      padding: 8px;
+      border: 2px groove #fff;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .guestbook-entry {
+      background: #ffffff;
+      border: 1px dashed #000080;
+      padding: 6px;
+      margin-top: 8px;
+      font-size: 0.9rem;
+      overflow-wrap: anywhere;
+    }
+    .guestbook-entry strong {
+      color: #000080;
+    }
+
+    .warning {
+      font-size: 0.78rem;
+      color: #cc0000;
+      margin-top: 4px;
+    }
+
+    .link-list {
+      padding-left: 20px;
+      list-style: square;
+    }
+
+    .new-badge {
+      color: red;
+      font-weight: bold;
+      font-size: 0.8rem;
+      animation: text-blink 0.8s steps(2, start) infinite;
+    }
+
+    .webring-box {
+      text-align: center;
+      background: #e8e8e8;
+      border: 2px groove #fff;
+      padding: 6px;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    .game-box {
+      background: #dcdcdc;
+      border: 2px groove #fff;
+      padding: 8px;
+      margin-top: 8px;
+    }
+    .game-box h3 {
+      margin: 0 0 4px 0;
+      font-size: 0.9rem;
+      color: #000080;
+    }
+    .game-result {
+      font-weight: bold;
+      color: #cc0000;
+      margin-top: 4px;
+    }
+
+    .secret-panel {
+      background: #220022;
+      color: #00ff00;
+      border-color: #ff00ff;
+    }
+    .secret-panel h2 {
+      background: #550055;
+      color: #ffff00;
+    }
+
+    .site-footer {
+      text-align: center;
+      background: #ffffff;
+      border: 3px inset #808080;
+      padding: 10px;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+    .site-footer p { margin: 4px 0; }
+    .tiny { font-size: 0.75rem; color: #666; }
+
+    /* レスポンシブ対応（スマホでも90年代風を維持） */
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-<header>
-<div class="wrap nav">
-<a href="#top"><strong>磐田市 令和7年度決算</strong></a>
-<nav aria-label="メニュー">
-<ul>
-<li><a href="#gaiyo">全体像</a></li>
-<li><a href="#suji">数字</a></li>
-<li><a href="#kadai">課題</a></li>
-<li><a href="#shakkin">借金と貯金</a></li>
-<li><a href="#yasashii">やさしいまとめ</a></li>
-<li><a href="cyber-space.html">管理人の部屋</a></li>
-<li><a href="dashboard.html">ダッシュボード</a></li>
-</ul>
-</nav>
-</div>
-</header>
+  
+  <div class="site-shell">
+    <!-- ヘッダーエリア -->
+    <header class="site-header" role="banner">
+      <div class="sparkles" aria-hidden="true">★彡 祝・開設！ようこそ僕のホームページへ！ 彡★</div>
+      <h1 class="blink-title">☆★ My Cyber Secret Base ★☆</h1>
+      <p class="subtitle">〜 あの頃の夢とロマンがここにある 〜</p>
+      
+      <!-- アクセスカウンター（7桁・レトロ基盤） -->
+      <div class="counter-box" aria-label="アクセスカウンター">
+        <span class="counter-label">あなたは</span>
+        <span class="counter-digits" id="visit-count" aria-live="polite">0000001</span>
+        <span class="counter-label">番目のお客様です！</span>
+        <div id="counter-message" class="kiriban-alert">キリ番（100/500/1000/10000）を踏んだらBBSで報告してね！</div>
+      </div>
 
-<main id="top" class="wrap">
-<h1>磐田市のお財布、令和7年度はどうだった？</h1>
-<p>市の決算書をもとに、むずかしい数字をかみくだいてまとめました。まず安心してください。すぐに困る状況ではありません。でも市立病院の赤字という大きな課題があります。</p>
-<p class="note">このページは index.html 1つだけ。外部通信・画像・広告・解析なし。JSなしでも読めます。</p>
+      <!-- 連絡事項・電光掲示板風 -->
+      <div class="marquee" aria-label="お知らせ">
+        <span>【重要】相互リンク募集中です！ / キリ番踏み逃げ厳禁！ / 漢字Talkから更新中！ / ゆっくりしていってね！！</span>
+      </div>
 
-<section id="gaiyo" aria-labelledby="gaiyo-h">
-<h2 id="gaiyo-h">全体像：3つのお財布</h2>
-<div class="card">
-<p><strong>1. くらしのお財布（一般会計）</strong><br>教育・福祉・道路・消防など。表面は黒字だけど、貯金の切り崩しを除いた本当のやりくりは持ち出しが続いています。</p>
-<p><strong>2. 保険料のお財布（事業会計）</strong><br>国保・介護・後期高齢者医療。保険料と国からのお金で回り、比較的安定しています。</p>
-<p><strong>3. 水道・病院のお財布（公営企業会計）</strong><br>水道・下水道・市立病院。全体で大きな赤字。とくに市立病院の赤字が市全体を圧迫しています。</p>
-</div>
-</section>
+      <div class="header-meta">
+        [Since 1999.04.01]　|　[Last Update: <span id="last-updated">2026/10/25</span>]　|　[推奨ブラウザ：Netscape / IE4.0以上]
+      </div>
+    </header>
 
-<section id="suji" aria-labelledby="suji-h">
-<h2 id="suji-h">数字で見る（実質収支）</h2>
-<table>
-<tr><th>お財布</th><th>実質収支</th></tr>
-<tr><td>くらし（一般会計）</td><td>+19.5億円</td></tr>
-<tr><td>保険料（事業会計）</td><td>+8.2億円</td></tr>
-<tr><td>水道・病院（公営企業）</td><td>▲54.4億円</td></tr>
-<tr><td><strong>市全体の合計</strong></td><td><strong>▲26.7億円</strong></td></tr>
-</table>
-<p class="note">一般会計の歳入840.9億・歳出818.5億。公営企業の赤字を他が補いきれない構造です。出典：市政報告書 第1表・第2表（数値照合表より）。</p>
-<h2>どこにお金が出ていった？（繰出金 85.4億円）</h2>
-<table>
-<tr><th>行き先</th><th>金額</th></tr>
-<tr><td>下水道へ</td><td>26.4億円</td></tr>
-<tr><td>病院へ</td><td>18.1億円</td></tr>
-<tr><td>水道へ</td><td>2.8億円</td></tr>
-<tr><td>介護・国保・後期高齢者などへ</td><td>38.1億円</td></tr>
-</table>
-</section>
+    <div class="layout">
+      <!-- サイドバー（左メニュー） -->
+      <nav class="sidebar panel" aria-label="メインメニュー">
+        <h2>◆ MENU ◆</h2>
+        <ul class="menu-list">
+          <li><a href="#about">■ TOP / はじめに</a></li>
+          <li><a href="#profile">■ 管理人のプロフィール</a></li>
+          <li><a href="#diary">■ 激動の管理人日記</a></li>
+          <li><a href="#gallery">■ 懐古写真館</a></li>
+          <li><a href="#bbs">■ 伝言板（BBS）</a></li>
+          <li><a href="#kiriban">■ キリ番ハンター殿堂</a></li>
+          <li><a href="#links">■ リンク＆リング</a></li>
+          <li><a href="#games">■ ゲーセン（おみくじ）</a></li>
+          <li><a href="#secret">■ ？？？（隠し部屋）</a></li>
+        </ul>
 
-<section id="kadai" aria-labelledby="kadai-h">
-<h2 id="kadai-h">課題：市立病院の赤字がいちばん大きい</h2>
-<p>病院では診療にかかる経費（人件費・薬品代など）が収入を上回っています。水道・下水道も設備の更新や過去の借金返済で持ち出しがあります。</p>
-<table>
-<tr><th>会計</th><th>実質収支</th></tr>
-<tr><td>水道</td><td>▲12.3億円</td></tr>
-<tr><td>下水道</td><td>▲13.5億円</td></tr>
-<tr><td>病院</td><td>▲28.6億円</td></tr>
-</table>
-<p class="note">赤字が大きくなると、福祉や教育など他のサービスに影響が出るおそれがあります。今のうちに皆で話し合って整える必要があります。</p>
-</section>
+        <!-- 当時お約束の工事中バナー -->
+        <div class="construction-banner" role="img" aria-label="工事中バナー">
+          <div class="worker-icon">🚧👷‍♂️🚧</div>
+          <strong>UNDER CONSTRUCTION</strong><br>
+          <span>只今改装中につき、<br>リンク切れ御免！</span>
+        </div>
+        
+        <div class="netscape-badge">
+          <small>Netscape Navigator<br>Best Viewed</small>
+        </div>
+      </nav>
 
-<section id="shakkin" aria-labelledby="shakkin-h">
-<h2 id="shakkin-h">借金と貯金・指標</h2>
-<table>
-<tr><th>項目</th><th>令和7年度</th></tr>
-<tr><td>借金残高（全会計）</td><td>969.6億円（前年より+49.2億円）</td></tr>
-<tr><td>うち一般会計分</td><td>617.0億円</td></tr>
-<tr><td>貯金（基金残高）</td><td>123.7億円（うち財政調整基金67.9億円）</td></tr>
-<tr><td>財政力指数</td><td>0.801</td></tr>
-<tr><td>経常収支比率</td><td>93.9%</td></tr>
-<tr><td>実質公債費比率</td><td>0.2%（返済負担は軽い）</td></tr>
-<tr><td>将来負担比率</td><td>7.8%</td></tr>
-</table>
-<p class="note">借金の返済負担は軽く、災害への備えの貯金も一定あります。出典：第3表・第12表。</p>
-</section>
+      <!-- メインコンテンツ -->
+      <main class="main-content" role="main">
+        
+        <section id="about" class="panel">
+          <h2>★ 管理人からのご挨拶 ★</h2>
+          <p>当ホームページへようこそお越しくださいました。<br>
+          ここは、管理人が趣味で集めたガジェットや、日々の思いつきを書き殴る個人サイトです。</p>
+          <p>フレーム構造やLZH圧縮、MIDI BGM（準備中）など、あの頃のネットカルチャーの息吹をそのまま現代に蘇らせました。</p>
+          <div class="notice">※ 当サイトはリンクフリーです。バナーは直リンク厳禁でお持ち帰りください。</div>
+        </section>
 
-<section id="yasashii" aria-labelledby="yasashii-h">
-<h2 id="yasashii-h">やさしいまとめ</h2>
-<ul>
-<li>すぐに困ることはありません</li>
-<li>市立病院の赤字が大きな課題です</li>
-<li>皆で話し合って、未来に向けた見直しを進めています</li>
-</ul>
-<p class="note">もっとやさしい版（数字なし・高齢者向け）は手持ちレポートにあります。数字の出典はすべて市政報告書の原本までたどれます（数値照合表）。</p>
-<p><a href="#top">ページ上部へ戻る</a></p>
-</section>
-</main>
+        <section id="profile" class="panel">
+          <h2>◆ 管理人のプロフィール ◆</h2>
+          <div class="profile-row">
+            <div class="avatar" aria-hidden="true">管理人<br>(ΦωΦ)</div>
+            <div class="profile-text">
+              <p><strong>HN：</strong> 管理人 (Ryo / 秘密基地主)</p>
+              <p><strong>環境：</strong> 自作DOS/V機 ＆ 謎のメインマシン</p>
+              <p><strong>趣味：</strong> プログラミング、ガジェット分解、深夜のネットサーフィン</p>
+              <p><strong>一言：</strong> カウンターがゾロ目になったら、キリ番ゲットの証拠をBBSに書き込んでいってくださいね！</p>
+            </div>
+          </div>
+        </section>
 
-<footer>
-<div class="wrap">
-<p>© 2026 超軽量サイト | 出典：磐田市「令和7年度 市政報告書」・数値照合表・人間主義的分析レポート | 単一HTML構成</p>
-</div>
-</footer>
+        <section id="diary" class="panel">
+          <h2>★ 管理人のネット日記 ★</h2>
+          <article class="diary-entry">
+            <h3>2026/10/25　ホームページを完全復刻しました</h3>
+            <p>ふと昔のホームページビルダーで作ったようなサイトが恋しくなり、モダンな基盤の上にあえて1990年代末のガワを構築してみました。あの頃の独特なアングラ感と温かさが心地よいです。</p>
+          </article>
+        </section>
+
+        <section id="gallery" class="panel">
+          <h2>◆ 懐古写真館（Photo Gallery） ◆</h2>
+          <p>思い出のハードウェアや旅先の風景（準備中）</p>
+          <div class="gallery-grid">
+            <div class="fake-photo">CRT Monitor<br><small>17インチ・トリニトロン</small></div>
+            <div class="fake-photo">Floppy Disk<br><small>3.5インチ 2HD</small></div>
+            <div class="fake-photo">Modem<br><small>アナログ 56kbps</small></div>
+          </div>
+        </section>
+
+        <!-- 伝言板（BBS） -->
+        <section id="bbs" class="panel">
+          <h2>★ 伝言板（BBS / ゲストブック） ★</h2>
+          <p>足あと、感想、キリ番ゲットの報告はこちらへどうぞ！</p>
+          
+          <form id="guestbook-form" class="guestbook-form">
+            <div class="form-group">
+              <label for="guest-name">お名前 (HN)：</label>
+              <input id="guest-name" name="name" maxlength="40" required placeholder="例：名無しさん＠お腹いっぱい">
+            </div>
+            <div class="form-group">
+              <label for="guest-message">メッセージ (キリ番報告など)：</label>
+              <textarea id="guest-message" name="message" maxlength="500" required rows="3" placeholder="キリ番踏みました！おめでとう自分！"></textarea>
+            </div>
+            <button type="submit" class="retro-btn">■ 書き込む ■</button>
+          </form>
+          
+          <p class="small-note warning">※ この掲示板はモダンブラウザのLocal Storage技術で動作しています（サーバーレス・セキュア仕様）。</p>
+          <div id="guestbook-list" class="guestbook-list" aria-live="polite"></div>
+        </section>
+
+        <!-- キリ番記念館 -->
+        <section id="kiriban" class="panel">
+          <h2>◆ キリ番（Kiri-Ban）殿堂 ◆</h2>
+          <p>記念すべきキリ番設定：<strong>100 / 500 / 1000 / 5000 / 10000 番</strong></p>
+          <p>キリ番を踏んだ方は、証拠のスクショと共にBBSへ書き込んでください。ここに殿堂入りさせます！</p>
+          <ul id="kiriban-list" class="kiriban-ul">
+            <li>現在のところ、記念すべきキリ番報告待ちです……！</li>
+          </ul>
+        </section>
+
+        <!-- リンク集 -->
+        <section id="links" class="panel">
+          <h2>★ リンク＆ウェブリング ★</h2>
+          <ul class="link-list">
+            <li><a href="kessan.html">■ 磐田市 令和7年度決算まとめ（管理人の真面目ページ）</a> <span class="new-badge">NEW!</span></li>
+            <li><a href="dashboard.html">■ 磐田市オープンデータ ダッシュボード</a></li>
+            <li><a href="#about">■ 管理人の秘密の裏サイト</a> <span class="new-badge">NEW!</span></li>
+            <li><a href="#games">■ 相互リンク募集中（メールください）</a></li>
+            <li><a href="https://www.yahoo.co.jp" target="_blank" rel="noopener">■ Yahoo! JAPAN (あの頃の定番)</a></li>
+          </ul>
+          <div class="webring-box">
+            [<a href="#links">◀ 前のサイト</a>] ── <b>[ 自由奔放ウェブリング ]</b> ── [<a href="#links">次のサイト ▶</a>]
+          </div>
+        </section>
+
+        <!-- ゲームセンター -->
+        <section id="games" class="panel">
+          <h2>◆ ゲーセン（おみくじ＆ミニゲーム） ◆</h2>
+          <div class="game-box">
+            <h3>■ 本日の運勢占い</h3>
+            <button id="omikuji-button" type="button" class="retro-btn">おみくじを引く</button>
+            <p id="omikuji-result" class="game-result" aria-live="polite">運勢はいかに……？</p>
+          </div>
+          <div class="game-box">
+            <h3>■ 1〜10当てゲーム</h3>
+            <form id="guess-form" style="display:flex; gap:6px; align-items:center; margin-top:4px;">
+              <label for="guess-number">数字：</label>
+              <input id="guess-number" type="number" min="1" max="10" required style="width:60px;">
+              <button type="submit" class="retro-btn" style="margin-top:0;">予想！</button>
+            </form>
+            <p id="guess-result" class="game-result" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <!-- 隠し部屋 -->
+        <section id="secret" class="panel secret-panel">
+          <h2>★ 秘密の隠し部屋 ★</h2>
+          <p>おめでとうございます！ここまでスクロールしたあなたには特別に……。</p>
+          <p><code>root@cyber-base:~$ sudo cat secret_memo.txt</code><br>
+          「インターネットはオープンで、どこか個人の温度が残る場所だった。」</p>
+        </section>
+
+        <!-- 更新履歴 -->
+        <section id="updates" class="panel">
+          <h2>◆ 更新履歴 (What's New) ◆</h2>
+          <ul class="update-list">
+            <li><time datetime="2026-10-25">1999/10/25</time>　デザインを極秘裏にリニューアル（※中身は2026年）</li>
+            <li><time datetime="2026-10-24">1999/10/24</time>　アクセスカウンターを設置しました。</li>
+          </ul>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- フッター -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-sparkles">★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆</div>
+      <p>当サイトはリンクフリーです。ご意見・ご感想は掲示板まで！</p>
+      <p>Copyright (c) 1999-2026 管理人の秘密基地 All Rights Reserved.</p>
+      <p class="tiny">Presented by Cyber Space Project. Powered by Modern Web Standards.</p>
+      <a href="#top" id="back-to-top">▲ ページの一番上に戻る ▲</a>
+      <p><a href="kessan.html">◀ 磐田市 令和7年度決算まとめ（トップ）へ戻る</a></p>
+      <p><a href="dashboard.html">▶ 磐田市オープンデータ ダッシュボード へ</a></p>
+    </footer>
+  </div>
+
+  <script>
+    /* ==========================================================
+       モダンバックエンド（LocalStorage & 堅牢ロジック）
+       ========================================================== */
+    (() => {
+      // アクセスカウンターの処理
+      const countKey = "retro_v1999_visit_count";
+      const stored = Number(localStorage.getItem(countKey) || "12344");
+      const count = Number.isFinite(stored) && stored >= 0 ? stored + 1 : 12345;
+      localStorage.setItem(countKey, String(count));
+
+      const countEl = document.getElementById("visit-count");
+      if (countEl) {
+        countEl.textContent = String(count).padStart(7, "0");
+      }
+
+      // キリ番判定ロジック
+      const msgEl = document.getElementById("counter-message");
+      const kiribans = [100, 500, 1000, 5000, 10000, 50000, 100000];
+      if (msgEl) {
+        if (kiribans.includes(count) || count % 1000 === 0) {
+          msgEl.textContent = `🎉 ｷﾀ━━━━(ﾟ∀ﾟ)━━━━!! ${count}番はキリ番です！BBSで報告してね！`;
+          msgEl.style.color = "#ff0000";
+          msgEl.style.fontWeight = "bold";
+        } else {
+          const next = kiribans.find(n => n > count) || (Math.floor(count / 1000) + 1) * 1000;
+          msgEl.textContent = `次のキリ番は [ ${next} 番] です！踏み逃げ厳禁！`;
+        }
+      }
+
+      // 伝言板（BBS）のLocalStorage永続化処理
+      const storageKey = "retro_v1999_bbs_entries";
+      const form = document.getElementById("guestbook-form");
+      const list = document.getElementById("guestbook-list");
+      const nameInput = document.getElementById("guest-name");
+      const messageInput = document.getElementById("guest-message");
+
+      function renderBBS() {
+        if (!list) return;
+        list.replaceChildren();
+        let entries = [];
+        try { entries = JSON.parse(localStorage.getItem(storageKey) || "[]"); } catch { entries = []; }
+
+        if (!entries.length) {
+          const p = document.createElement("p");
+          p.className = "small-note";
+          p.textContent = "まだ書き込みはありません。最初の足あとを残してね！";
+          list.append(p);
+          return;
+        }
+
+        entries.slice().reverse().forEach((entry, idx) => {
+          const article = document.createElement("article");
+          article.className = "guestbook-entry";
+          
+          const header = document.createElement("div");
+          const strong = document.createElement("strong");
+          strong.textContent = `No.${entries.length - idx} [${entry.name}] さん`;
+          const small = document.createElement("small");
+          small.style.color = "#666";
+          small.textContent = `(${entry.date})`;
+          header.append(strong, document.createTextNode(" "), small);
+          
+          const body = document.createElement("p");
+          body.style.margin = "4px 0 0 0";
+          body.textContent = entry.message;
+          
+          article.append(header, body);
+          list.append(article);
+        });
+      }
+
+      if (form) {
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const name = nameInput.value.trim();
+          const message = messageInput.value.trim();
+          if (!name || !message) return;
+
+          let entries = [];
+          try { entries = JSON.parse(localStorage.getItem(storageKey) || "[]"); } catch { entries = []; }
+
+          entries.push({
+            name: name.slice(0, 30),
+            message: message.slice(0, 300),
+            date: new Date().toLocaleString("ja-JP")
+          });
+
+          localStorage.setItem(storageKey, JSON.stringify(entries.slice(-50)));
+          form.reset();
+          renderBBS();
+        });
+      }
+      renderBBS();
+
+      // おみくじ機能
+      const fortunes = [
+        "【大吉】キリ番を踏む確率100%！素晴らしい一日になります。",
+        "【中吉】ネットの回線速度が爆速になる予感。",
+        "【小吉】新しいソフトウェアのインストールは慎重に。",
+        "【吉】BBSに書き込むと良いことあるかも？",
+        "【凶】回線切断（モデムのダイヤルアップ失敗）に注意……"
+      ];
+      const omikujiBtn = document.getElementById("omikuji-button");
+      if (omikujiBtn) {
+        omikujiBtn.addEventListener("click", () => {
+          const res = document.getElementById("omikuji-result");
+          if (res) {
+            res.textContent = fortunes[Math.floor(Math.random() * fortunes.length)];
+          }
+        });
+      }
+
+      // 数字当てゲーム
+      const guessForm = document.getElementById("guess-form");
+      if (guessForm) {
+        guessForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const val = Number(document.getElementById("guess-number").value);
+          const target = Math.floor(Math.random() * 10) + 1;
+          const res = document.getElementById("guess-result");
+          if (res) {
+            res.textContent = val === target 
+              ? `🎯 当たり！正解は ${target} です！キリ番運あるかも！` 
+              : `💦 残念！正解は ${target} でした。もう一回トライ！`;
+          }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
