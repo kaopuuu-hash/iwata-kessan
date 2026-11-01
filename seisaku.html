@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="磐田市オープンデータ分析サイトで使っている数字の見方（3つの会計区分・実質収支・繰出金・財政指標・Dashboardの集計方法）を整理したページ。">
+<title>制作・分析手法 | 磐田市オープンデータ分析</title>
+<style>
+:root{--fg:#222;--bg:#fff;--muted:#666;--line:#e5e5e5;--accent:#14365e;--navy:#14365e;--navy-pale:#eef2f7;--max:720px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;line-height:1.8;font-size:16px}
+header{border-bottom:1px solid var(--line)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 0;flex-wrap:wrap;gap:8px}
+.nav a{color:var(--fg);text-decoration:none}
+.nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+main{padding:24px 0 48px}
+h1{font-size:1.5rem;line-height:1.4;margin:16px 0}
+h2{font-size:1.2rem;margin-top:32px;border-left:4px solid var(--accent);padding-left:10px}
+.card{border:1px solid var(--line);padding:16px;margin:16px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.95rem}
+th,td{border:1px solid var(--line);padding:8px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+.note{color:var(--muted);font-size:0.9rem}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:0.9rem;padding:16px 0 32px}
+th{background:var(--navy-pale)}
+.gnav{background:var(--navy);color:#fff}
+.gnav .wrap{display:flex;flex-wrap:wrap;gap:2px}
+.gnav a{color:#fff;text-decoration:none;font-size:.85rem;padding:9px 10px}
+.gnav a:hover{background:rgba(255,255,255,.14)}
+.gnav a[aria-current="page"]{background:rgba(255,255,255,.2);font-weight:700}
+.more{font-size:.9rem;margin-top:16px}
+.more a{color:var(--accent);font-weight:600}
+@media(max-width:560px){.wrap{padding:0 12px}table{font-size:0.85rem}th,td{padding:6px}}
+</style>
+</head>
+<body>
+<nav class="gnav" aria-label="サイト共通メニュー">
+<div class="wrap">
+<a href="index.html">トップ</a>
+<a href="cyber-space.html">cyber-space</a>
+<a href="kessan.html">決算概要</a>
+<a href="analysis.html">財政分析</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="method.html">分析手法</a>
+<a href="sources.html">出典・参考資料</a>
+<a href="seisaku.html" aria-current="page">制作・分析手法</a>
+</div>
+</nav>
+<header>
+<div class="wrap nav">
+<a href="index.html"><strong>磐田市オープンデータ分析</strong></a>
+</div>
+</header>
+
+<main id="top" class="wrap">
+<h1>制作・分析手法</h1>
+<p><strong>AIエージェントによるデータ分析・制作</strong></p>
+<p>本プロジェクトでは、複数のAIエージェントを専門工程ごとに配置し、調査から分析、設計、実装、検証までを一貫して実行する制作方式を採用しています。</p>
+<p>単純な文章生成やデータ集計にとどまらず、異なる専門領域の作業を分解・連携させ、実際に利用できる成果物へと統合することを目指しています。</p>
+<h2>専門工程別の分業体制</h2>
+<table>
+<tr><th>工程</th><th>主な役割</th></tr>
+<tr><td>Research</td><td>公開情報・オープンデータの収集</td></tr>
+<tr><td>Data Engineering</td><td>データの整理・加工・照合</td></tr>
+<tr><td>Analysis</td><td>数値検証・分析・考察</td></tr>
+<tr><td>Design</td><td>情報設計・画面デザイン</td></tr>
+<tr><td>Development</td><td>Webサイト・Dashboardの実装</td></tr>
+<tr><td>Quality Assurance</td><td>動作確認・品質検証・成果物確認</td></tr>
+</table>
+<h2>制作プロセス</h2>
+<ol>
+<li>調査：公開情報や複数のデータソースを収集</li>
+<li>照合：情報源間の数値や記載内容を確認</li>
+<li>分析：データの構造や傾向を分析</li>
+<li>設計：情報を理解しやすい構成に整理</li>
+<li>実装：Webページや可視化ツールを制作</li>
+<li>検証：出典・数値・表示・動作を確認</li>
+</ol>
+<h2>制作思想</h2>
+<p>AIにすべての判断を委ねるのではなく、人間が目的設定と重要な意思決定を担い、AIエージェントが専門工程の実行を支援する仕組みです。</p>
+<p>各工程を小さなタスクに分解し、成果物の検証と品質管理を繰り返すことで、作業の再現性と効率性を高めています。</p>
+<h2>この取り組みで重視すること</h2>
+<ul>
+<li>オープンデータの有効活用</li>
+<li>複数情報源による照合</li>
+<li>専門工程の分業と統合</li>
+<li>作業の自動化と効率化</li>
+<li>出典と分析過程の透明性</li>
+<li>人間による最終判断と品質管理</li>
+</ul>
+<p>データを集めるだけでなく、情報を価値ある成果物へ変換する。そのためのAI活用と業務プロセスの構築を実践しています。</p>
+<h2>このサイトについて（注記）</h2>
+<p>本サイトは、1990年代の個人ホームページ文化を再現した個人制作の実験プロジェクトです。</p>
+<p>1999年という設定、管理人プロフィール、掲示板等は演出上のものであり、実際の運営履歴を示すものではありません。</p>
+<p>磐田市および関係機関が運営・公認する公式サイトではありません。</p>
+<p>行政データ等を利用する場合は、各公開元の利用規約・ライセンスに従っています。</p>
+<p class="more">▶ 関連ページ：<a href="method.html">分析手法</a>／<a href="sources.html">出典・参考資料</a>／<a href="index.html">トップ（Cyber Space）</a></p>
+</main>
+
+<footer>
+<div class="wrap">
+<p>© 2026 超軽量サイト | 本ページは既存ページの記載に基づいて作成 | 単一HTML構成</p>
+</div>
+</footer>
+</body>
+</html>
