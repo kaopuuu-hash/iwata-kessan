@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>森町オープンデータ ダッシュボード</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { navy: {50:'#f0f4fa',100:'#dce6f2',200:'#b9cfe6',600:'#1d4e89',700:'#173e6e',800:'#14365e',900:'#0f2a4a'} } } } }</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+  .card { transition: transform .2s ease, box-shadow .2s ease; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -8px rgba(15,23,42,.18); }
+  .spinner { border: 3px solid rgba(20,54,94,.15); border-top-color: #14365e; border-radius: 50%; width: 36px; height: 36px; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .chart-box { height: 320px; position: relative; }
+  .chart-box canvas { height: 100% !important; max-height: 320px; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+  <header class="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div>
+        <h1 class="text-xl sm:text-2xl font-bold tracking-tight">森町オープンデータ ダッシュボード</h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">人口動態・防災施設の可視化 / Mori Town Open Data</p>
+      </div>
+      <div class="text-right text-xs text-slate-500">
+        <div>出典: 森町公式 (人口統計表PDF / 避難所PDF)</div>
+        <div id="updated" class="mt-1"></div>
+      </div>
+    </div>
+  </header>
+  <nav class="bg-navy-800 text-white" aria-label="サイト共通メニュー">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap gap-1 py-1 text-sm">
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="index.html">トップ</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="cyber-space.html">cyber-space</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="kessan.html">決算概要</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="analysis.html">財政分析</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="dashboard.html">Dashboard（磐田）</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="fukuroi.html">袋井Dashboard</a>
+      <a class="px-2 py-1 rounded bg-white/20 font-bold" href="mori.html" aria-current="page">森町Dashboard</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="method.html">分析手法</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="sources.html">出典・参考資料</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="seisaku.html">制作手法</a>
+    </div>
+  </nav>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div class="bg-amber-50 border border-amber-300 rounded-xl p-3 text-amber-800 text-sm">注意: 人口は2026年9月30日現在、避難所は2024年8月時点のデータです。最新情報は森町HPで確認してください。</div>
+    <div id="loading" class="flex flex-col items-center justify-center py-20 gap-4">
+      <div class="spinner"></div>
+      <p class="text-slate-500 text-sm">データを読み込み中...</p>
+    </div>
+    <div id="error" class="hidden bg-red-50 border border-red-300 rounded-xl p-4 text-red-700 text-sm"></div>
+    <section id="content" class="hidden space-y-6">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">総人口</div>
+          <div id="kpi-pop" class="text-2xl font-bold mt-1 text-navy-800">-</div>
+          <div class="text-xs text-slate-500 mt-1">2026年9月末</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">総世帯数</div>
+          <div id="kpi-hh" class="text-2xl font-bold mt-1 text-sky-700">-</div>
+          <div class="text-xs text-slate-500 mt-1">町別合計</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">避難所数</div>
+          <div id="kpi-sh" class="text-2xl font-bold mt-1 text-amber-600">-</div>
+          <div class="text-xs text-slate-500 mt-1">指定避難所</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">65歳以上比率</div>
+          <div id="kpi-elder" class="text-2xl font-bold mt-1 text-navy-600">-</div>
+          <div class="text-xs text-slate-500 mt-1">高齢化率</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <h2 class="text-base font-semibold mb-3">年齢別人口（5歳階級）</h2>
+          <div class="chart-box"><canvas id="ageChart"></canvas></div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <h2 class="text-base font-semibold mb-3">男女比</h2>
+          <div class="chart-box"><canvas id="genderChart"></canvas></div>
+        </div>
+      </div>
+      <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+        <h2 class="text-base font-semibold mb-3">町別人口 Top 15</h2>
+        <div class="chart-box"><canvas id="townChart"></canvas></div>
+      </div>
+      <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+        <h2 class="text-base font-semibold mb-3">指定避難所一覧</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-slate-500 border-b border-slate-200">
+              <tr><th class="text-left py-2 px-2">名称</th><th class="text-left py-2 px-2">所在地</th><th class="text-left py-2 px-2">避難対象地区</th></tr>
+            </thead>
+            <tbody id="shelterBody" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="border-t border-slate-200 mt-10 py-6 text-center text-xs text-slate-500">
+    <div style="margin-bottom:8px"><a href="kessan.html" style="color:#1e40af;text-decoration:underline">◀ 磐田市 令和7年度決算まとめ へ</a></div>
+    <div style="margin-bottom:8px"><a href="cyber-space.html" style="color:#1e40af;text-decoration:underline">▶ cyber-space へ</a></div>
+    データ出典: 森町公式ウェブサイト / 人口2026年9月30日現在、避難所2024年8月時点
+  </footer>
+  <script id="city-data" type="application/json">{"ageBuckets": [{"label": "0歳〜4歳", "male": 156, "female": 173, "total": 329}, {"label": "5歳〜9歳", "male": 288, "female": 252, "total": 540}, {"label": "10歳〜14歳", "male": 365, "female": 334, "total": 699}, {"label": "15歳〜19歳", "male": 394, "female": 331, "total": 725}, {"label": "20歳〜24歳", "male": 438, "female": 349, "total": 787}, {"label": "25歳〜29歳", "male": 347, "female": 278, "total": 625}, {"label": "30歳〜34歳", "male": 325, "female": 234, "total": 559}, {"label": "35歳〜39歳", "male": 411, "female": 387, "total": 798}, {"label": "40歳〜44歳", "male": 524, "female": 442, "total": 966}, {"label": "45歳〜49歳", "male": 546, "female": 477, "total": 1023}, {"label": "50歳〜54歳", "male": 540, "female": 510, "total": 1050}, {"label": "55歳〜59歳", "male": 510, "female": 466, "total": 976}, {"label": "60歳〜64歳", "male": 526, "female": 522, "total": 1048}, {"label": "65歳〜69歳", "male": 634, "female": 668, "total": 1302}, {"label": "70歳〜74歳", "male": 731, "female": 729, "total": 1460}, {"label": "75歳〜79歳", "male": 713, "female": 708, "total": 1421}, {"label": "80歳〜84歳", "male": 371, "female": 438, "total": 809}, {"label": "85歳〜89歳", "male": 217, "female": 437, "total": 654}, {"label": "90歳〜94歳", "male": 117, "female": 304, "total": 421}, {"label": "95歳〜99歳", "male": 36, "female": 130, "total": 166}, {"label": "100歳以上", "male": 9, "female": 29, "total": 38}], "towns": [{"town": "森", "households": 1643, "male": 1815, "female": 1876, "total": 3691}, {"town": "飯田", "households": 840, "male": 1120, "female": 1109, "total": 2229}, {"town": "一宮", "households": 614, "male": 849, "female": 791, "total": 1640}, {"town": "睦実", "households": 586, "male": 660, "female": 696, "total": 1356}, {"town": "中川", "households": 545, "male": 688, "female": 613, "total": 1301}, {"town": "天宮", "households": 483, "male": 600, "female": 633, "total": 1233}, {"town": "円田", "households": 249, "male": 336, "female": 339, "total": 675}, {"town": "草ケ谷", "households": 271, "male": 338, "female": 321, "total": 659}, {"town": "谷中", "households": 216, "male": 292, "female": 291, "total": 583}, {"town": "向天方", "households": 235, "male": 290, "female": 291, "total": 581}, {"town": "三倉", "households": 276, "male": 277, "female": 300, "total": 577}, {"town": "城下", "households": 230, "male": 257, "female": 266, "total": 523}, {"town": "牛飼", "households": 116, "male": 132, "female": 158, "total": 290}, {"town": "問詰", "households": 112, "male": 142, "female": 142, "total": 284}, {"town": "大鳥居", "households": 110, "male": 136, "female": 135, "total": 271}, {"town": "西俣", "households": 68, "male": 90, "female": 75, "total": 165}, {"town": "鍛治島", "households": 51, "male": 56, "female": 48, "total": 104}, {"town": "薄場", "households": 33, "male": 32, "female": 37, "total": 69}, {"town": "葛布", "households": 31, "male": 37, "female": 30, "total": 67}, {"town": "橘", "households": 34, "male": 34, "female": 30, "total": 64}, {"town": "亀久保", "households": 18, "male": 16, "female": 16, "total": 32}, {"town": "嵯塚", "households": 3, "male": 1, "female": 2, "total": 3}], "shelters": [{"name": "三倉小学校", "address": "森町三倉 740", "target": "黒田・三倉・中村・上野平・大河内・木根・乙丸・大府川・中野・大久保・田能（収容266人）"}, {"name": "泉陽中学校", "address": "森町問詰 259", "target": "葛布・西俣・黒石（収容424人）"}, {"name": "天方小学校", "address": "森町大鳥居 220-2", "target": "大鳥居・問詰・鍛治島・亀久保・嵯塚（収容316人）"}, {"name": "森中学校", "address": "森町天宮 888-1", "target": "城下下・城下上・赤松・川向・本丁・川久保・大上・橘・薄場（収容751人）"}, {"name": "森小学校", "address": "森町森 125", "target": "開運町・明治町・新町・仲横町・川原町・南町（収容864人）"}, {"name": "森町総合体育館", "address": "森町森 92-8", "target": "本町・下宿・大門・向天方下・向天方上（収容656人）"}, {"name": "遠江総合高校", "address": "森町森 2085", "target": "栄町上・栄町中（収容280人）"}, {"name": "森町文化会館", "address": "森町森 1485", "target": "西幸町・促進住宅森（収容177人）"}, {"name": "一宮総合センター", "address": "森町一宮 1845-10", "target": "片瀬（収容80人）"}, {"name": "旭が丘中学校", "address": "森町谷中 556", "target": "草ケ谷・円田・中川上・西組（収容699人）"}, {"name": "宮園小学校", "address": "森町谷中 650", "target": "米倉・大久保・赤根・谷崎・宮代西・宮代東・谷中・中川下（収容806人）"}, {"name": "園田総合センター", "address": "森町谷中 513-1", "target": "牛飼（収容79人）"}, {"name": "飯田小学校", "address": "森町飯田 3310-1", "target": "市場・下飯田・中飯田・上飯田・東組・若宮・鴨谷・福田地・戸綿・北戸綿・南戸綿（収容811人）"}, {"name": "飯田総合センター", "address": "森町飯田 4040-28", "target": "城北・梶ヶ谷（収容64人）"}], "meta": {"populationNote": "令和8年9月30日現在", "shelterNote": "2024年8月10日（町HP更新日）", "households": 6764, "source": "森町公式ウェブサイト", "note": "LinkData公開なし。町HPのPDF（町名別・年齢別・避難所一覧）を正本とした。009000=葛布・010000=亀久保は行政区別表と避難所PDFで照合。世帯数は混合世帯の重複を除いた実数。年齢別合計は16,396で公式総数と1人差（原票のまま、年齢不詳相当）。KPI・男女比は町名別合計（公式一致）を正本とした。"}}</script>
+  <script>
+  (function(){
+    const loading = document.getElementById('loading');
+    const errorBox = document.getElementById('error');
+    const content = document.getElementById('content');
+    try {
+      const raw = document.getElementById('city-data').textContent;
+      const D = JSON.parse(raw);
+      const towns = D.towns;
+      const ageBuckets = D.ageBuckets;
+      const shelters = D.shelters;
+      const totalPop = towns.reduce((s,t)=>s+t.total,0);
+      const totalHH = towns.reduce((s,t)=>s+t.households,0);
+      const maleTotal = towns.reduce((s,t)=>s+t.male,0);
+      const femaleTotal = towns.reduce((s,t)=>s+t.female,0);
+      const elder = ageBuckets.filter(b=>parseInt(b.label)>=65).reduce((s,b)=>s+b.total,0);
+      const elderRate = (elder/totalPop*100).toFixed(1);
+      document.getElementById('kpi-pop').textContent = totalPop.toLocaleString();
+      document.getElementById('kpi-hh').textContent = totalHH.toLocaleString();
+      document.getElementById('kpi-sh').textContent = shelters.length.toLocaleString();
+      document.getElementById('kpi-elder').textContent = elderRate + '%';
+      document.getElementById('updated').textContent = '人口: ' + D.meta.populationNote + ' / 避難所: ' + D.meta.shelterNote;
+      new Chart(document.getElementById('ageChart'), {
+        type: 'bar',
+        data: { labels: ageBuckets.map(b=>b.label), datasets: [
+          { label: '男性', data: ageBuckets.map(b=>b.male), backgroundColor: 'rgba(20,54,94,0.85)', borderRadius: 4 },
+          { label: '女性', data: ageBuckets.map(b=>b.female), backgroundColor: 'rgba(2,132,199,0.8)', borderRadius: 4 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#334155' } } },
+          scales: { x: { stacked: true, ticks: { color: '#64748b', maxRotation: 45, minRotation: 45 }, grid: { color: 'rgba(100,116,139,0.15)' } },
+                   y: { stacked: true, ticks: { color: '#64748b' }, grid: { color: 'rgba(100,116,139,0.15)' } } }
+        }
+      });
+      new Chart(document.getElementById('genderChart'), {
+        type: 'doughnut',
+        data: { labels: ['男性','女性'], datasets: [{ data: [maleTotal, femaleTotal], backgroundColor: ['rgba(20,54,94,0.9)','rgba(2,132,199,0.9)'], borderWidth: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#334155' } } } }
+      });
+      const top15 = towns.slice(0,15);
+      new Chart(document.getElementById('townChart'), {
+        type: 'bar',
+        data: { labels: top15.map(t=>t.town), datasets: [{ label: '人口', data: top15.map(t=>t.total), backgroundColor: 'rgba(29,78,137,0.85)', borderRadius: 4 }] },
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: { x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(100,116,139,0.15)' } },
+                   y: { ticks: { color: '#64748b' }, grid: { display: false } } }
+        }
+      });
+      const tbody = document.getElementById('shelterBody');
+      shelters.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td class="py-2 px-2 font-medium">' + s.name + '</td>' +
+          '<td class="py-2 px-2 text-slate-600">' + s.address + '</td>' +
+          '<td class="py-2 px-2 text-slate-600 text-xs">' + (s.target||'') + '</td>';
+        tbody.appendChild(tr);
+      });
+      loading.classList.add('hidden');
+      content.classList.remove('hidden');
+    } catch (e) {
+      loading.classList.add('hidden');
+      errorBox.textContent = 'データの読み込みに失敗しました: ' + e.message;
+      errorBox.classList.remove('hidden');
+    }
+  })();
+  </script>
+</body>
+</html>
