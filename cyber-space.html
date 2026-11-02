@@ -464,7 +464,7 @@
       </div>
 
       <div class="bgm-row">
-        <button id="bgm-toggle" type="button" class="retro-btn">♪ BGMを鳴らす（ピコピコ）</button>
+        <button id="bgm-toggle" type="button" class="retro-btn">♪ クリスタルの調べを奏でる</button>
       </div>
 
       <div class="header-meta">
@@ -770,30 +770,66 @@
         });
       }
 
-      // BGMトグル（WebAudio生成・デフォOFF）
+      // BGMトグル（ファンタジー風オリジナル・オマージュ / 原曲の転載ではありません・デフォOFF）
       const bgmBtn = document.getElementById("bgm-toggle");
       let audioCtx = null, bgmTimer = null, bgmStep = 0;
-      const melody = [523, 659, 784, 659, 880, 784, 659, 523];
+      // クリスタル風アルペジオのオリジナルフレーズ（Am→F→Dm→E7の響きをイメージ / 上昇下降の波）
+      const ffHomageLead = [
+        220, 261.63, 329.63, 440, 523.25, 659.25, 880, 659.25, 523.25, 440, 329.63, 261.63,
+        174.61, 220, 261.63, 349.23, 440, 523.25, 698.46, 523.25, 440, 349.23, 261.63, 220,
+        146.83, 220, 293.66, 349.23, 440, 587.33, 698.46, 587.33, 440, 349.23, 293.66, 220,
+        164.81, 207.65, 246.94, 329.63, 415.30, 493.88, 659.25, 493.88, 415.30, 329.63, 246.94, 207.65
+      ];
+      const ffHomageBass = [110, 87.31, 73.42, 82.41];
       if (bgmBtn) {
         bgmBtn.addEventListener("click", () => {
           if (bgmTimer) {
             clearInterval(bgmTimer); bgmTimer = null;
             if (audioCtx) audioCtx.close(); audioCtx = null;
-            bgmBtn.textContent = "♪ BGMを鳴らす（ピコピコ）";
+            bgmBtn.textContent = "♪ クリスタルの調べを奏でる";
             return;
           }
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const echo = audioCtx.createDelay(1.0);
+          echo.delayTime.value = 0.29;
+          const fb = audioCtx.createGain();
+          fb.gain.value = 0.32;
+          const echoMix = audioCtx.createGain();
+          echoMix.gain.value = 0.25;
+          echo.connect(fb); fb.connect(echo); echo.connect(echoMix); echoMix.connect(audioCtx.destination);
           bgmTimer = setInterval(() => {
+            const t = audioCtx.currentTime;
+            const leadFreq = ffHomageLead[bgmStep % ffHomageLead.length];
             const osc = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = "square";
-            osc.frequency.value = melody[bgmStep % melody.length];
-            gain.gain.value = 0.05;
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.18);
+            osc.type = "triangle";
+            osc2.type = "sine";
+            osc.frequency.value = leadFreq;
+            osc2.frequency.value = leadFreq;
+            osc2.detune.value = 5;
+            gain.gain.setValueAtTime(0.0001, t);
+            gain.gain.exponentialRampToValueAtTime(0.07, t + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+            osc.connect(gain); osc2.connect(gain);
+            gain.connect(audioCtx.destination); gain.connect(echo);
+            osc.start(t); osc.stop(t + 0.25);
+            osc2.start(t); osc2.stop(t + 0.25);
+            if (bgmStep % 12 === 0) {
+              const bassFreq = ffHomageBass[((bgmStep / 12) | 0) % ffHomageBass.length];
+              const bOsc = audioCtx.createOscillator();
+              const bGain = audioCtx.createGain();
+              bOsc.type = "sine";
+              bOsc.frequency.value = bassFreq;
+              bGain.gain.setValueAtTime(0.0001, t);
+              bGain.gain.exponentialRampToValueAtTime(0.09, t + 0.05);
+              bGain.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+              bOsc.connect(bGain); bGain.connect(audioCtx.destination);
+              bOsc.start(t); bOsc.stop(t + 1.8);
+            }
             bgmStep++;
-          }, 220);
-          bgmBtn.textContent = "■ BGMを止める";
+          }, 190);
+          bgmBtn.textContent = "■ 調べを止める";
         });
       }
 
