@@ -3,1185 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>袋井市 人口ダッシュボード（令和8年10月1日）</title>
-<meta name="description" content="袋井市公式人口表をもとにした人口ダッシュボード。総人口86,919人。">
+<title>袋井市オープンデータ ダッシュボード</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = { theme: { extend: { colors: { navy: {50:'#f0f4fa',100:'#dce6f2',200:'#b9cfe6',600:'#1d4e89',700:'#173e6e',800:'#14365e',900:'#0f2a4a'} } } } }
-</script>
+<script>tailwind.config = { theme: { extend: { colors: { navy: {50:'#f0f4fa',100:'#dce6f2',200:'#b9cfe6',600:'#1d4e89',700:'#173e6e',800:'#14365e',900:'#0f2a4a'} } } } }</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script type="application/json" id="fukuroi-data">{"meta": {"city": "袋井市(静岡県)", "reference_date": "2026-10-01", "reference_label": "令和8年10月1日(9月末データ)", "official_total": 86919, "official_households": 37819, "source_page": "https://www.city.fukuroi.shizuoka.jp/soshiki/4/2/tokei/jinko/suii/13947.html", "source_file": "https://www.city.fukuroi.shizuoka.jp/material/files/group/11/jinkouR080930.xlsx", "linkdata_note": "袋井市の年齢別・町別人口のLinkData workは存在しない(市公式がLinkDataではなく「ふじのくにオープンデータカタログ」経由で公開、人口表は公式サイトのExcelのみ)。そのため公式人口表Excelを正本として取得・検証した。"}, "verification": {"town_jichikai_sum": 86919, "town_ooaza_sum": 86919, "age_sum": 86919, "sheet_grand_total": 86919, "town_jichikai_match_official": true, "town_ooaza_match_official": true, "age_match_official": true, "three_point_match": true}, "counts": {"jichikai_areas": 156, "ooaza_areas": 113, "ages": 111}, "by_jichikai": [{"union": "駅前", "name": "西通", "total": 231}, {"union": "", "name": "東通", "total": 345}, {"union": "", "name": "栄町", "total": 583}, {"union": "", "name": "睦町", "total": 444}, {"union": "高尾", "name": "掛之上", "total": 416}, {"union": "", "name": "下地", "total": 690}, {"union": "", "name": "三門町", "total": 330}, {"union": "", "name": "田端", "total": 381}, {"union": "", "name": "大門一丁目", "total": 214}, {"union": "", "name": "大門二丁目", "total": 284}, {"union": "", "name": "大門三丁目", "total": 339}, {"union": "", "name": "大門五丁目", "total": 511}, {"union": "豊沢", "name": "宝野", "total": 1185}, {"union": "", "name": "大通", "total": 109}, {"union": "", "name": "菩提", "total": 745}, {"union": "", "name": "法多", "total": 233}, {"union": "", "name": "神長南", "total": 656}, {"union": "", "name": "神長中", "total": 719}, {"union": "", "name": "神長北", "total": 413}, {"union": "愛野", "name": "上石野", "total": 1948}, {"union": "", "name": "祢宜弥", "total": 1236}, {"union": "", "name": "下石野", "total": 200}, {"union": "", "name": "山田川", "total": 564}, {"union": "", "name": "小野田", "total": 1477}, {"union": "", "name": "寺前", "total": 154}, {"union": "高南", "name": "柳原", "total": 243}, {"union": "", "name": "南町", "total": 714}, {"union": "", "name": "小川町", "total": 587}, {"union": "", "name": "砂本町", "total": 322}, {"union": "", "name": "清水町", "total": 549}, {"union": "", "name": "青木町第一", "total": 602}, {"union": "", "name": "青木町第二", "total": 142}, {"union": "", "name": "高尾台", "total": 407}, {"union": "袋井", "name": "新町", "total": 287}, {"union": "", "name": "本町", "total": 280}, {"union": "", "name": "永楽町", "total": 156}, {"union": "川井", "name": "川井東", "total": 661}, {"union": "", "name": "川井中", "total": 277}, {"union": "", "name": "川井西第一", "total": 1085}, {"union": "", "name": "川井西第二", "total": 1033}, {"union": "西", "name": "木原", "total": 637}, {"union": "", "name": "土橋", "total": 510}, {"union": "", "name": "西田", "total": 350}, {"union": "田原", "name": "上新池", "total": 599}, {"union": "", "name": "下新池", "total": 1075}, {"union": "", "name": "松袋井", "total": 215}, {"union": "", "name": "彦島", "total": 194}, {"union": "方丈", "name": "方丈中", "total": 429}, {"union": "", "name": "方丈西", "total": 180}, {"union": "", "name": "方丈東", "total": 555}, {"union": "", "name": "方丈北", "total": 193}, {"union": "", "name": "方丈南", "total": 338}, {"union": "北", "name": "鷲巣上", "total": 682}, {"union": "", "name": "鷲巣下", "total": 1071}, {"union": "", "name": "可睡", "total": 377}, {"union": "", "name": "上久能", "total": 1416}, {"union": "", "name": "中久能", "total": 911}, {"union": "", "name": "下久能", "total": 326}, {"union": "", "name": "山科上", "total": 695}, {"union": "", "name": "山科下", "total": 435}, {"union": "", "name": "北町", "total": 422}, {"union": "", "name": "天神町", "total": 929}, {"union": "", "name": "堀越上", "total": 2145}, {"union": "", "name": "堀越中", "total": 156}, {"union": "", "name": "堀越一丁目", "total": 430}, {"union": "", "name": "堀越二丁目", "total": 480}, {"union": "", "name": "堀越三丁目", "total": 626}, {"union": "", "name": "堀越五丁目", "total": 489}, {"union": "", "name": "サンズテラス久能", "total": 284}, {"union": "袋井北四町", "name": "田町", "total": 836}, {"union": "", "name": "葵町", "total": 810}, {"union": "", "name": "泉町", "total": 642}, {"union": "", "name": "旭町", "total": 1028}, {"union": "東一", "name": "上貫名", "total": 502}, {"union": "", "name": "下貫名", "total": 715}, {"union": "", "name": "新屋", "total": 729}, {"union": "", "name": "久津部西", "total": 592}, {"union": "", "name": "久津部東", "total": 409}, {"union": "", "name": "久津部北", "total": 368}, {"union": "", "name": "名栗北原川", "total": 378}, {"union": "", "name": "不入斗", "total": 232}, {"union": "", "name": "菅ヶ谷", "total": 259}, {"union": "東二", "name": "村松下", "total": 392}, {"union": "", "name": "村松上", "total": 265}, {"union": "", "name": "村松西", "total": 632}, {"union": "今井", "name": "深見北", "total": 198}, {"union": "", "name": "深見南", "total": 137}, {"union": "", "name": "深見東", "total": 484}, {"union": "", "name": "延久", "total": 721}, {"union": "", "name": "横井", "total": 320}, {"union": "", "name": "徳光", "total": 446}, {"union": "", "name": "小山", "total": 507}, {"union": "", "name": "太田", "total": 898}, {"union": "", "name": "太田西", "total": 153}, {"union": "", "name": "太田東", "total": 106}, {"union": "三川", "name": "見取", "total": 568}, {"union": "", "name": "大谷", "total": 353}, {"union": "", "name": "友永", "total": 370}, {"union": "", "name": "萱間", "total": 739}, {"union": "", "name": "川会", "total": 326}, {"union": "", "name": "山田", "total": 337}, {"union": "笠原", "name": "五十岡", "total": 192}, {"union": "", "name": "西区", "total": 276}, {"union": "", "name": "上区", "total": 301}, {"union": "", "name": "東区", "total": 92}, {"union": "", "name": "下区", "total": 146}, {"union": "", "name": "南区", "total": 414}, {"union": "", "name": "三沢", "total": 396}, {"union": "", "name": "三輪", "total": 353}, {"union": "", "name": "柏木", "total": 120}, {"union": "上山梨", "name": "上町", "total": 756}, {"union": "", "name": "中町", "total": 533}, {"union": "", "name": "下町", "total": 1324}, {"union": "", "name": "入古", "total": 375}, {"union": "", "name": "金屋敷", "total": 114}, {"union": "", "name": "沖山梨", "total": 249}, {"union": "", "name": "月見町", "total": 414}, {"union": "下山梨", "name": "下山梨上", "total": 724}, {"union": "", "name": "下山梨下", "total": 1217}, {"union": "", "name": "平宇", "total": 618}, {"union": "宇刈", "name": "春岡", "total": 2760}, {"union": "", "name": "一色", "total": 326}, {"union": "", "name": "宇刈三沢", "total": 663}, {"union": "", "name": "馬ケ谷", "total": 220}, {"union": "", "name": "中村", "total": 154}, {"union": "", "name": "大日", "total": 230}, {"union": "", "name": "可睡の杜南", "total": 798}, {"union": "", "name": "可睡の杜北", "total": 1045}, {"union": "浅羽北", "name": "諸井", "total": 2458}, {"union": "", "name": "浅羽", "total": 2787}, {"union": "", "name": "浅名", "total": 1889}, {"union": "", "name": "豊住", "total": 577}, {"union": "", "name": "浅羽山の手", "total": 716}, {"union": "", "name": "浅羽南", "total": 660}, {"union": "浅羽西", "name": "長溝", "total": 651}, {"union": "", "name": "浅岡上", "total": 153}, {"union": "", "name": "浅岡下", "total": 547}, {"union": "", "name": "中", "total": 263}, {"union": "", "name": "浅羽一色", "total": 381}, {"union": "", "name": "富里上", "total": 173}, {"union": "", "name": "富里中", "total": 382}, {"union": "", "name": "富里下", "total": 213}, {"union": "", "name": "西ケ崎", "total": 120}, {"union": "", "name": "風の街", "total": 157}, {"union": "浅羽東", "name": "新堀", "total": 490}, {"union": "", "name": "梅山", "total": 873}, {"union": "", "name": "松原", "total": 922}, {"union": "", "name": "初越", "total": 100}, {"union": "浅羽南", "name": "中新田", "total": 359}, {"union": "", "name": "大野", "total": 479}, {"union": "", "name": "東同笠", "total": 480}, {"union": "", "name": "西同笠", "total": 366}, {"union": "", "name": "太郎助", "total": 343}, {"union": "", "name": "湊東", "total": 615}, {"union": "", "name": "湊中", "total": 349}, {"union": "", "name": "湊西", "total": 253}], "by_ooaza": [{"district": "南", "name": "高尾", "total": 3620}, {"district": "", "name": "栄町", "total": 584}, {"district": "", "name": "三門町", "total": 162}, {"district": "", "name": "睦町", "total": 457}, {"district": "", "name": "山名町", "total": 206}, {"district": "", "name": "大門", "total": 206}, {"district": "", "name": "高尾町", "total": 581}, {"district": "", "name": "掛之上", "total": 409}, {"district": "高南", "name": "小川町", "total": 587}, {"district": "", "name": "砂本町", "total": 322}, {"district": "", "name": "清水町", "total": 549}, {"district": "", "name": "青木町", "total": 662}, {"district": "豊愛", "name": "豊沢", "total": 3159}, {"district": "", "name": "愛野", "total": 2371}, {"district": "", "name": "愛野東一丁目", "total": 800}, {"district": "", "name": "愛野東二丁目", "total": 436}, {"district": "", "name": "愛野南一丁目", "total": 653}, {"district": "", "name": "愛野南二丁目", "total": 511}, {"district": "", "name": "愛野南三丁目", "total": 301}, {"district": "", "name": "愛野南四丁目", "total": 434}, {"district": "", "name": "神長", "total": 966}, {"district": "西", "name": "袋井", "total": 524}, {"district": "", "name": "川井", "total": 3085}, {"district": "", "name": "木原", "total": 623}, {"district": "", "name": "土橋", "total": 510}, {"district": "", "name": "西田", "total": 350}, {"district": "", "name": "永楽町", "total": 156}, {"district": "", "name": "方丈一丁目", "total": 340}, {"district": "", "name": "方丈二丁目", "total": 178}, {"district": "", "name": "方丈三丁目", "total": 147}, {"district": "", "name": "方丈四丁目", "total": 282}, {"district": "", "name": "方丈五丁目", "total": 193}, {"district": "", "name": "方丈六丁目", "total": 555}, {"district": "田原", "name": "新池", "total": 1546}, {"district": "", "name": "松袋井", "total": 199}, {"district": "", "name": "彦島", "total": 194}, {"district": "北", "name": "鷲巣", "total": 1741}, {"district": "", "name": "久能", "total": 3723}, {"district": "", "name": "堀越", "total": 2220}, {"district": "", "name": "堀越一丁目", "total": 430}, {"district": "", "name": "堀越二丁目", "total": 432}, {"district": "", "name": "堀越三丁目", "total": 590}, {"district": "", "name": "堀越四丁目", "total": 156}, {"district": "", "name": "堀越五丁目", "total": 488}, {"district": "", "name": "山科", "total": 1227}, {"district": "", "name": "田町一丁目", "total": 218}, {"district": "", "name": "田町二丁目", "total": 618}, {"district": "", "name": "泉町一丁目", "total": 357}, {"district": "", "name": "泉町二丁目", "total": 284}, {"district": "", "name": "旭町一丁目", "total": 456}, {"district": "", "name": "旭町二丁目", "total": 572}, {"district": "", "name": "葵町一丁目", "total": 396}, {"district": "", "name": "葵町二丁目", "total": 243}, {"district": "", "name": "葵町三丁目", "total": 171}, {"district": "", "name": "天神町一丁目", "total": 414}, {"district": "", "name": "天神町二丁目", "total": 207}, {"district": "", "name": "天神町三丁目", "total": 310}, {"district": "東", "name": "広岡", "total": 1698}, {"district": "", "name": "国本", "total": 1943}, {"district": "", "name": "村松", "total": 1398}, {"district": "", "name": "新屋二丁目", "total": 140}, {"district": "", "name": "新屋三丁目", "total": 170}, {"district": "", "name": "新屋四丁目", "total": 153}, {"district": "今井", "name": "深見", "total": 819}, {"district": "", "name": "太田", "total": 1089}, {"district": "", "name": "延久", "total": 647}, {"district": "", "name": "横井", "total": 278}, {"district": "", "name": "徳光", "total": 431}, {"district": "", "name": "小山", "total": 591}, {"district": "三川", "name": "見取", "total": 568}, {"district": "", "name": "大谷", "total": 349}, {"district": "", "name": "友永", "total": 375}, {"district": "", "name": "萱間", "total": 729}, {"district": "", "name": "川会", "total": 331}, {"district": "", "name": "山田", "total": 341}, {"district": "笠原", "name": "岡崎", "total": 1378}, {"district": "", "name": "山崎", "total": 905}, {"district": "山梨", "name": "上山梨", "total": 1468}, {"district": "", "name": "上山梨一丁目", "total": 317}, {"district": "", "name": "上山梨二丁目", "total": 297}, {"district": "", "name": "上山梨三丁目", "total": 548}, {"district": "", "name": "上山梨五丁目", "total": 340}, {"district": "", "name": "上山梨六丁目", "total": 155}, {"district": "", "name": "下山梨", "total": 1948}, {"district": "", "name": "下山梨一丁目", "total": 419}, {"district": "", "name": "下山梨二丁目", "total": 288}, {"district": "", "name": "沖山梨", "total": 226}, {"district": "", "name": "月見町", "total": 421}, {"district": "宇刈", "name": "春岡", "total": 1459}, {"district": "", "name": "春岡一丁目", "total": 851}, {"district": "", "name": "春岡二丁目", "total": 408}, {"district": "", "name": "宇刈", "total": 1601}, {"district": "", "name": "可睡の杜", "total": 1825}, {"district": "浅羽北", "name": "浅名", "total": 1510}, {"district": "", "name": "浅羽", "total": 4333}, {"district": "", "name": "諸井", "total": 2623}, {"district": "", "name": "豊住", "total": 568}, {"district": "浅羽西", "name": "富里", "total": 769}, {"district": "", "name": "中", "total": 419}, {"district": "", "name": "長溝", "total": 648}, {"district": "", "name": "浅岡", "total": 703}, {"district": "", "name": "浅羽一色", "total": 381}, {"district": "", "name": "西ケ崎", "total": 120}, {"district": "浅羽東", "name": "松原", "total": 997}, {"district": "", "name": "梅山", "total": 1005}, {"district": "", "name": "新堀", "total": 510}, {"district": "", "name": "初越", "total": 100}, {"district": "浅羽南", "name": "西同笠", "total": 326}, {"district": "", "name": "太郎助", "total": 212}, {"district": "", "name": "湊", "total": 1371}, {"district": "", "name": "中新田", "total": 359}, {"district": "", "name": "大野", "total": 479}, {"district": "", "name": "東同笠", "total": 471}], "by_age": [{"age": "0", "total": 508, "male": 263, "female": 245}, {"age": "1", "total": 523, "male": 247, "female": 276}, {"age": "2", "total": 554, "male": 289, "female": 265}, {"age": "3", "total": 617, "male": 305, "female": 312}, {"age": "4", "total": 672, "male": 365, "female": 307}, {"age": "5", "total": 633, "male": 325, "female": 308}, {"age": "6", "total": 722, "male": 361, "female": 361}, {"age": "7", "total": 756, "male": 378, "female": 378}, {"age": "8", "total": 796, "male": 411, "female": 385}, {"age": "9", "total": 816, "male": 416, "female": 400}, {"age": "10", "total": 773, "male": 372, "female": 401}, {"age": "11", "total": 827, "male": 432, "female": 395}, {"age": "12", "total": 886, "male": 432, "female": 454}, {"age": "13", "total": 888, "male": 485, "female": 403}, {"age": "14", "total": 897, "male": 492, "female": 405}, {"age": "15", "total": 933, "male": 482, "female": 451}, {"age": "16", "total": 896, "male": 488, "female": 408}, {"age": "17", "total": 957, "male": 486, "female": 471}, {"age": "18", "total": 870, "male": 449, "female": 421}, {"age": "19", "total": 928, "male": 523, "female": 405}, {"age": "20", "total": 887, "male": 469, "female": 418}, {"age": "21", "total": 902, "male": 467, "female": 435}, {"age": "22", "total": 944, "male": 515, "female": 429}, {"age": "23", "total": 910, "male": 503, "female": 407}, {"age": "24", "total": 973, "male": 560, "female": 413}, {"age": "25", "total": 921, "male": 505, "female": 416}, {"age": "26", "total": 949, "male": 509, "female": 440}, {"age": "27", "total": 920, "male": 527, "female": 393}, {"age": "28", "total": 895, "male": 468, "female": 427}, {"age": "29", "total": 919, "male": 491, "female": 428}, {"age": "30", "total": 972, "male": 529, "female": 443}, {"age": "31", "total": 858, "male": 486, "female": 372}, {"age": "32", "total": 924, "male": 479, "female": 445}, {"age": "33", "total": 955, "male": 517, "female": 438}, {"age": "34", "total": 943, "male": 509, "female": 434}, {"age": "35", "total": 961, "male": 505, "female": 456}, {"age": "36", "total": 1024, "male": 544, "female": 480}, {"age": "37", "total": 1021, "male": 544, "female": 477}, {"age": "38", "total": 1081, "male": 573, "female": 508}, {"age": "39", "total": 1133, "male": 602, "female": 531}, {"age": "40", "total": 1122, "male": 577, "female": 545}, {"age": "41", "total": 1188, "male": 599, "female": 589}, {"age": "42", "total": 1215, "male": 640, "female": 575}, {"age": "43", "total": 1178, "male": 628, "female": 550}, {"age": "44", "total": 1242, "male": 631, "female": 611}, {"age": "45", "total": 1256, "male": 674, "female": 582}, {"age": "46", "total": 1290, "male": 670, "female": 620}, {"age": "47", "total": 1208, "male": 633, "female": 575}, {"age": "48", "total": 1291, "male": 676, "female": 615}, {"age": "49", "total": 1326, "male": 710, "female": 616}, {"age": "50", "total": 1297, "male": 662, "female": 635}, {"age": "51", "total": 1247, "male": 675, "female": 572}, {"age": "52", "total": 1309, "male": 688, "female": 621}, {"age": "53", "total": 1464, "male": 759, "female": 705}, {"age": "54", "total": 1334, "male": 666, "female": 668}, {"age": "55", "total": 1262, "male": 651, "female": 611}, {"age": "56", "total": 1207, "male": 656, "female": 551}, {"age": "57", "total": 1206, "male": 635, "female": 571}, {"age": "58", "total": 1113, "male": 574, "female": 539}, {"age": "59", "total": 1157, "male": 611, "female": 546}, {"age": "60", "total": 756, "male": 413, "female": 343}, {"age": "61", "total": 1051, "male": 543, "female": 508}, {"age": "62", "total": 1014, "male": 514, "female": 500}, {"age": "63", "total": 921, "male": 473, "female": 448}, {"age": "64", "total": 914, "male": 459, "female": 455}, {"age": "65", "total": 1004, "male": 470, "female": 534}, {"age": "66", "total": 988, "male": 498, "female": 490}, {"age": "67", "total": 1002, "male": 484, "female": 518}, {"age": "68", "total": 974, "male": 493, "female": 481}, {"age": "69", "total": 1066, "male": 532, "female": 534}, {"age": "70", "total": 1055, "male": 520, "female": 535}, {"age": "71", "total": 1041, "male": 520, "female": 521}, {"age": "72", "total": 1011, "male": 504, "female": 507}, {"age": "73", "total": 1066, "male": 531, "female": 535}, {"age": "74", "total": 1147, "male": 547, "female": 600}, {"age": "75", "total": 1078, "male": 555, "female": 523}, {"age": "76", "total": 1111, "male": 524, "female": 587}, {"age": "77", "total": 1225, "male": 629, "female": 596}, {"age": "78", "total": 1091, "male": 543, "female": 548}, {"age": "79", "total": 1029, "male": 497, "female": 532}, {"age": "80", "total": 561, "male": 251, "female": 310}, {"age": "81", "total": 645, "male": 297, "female": 348}, {"age": "82", "total": 679, "male": 306, "female": 373}, {"age": "83", "total": 689, "male": 303, "female": 386}, {"age": "84", "total": 612, "male": 277, "female": 335}, {"age": "85", "total": 541, "male": 215, "female": 326}, {"age": "86", "total": 502, "male": 200, "female": 302}, {"age": "87", "total": 383, "male": 153, "female": 230}, {"age": "88", "total": 405, "male": 155, "female": 250}, {"age": "89", "total": 307, "male": 124, "female": 183}, {"age": "90", "total": 318, "male": 113, "female": 205}, {"age": "91", "total": 258, "male": 59, "female": 199}, {"age": "92", "total": 229, "male": 64, "female": 165}, {"age": "93", "total": 212, "male": 62, "female": 150}, {"age": "94", "total": 139, "male": 43, "female": 96}, {"age": "95", "total": 130, "male": 39, "female": 91}, {"age": "96", "total": 81, "male": 24, "female": 57}, {"age": "97", "total": 66, "male": 18, "female": 48}, {"age": "98", "total": 56, "male": 11, "female": 45}, {"age": "99", "total": 48, "male": 12, "female": 36}, {"age": "100", "total": 25, "male": 4, "female": 21}, {"age": "101", "total": 11, "male": 1, "female": 10}, {"age": "102", "total": 12, "male": 0, "female": 12}, {"age": "103", "total": 7, "male": 0, "female": 7}, {"age": "104", "total": 1, "male": 0, "female": 1}, {"age": "105", "total": 0, "male": 0, "female": 0}, {"age": "106", "total": 1, "male": 0, "female": 1}, {"age": "107", "total": 0, "male": 0, "female": 0}, {"age": "108", "total": 1, "male": 0, "female": 1}, {"age": "109", "total": 0, "male": 0, "female": 0}, {"age": "110", "total": 0, "male": 0, "female": 0}]}</script>
-<script type="application/json" id="fukuroi-shelter">{
-  "metadata": {
-    "title": "袋井市 指定緊急避難場所・指定避難所一覧",
-    "as_of": "2025-04-01 (令和7年4月1日現在)",
-    "source_page": "https://www.city.fukuroi.shizuoka.jp/soshiki/3/2/bosai/1452147144694.html",
-    "source_page_updated": "2025-04-11 (更新日:2025年04月11日)",
-    "pdf_url": "https://www.city.fukuroi.shizuoka.jp/material/files/group/10/202504_shiteihinanjoiritan.pdf",
-    "pdf_size_kb": 51.6,
-    "pdf_totals_stated": {
-      "facilities": 63,
-      "designated_shelters": 62,
-      "emergency_flood": 51,
-      "emergency_landslide": 62,
-      "emergency_earthquake": 62,
-      "emergency_tsunami": 62,
-      "emergency_fire": 63
-    },
-    "verified_counts": {
-      "facilities": 63,
-      "designated_shelter": 62,
-      "flood": 51,
-      "landslide": 62,
-      "earthquake": 62,
-      "tsunami": 62,
-      "fire": 63
-    },
-    "verification": "一致 (PDF内の合計表記と抽出件数が全項目で一致)",
-    "address_note": "このPDFに住所の記載なし。住所・電話番号・緯度経度は市オープンデータ「防災関係情報」にあり",
-    "footnotes": {
-      "※1": "1階が浸水想定区域内のため2階に避難。ただし家屋倒壊等氾濫想定区域内(原文のまま。文末が途切れているように見える)",
-      "※2": "1階が浸水想定区域内のため2階に避難。"
-    }
-  },
-  "facilities": [
-    {
-      "no": 1,
-      "branch": "三川",
-      "facility": "三川コミュニティセンター（さんさん会館）",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※1",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 2,
-      "branch": "三川",
-      "facility": "三川小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※1",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 3,
-      "branch": "三川",
-      "facility": "三川幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 4,
-      "branch": "宇刈",
-      "facility": "宇刈いきいきセンター",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 5,
-      "branch": "宇刈",
-      "facility": "山梨こども園",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 6,
-      "branch": "宇刈",
-      "facility": "山名小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 7,
-      "branch": "上山梨",
-      "facility": "山名コミュニティセンター",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 8,
-      "branch": "上山梨",
-      "facility": "月見の里学遊館",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 9,
-      "branch": "下山梨",
-      "facility": "周南中学校",
-      "floors": 4,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 10,
-      "branch": "今井",
-      "facility": "今井コミュニティセンター",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※2",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 11,
-      "branch": "今井",
-      "facility": "今井小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※2",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 12,
-      "branch": "今井",
-      "facility": "今井幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 13,
-      "branch": "今井",
-      "facility": "静岡県温室農業協同組合クラウンメロン支所",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 14,
-      "branch": "袋井北",
-      "facility": "県立袋井商業高校",
-      "floors": 4,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 15,
-      "branch": "袋井北",
-      "facility": "若草こども園",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 16,
-      "branch": "袋井北",
-      "facility": "袋井北小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 17,
-      "branch": "袋井北",
-      "facility": "袋井北コミュニティセンター",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※2",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 18,
-      "branch": "袋井北",
-      "facility": "若葉こども園",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 19,
-      "branch": "袋井北",
-      "facility": "袋井市総合体育館（さわやかアリーナ）",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 20,
-      "branch": "川井",
-      "facility": "袋井西小学校",
-      "floors": 4,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※2",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 21,
-      "branch": "川井",
-      "facility": "袋井西幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 22,
-      "branch": "袋井",
-      "facility": "袋井西コミュニティセンター(彩雲館）",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "家屋倒壊等氾濫想定区域内のため除外"
-    },
-    {
-      "no": 23,
-      "branch": "袋井",
-      "facility": "袋井中学校",
-      "floors": 4,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※2",
-      "designated_shelter": true,
-      "note": "武道館は家屋倒壊等氾濫想定区域内で鉄骨造のため除外"
-    },
-    {
-      "no": 24,
-      "branch": "袋井東",
-      "facility": "袋井東幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 25,
-      "branch": "袋井東",
-      "facility": "袋井東小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 26,
-      "branch": "袋井東",
-      "facility": "袋井東コミュニティセンター（かつもく館）",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 27,
-      "branch": "駅前",
-      "facility": "天理教山名大教会",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 28,
-      "branch": "駅前",
-      "facility": "袋井南コミュニティセンター（南風館）",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 29,
-      "branch": "高尾",
-      "facility": "袋井南小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 30,
-      "branch": "高尾",
-      "facility": "旧袋井南幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": false,
-        "earthquake": false,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": false,
-      "note": "土砂災害警戒区域の鉄骨造のため除外"
-    },
-    {
-      "no": 31,
-      "branch": "豊沢・愛野",
-      "facility": "袋井南中学校",
-      "floors": 4,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 32,
-      "branch": "豊沢・愛野",
-      "facility": "県立袋井高校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "指定避難所は、体育館・柔剣道場・卓球場・槙緑館。指定緊急避難場所は、運動場・体育館。"
-    },
-    {
-      "no": 33,
-      "branch": "豊沢・愛野",
-      "facility": "小笠山総合運動公園",
-      "floors": 6,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "指定避難所は、ｴｺﾊﾟｱﾘｰﾅ、ｻﾌﾞｱﾘｰﾅ。指定緊急避難場所は、ｻﾌﾞｱﾘｰﾅ、駐車場。"
-    },
-    {
-      "no": 34,
-      "branch": "豊沢・愛野",
-      "facility": "静岡理工科大学",
-      "floors": 5,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 35,
-      "branch": "豊沢・愛野",
-      "facility": "豊沢コミュニティセンター（豊沢ふれあい会館）",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 36,
-      "branch": "高南",
-      "facility": "県立袋井特別支援学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 37,
-      "branch": "高南",
-      "facility": "高南コミュニティセンター（きぼう館）",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 38,
-      "branch": "高南",
-      "facility": "袋井体育センター",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 39,
-      "branch": "高南",
-      "facility": "サンライフ袋井",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 40,
-      "branch": "高南",
-      "facility": "高南小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 41,
-      "branch": "高南",
-      "facility": "子育てセンターにじいろ",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "指定避難所は、遊戯室、ランチルーム"
-    },
-    {
-      "no": 42,
-      "branch": "田原",
-      "facility": "田原幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 43,
-      "branch": "田原",
-      "facility": "田原農村総合管理センター",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 44,
-      "branch": "浅羽北",
-      "facility": "浅羽東小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 45,
-      "branch": "浅羽北",
-      "facility": "浅羽東こども園",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 46,
-      "branch": "浅羽北",
-      "facility": "浅羽北コミュニティセンター",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 47,
-      "branch": "浅羽北",
-      "facility": "浅羽北小学校",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 48,
-      "branch": "浅羽北",
-      "facility": "浅羽北幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 49,
-      "branch": "浅羽北",
-      "facility": "メロープラザ",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※2",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 50,
-      "branch": "浅羽北",
-      "facility": "浅羽中学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※2",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 51,
-      "branch": "浅羽西",
-      "facility": "浅羽西幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 52,
-      "branch": "浅羽西",
-      "facility": "浅羽西コミュニティセンター",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 53,
-      "branch": "笠原",
-      "facility": "中遠クリーンセンター",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 54,
-      "branch": "笠原",
-      "facility": "風見の丘",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 55,
-      "branch": "笠原",
-      "facility": "岡崎会館",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 56,
-      "branch": "笠原",
-      "facility": "旧笠原保育所",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 57,
-      "branch": "笠原",
-      "facility": "笠原こども園",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 58,
-      "branch": "笠原",
-      "facility": "笠原コミュニティセンター",
-      "floors": 2,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 59,
-      "branch": "笠原",
-      "facility": "笠原コミュニティセンタープラザホール",
-      "floors": 1,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 60,
-      "branch": "笠原",
-      "facility": "笠原小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": ""
-    },
-    {
-      "no": 61,
-      "branch": "浅羽東",
-      "facility": "浅羽東コミュニティセンター",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 62,
-      "branch": "浅羽南",
-      "facility": "浅羽南幼稚園",
-      "floors": 1,
-      "emergency": {
-        "flood": false,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": false,
-        "fire": true
-      },
-      "flood_note": "",
-      "designated_shelter": true,
-      "note": "１階が洪水浸水想定区域内のため除外"
-    },
-    {
-      "no": 63,
-      "branch": "浅羽南",
-      "facility": "浅羽南小学校",
-      "floors": 3,
-      "emergency": {
-        "flood": true,
-        "landslide": true,
-        "earthquake": true,
-        "tsunami": true,
-        "fire": true
-      },
-      "flood_note": "※2",
-      "designated_shelter": true,
-      "note": ""
-    }
-  ]
-}</script>
-<script type="application/json" id="fukuroi-kessan">{"city":"袋井市（静岡県）","fiscal_year":{"japan":"令和6年度","western":2024,"note":"最新決算（2026-11-01時点で入手可能な最新）"},"general_account":{"note":"普通会計ベース（総務省 地方財政状況調査）。円単位の exact 値は公開集計から取得できず億単位の丸め値","revenue_total_hundred_million_yen":418.8,"expenditure_total_hundred_million_yen":407.4,"balance_hundred_million_yen":11.3,"carryover_to_next_year_hundred_million_yen":2.9,"real_balance_thousand_yen":842682,"real_balance_hundred_million_yen":8.4,"single_year_balance_hundred_million_yen":-6.2,"reserve_deposit_thousand_yen":6710,"reserve_withdrawal_thousand_yen":30800,"early_redemption_thousand_yen":0,"real_single_year_balance_thousand_yen":-643315,"real_single_year_balance_hundred_million_yen":-6.4,"previous_year_comparison":{"revenue_total_hundred_million_yen":419.8,"expenditure_total_hundred_million_yen":402.4,"balance_hundred_million_yen":17.4,"carryover_hundred_million_yen":2.8,"real_balance_hundred_million_yen":14.6,"real_single_year_balance_hundred_million_yen":-5.6}},"fiscal_indicators":{"financial_capability_index_3yr_avg":0.82,"financial_capability_index_single_year_r6":0.82,"current_account_ratio_pct":95.0,"current_account_ratio_r5_pct":92.8,"real_debt_service_ratio_3yr_avg_pct":4.9,"real_debt_service_ratio_r5_pct":5.1,"future_burden_ratio_pct":62.7,"future_burden_ratio_r5_pct":52.5,"real_deficit_ratio":"―（赤字なし）","consolidated_real_deficit_ratio":"―（赤字なし）"},"public_enterprise":{"fund_shortage_ratio":{"water":"―（不足なし）","sewer":"―（不足なし）","hospital":"―（不足なし）"}},"city_comment_summary":{"current_account_ratio":"地方交付税・特例交付金等が増えたが、人件費（人事院勧告）・扶助費（子ども医療費助成拡充）・物件費（物価高騰）の増で歳出が上回り前年度比+2.2pt","future_burden_ratio":"脱炭素化推進事業債・緊急自然災害防止対策事業債の残高増と充当可能基金の減で+10.2pt悪化","real_single_year_balance":"実質収支は黒字だが実質単年度収支は2年連続赤字（基金取崩し等による計画的要因の範囲）"},"unknowns":["歳入・歳出総額の円単位 exact 値（億単位の丸め値のみ入手）","特別会計（国保・介護・後期高齢など）ごとの決算額","企業会計（水道・下水道・病院）の収益・損益額","市債残高・基金残高のR6末 exact 値"],"sources":[{"label":"総務省 e-Stat 地方財政状況調査（決算収支）経由 cpriver 自治体ページ","url":"https://cpriver.jp/lg/22216/"},{"label":"袋井市 令和6年度財政健全化審査意見書（監査委員・健全化判断比率/資金不足比率）","url":"https://www.city.fukuroi.shizuoka.jp/material/files/group/89/zaiseikenzen.pdf"},{"label":"袋井市 財政健全化判断比率ページ（公式）","url":"https://www.city.fukuroi.shizuoka.jp/soshiki/6/2/zaisei/1422626521465.html"},{"label":"袋井市 財政状況資料集ページ（R6 Excel・公式）","url":"https://www.city.fukuroi.shizuoka.jp/soshiki/6/2/zaisei/1422534491340.html"},{"label":"袋井市 決算カード分析欄転載（shibutani.org・2024年度）","url":"https://shibutani.org/222160/"},{"label":"静岡県 令和6年度県内市町財政力指数（公式）","url":"https://www.pref.shizuoka.jp/_res/projects/default_project/_page_/001/012/131/r06zaiseiryokushisuu_2.pdf"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-body { background: #f8fafc; }
-.chart-box { height: 320px; position: relative; }
-@media (max-width: 640px) { .chart-box { height: 260px; } }
+  body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+  .card { transition: transform .2s ease, box-shadow .2s ease; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -8px rgba(15,23,42,.18); }
+  .spinner { border: 3px solid rgba(20,54,94,.15); border-top-color: #14365e; border-radius: 50%; width: 36px; height: 36px; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .chart-box { height: 320px; position: relative; }
+  .chart-box canvas { height: 100% !important; max-height: 320px; }
 </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
-<div class="max-w-5xl mx-auto px-4 py-6">
-<header class="mb-6">
-<h1 class="text-2xl font-bold">袋井市 人口ダッシュボード</h1>
-<p class="text-slate-500 text-sm mt-1">令和8年10月1日（9月末データ）・出典：袋井市公式人口表</p>
-<nav class="mt-2 text-sm"><a class="underline" href="https://kaopuuu-hash.github.io/iwata-kessan/">管理人のホームページへ</a></nav>
-</header>
-<div id="loading" class="text-slate-500">読み込み中…</div>
-<div id="error" class="hidden bg-red-50 border border-red-300 rounded-xl p-4 text-red-700"></div>
-<main id="content" class="hidden">
-<section class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" id="kpi"></section>
-<section class="bg-white border border-slate-200 rounded-xl p-4 mb-4">
-<h2 class="font-bold mb-2">5歳階級別人口</h2>
-<div class="chart-box"><canvas id="ch-age"></canvas></div>
-</section>
-<section class="grid md:grid-cols-2 gap-4 mb-4">
-<div class="bg-white border border-slate-200 rounded-xl p-4">
-<h2 class="font-bold mb-2">3区分人口</h2>
-<div class="chart-box"><canvas id="ch-gen"></canvas></div>
-</div>
-<div class="bg-white border border-slate-200 rounded-xl p-4">
-<h2 class="font-bold mb-2">大字トップ12</h2>
-<div class="chart-box"><canvas id="ch-town"></canvas></div>
-</div>
-</section>
-<section class="bg-white border border-slate-200 rounded-xl p-4 mb-4">
-<h2 class="font-bold mb-1">指定避難所（令和7年4月1日現在・63施設）</h2>
-<p class="text-slate-500 text-xs mb-3">出典：袋井市「指定緊急避難場所・指定避難所」（2025年4月11日更新）。住所の記載なし。</p>
-<div class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-3" id="sh-kpi"></div>
-<div class="chart-box"><canvas id="ch-shelter"></canvas></div>
-</section>
-<section class="bg-white border border-slate-200 rounded-xl p-4 mb-4">
-<h2 class="font-bold mb-1">決算（令和6年度・2024年度）</h2>
-<p class="text-slate-500 text-xs mb-3">普通会計ベース。億単位の丸め値（円単位exact値は未公開）。出典は下記。</p>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3" id="ks-kpi"></div>
-<div class="text-sm" id="ks-table"></div>
-</section>
-<footer class="text-slate-500 text-xs mt-6">
-<p>出典：<a class="underline" href="https://www.city.fukuroi.shizuoka.jp/soshiki/4/2/tokei/jinko/suii/13947.html">袋井市 人口の推移</a>／人口表Excel（令和8年9月末）</p>
-<p>検証：自治会別合計＝大字別合計＝年齢別合計＝公式総人口（3点一致⭕）。LinkDataに該当年齢・町別人口なし。更新日：2026-11-01</p>
-<nav class="mt-2"><a class="underline" href="https://kaopuuu-hash.github.io/iwata-kessan/">管理人のホームページへ</a></nav>
-</footer>
-</main>
-</div>
-<script>
-try {
-const D = JSON.parse(document.getElementById('fukuroi-data').textContent);
-document.getElementById('loading').classList.add('hidden');
-document.getElementById('content').classList.remove('hidden');
-const ages = D.by_age.filter(x => /^\d+$/.test(x.age)).map(x => ({ a: +x.age, t: x.total }));
-const sum = (lo, hi) => ages.filter(x => x.a >= lo && x.a <= hi).reduce((s, x) => s + x.t, 0);
-const young = sum(0, 14), prod = sum(15, 64), old = sum(65, 200), tot = young + prod + old;
-const pct = n => (n / tot * 100).toFixed(1) + '%';
-const kpis = [
-['総人口', tot.toLocaleString() + '人'],
-['世帯数', D.meta.official_households.toLocaleString() + '世帯'],
-['高齢化率', pct(old)],
-['年少割合', pct(young)]
-];
-document.getElementById('kpi').innerHTML = kpis.map(k =>
-'<div class="bg-white border border-slate-200 rounded-xl p-4"><p class="text-xs text-slate-500">' + k[0] +
-'</p><p class="text-xl font-bold mt-1">' + k[1] + '</p></div>').join('');
-const buckets = [], blabels = [];
-for (let lo = 0; lo <= 100; lo += 5) {
-const hi = lo + 4, label = lo + '〜' + hi + '歳';
-blabels.push(label); buckets.push(sum(lo, lo === 100 ? 200 : hi));
-}
-Chart.defaults.color = '#64748b';
-new Chart(document.getElementById('ch-age'), { type: 'bar',
-data: { labels: blabels, datasets: [{ data: buckets, backgroundColor: 'rgba(20,54,94,0.85)' }] },
-options: { maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-new Chart(document.getElementById('ch-gen'), { type: 'doughnut',
-data: { labels: ['年少（0〜14）', '生産（15〜64）', '高齢（65〜）'],
-datasets: [{ data: [young, prod, old], backgroundColor: ['rgba(2,132,199,0.8)', 'rgba(20,54,94,0.85)', 'rgba(29,78,137,0.85)'] }] },
-options: { maintainAspectRatio: false } });
-const top = [...D.by_ooaza].sort((a, b) => b.total - a.total).slice(0, 12);
-new Chart(document.getElementById('ch-town'), { type: 'bar',
-data: { labels: top.map(x => x.name), datasets: [{ data: top.map(x => x.total), backgroundColor: 'rgba(29,78,137,0.85)' }] },
-options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-const S = JSON.parse(document.getElementById('fukuroi-shelter').textContent);
-const F = S.facilities;
-const cats = [['洪水','flood'],['土砂','landslide'],['地震','earthquake'],['津波','tsunami'],['火事','fire']];
-const designated = F.filter(x => x.designated_shelter).length;
-document.getElementById('sh-kpi').innerHTML =
-'<div class="bg-navy-50 rounded-xl p-3"><p class="text-xs text-slate-500">施設総数</p><p class="text-xl font-bold mt-1">' + F.length + '</p></div>' +
-'<div class="bg-navy-50 rounded-xl p-3"><p class="text-xs text-slate-500">指定避難所</p><p class="text-xl font-bold mt-1">' + designated + '</p></div>' +
-cats.map(c => {
-const n = F.filter(x => x.emergency && x.emergency[c[1]]).length;
-return '<div class="bg-navy-50 rounded-xl p-3"><p class="text-xs text-slate-500">' + c[0] + '</p><p class="text-xl font-bold mt-1">' + n + '</p></div>';
-}).join('');
-new Chart(document.getElementById('ch-shelter'), { type: 'bar',
-data: { labels: cats.map(c => c[0]),
-datasets: [{ data: cats.map(c => F.filter(x => x.emergency && x.emergency[c[1]]).length), backgroundColor: 'rgba(2,132,199,0.8)' }] },
-options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-const K = JSON.parse(document.getElementById('fukuroi-kessan').textContent);
-const G = K.general_account, I = K.fiscal_indicators;
-const e = n => (n * 1).toLocaleString() + '億円';
-document.getElementById('ks-kpi').innerHTML =
-[['歳入総額', e(G.revenue_total_hundred_million_yen)],
-['歳出総額', e(G.expenditure_total_hundred_million_yen)],
-['実質収支', e(G.real_balance_hundred_million_yen) + '（黒字）'],
-['実質単年度収支', e(G.real_single_year_balance_hundred_million_yen) + '（2年連続赤字）']]
-.map(k => '<div class="bg-navy-50 rounded-xl p-3"><p class="text-xs text-slate-500">' + k[0] +
-'</p><p class="text-xl font-bold mt-1">' + k[1] + '</p></div>').join('');
-const rows = [
-['財政力指数（3か年平均）', I.financial_capability_index_3yr_avg],
-['経常収支比率', I.current_account_ratio_pct + '%（R5 ' + I.current_account_ratio_r5_pct + '%）'],
-['実質公債費比率', I.real_debt_service_ratio_3yr_avg_pct + '%'],
-['将来負担比率', I.future_burden_ratio_pct + '%']];
-document.getElementById('ks-table').innerHTML =
-'<table class="w-full text-left"><tbody>' +
-rows.map(r => '<tr class="border-t border-slate-200"><td class="py-2 pr-2 text-slate-600">' + r[0] +
-'</td><td class="py-2 font-bold">' + r[1] + '</td></tr>').join('') + '</tbody></table>' +
-'<p class="text-slate-500 text-xs mt-2">実質赤字比率・連結実質赤字比率・資金不足比率：すべて赤字なし（―）。</p>';
-} catch (e) {
-document.getElementById('loading').classList.add('hidden');
-const el = document.getElementById('error');
-el.classList.remove('hidden');
-el.textContent = '表示エラー：' + e.message;
-}
-</script>
+  <header class="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div>
+        <h1 class="text-xl sm:text-2xl font-bold tracking-tight">袋井市オープンデータ ダッシュボード</h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">人口動態・防災施設の可視化 / Fukuroi City Open Data</p>
+      </div>
+      <div class="text-right text-xs text-slate-500">
+        <div>出典: 袋井市公式 (人口表Excel / 避難所PDF)</div>
+        <div id="updated" class="mt-1"></div>
+      </div>
+    </div>
+  </header>
+  <nav class="bg-navy-800 text-white" aria-label="サイト共通メニュー">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap gap-1 py-1 text-sm">
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="index.html">トップ</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="cyber-space.html">cyber-space</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="kessan.html">決算概要</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="analysis.html">財政分析</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="dashboard.html">Dashboard（磐田）</a>
+      <a class="px-2 py-1 rounded bg-white/20 font-bold" href="fukuroi.html" aria-current="page">袋井Dashboard</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="method.html">分析手法</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="sources.html">出典・参考資料</a>
+      <a class="px-2 py-1 rounded hover:bg-white/15" href="seisaku.html">制作手法</a>
+    </div>
+  </nav>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div class="bg-amber-50 border border-amber-300 rounded-xl p-3 text-amber-800 text-sm">注意: 人口は2026年9月末、避難所は2025年4月時点のデータです。最新情報は袋井市HPで確認してください。</div>
+    <div id="loading" class="flex flex-col items-center justify-center py-20 gap-4">
+      <div class="spinner"></div>
+      <p class="text-slate-500 text-sm">データを読み込み中...</p>
+    </div>
+    <div id="error" class="hidden bg-red-50 border border-red-300 rounded-xl p-4 text-red-700 text-sm"></div>
+    <section id="content" class="hidden space-y-6">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">総人口</div>
+          <div id="kpi-pop" class="text-2xl font-bold mt-1 text-navy-800">-</div>
+          <div class="text-xs text-slate-500 mt-1">2026年9月末</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">総世帯数</div>
+          <div id="kpi-hh" class="text-2xl font-bold mt-1 text-sky-700">-</div>
+          <div class="text-xs text-slate-500 mt-1">公式合計</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">避難所数</div>
+          <div id="kpi-sh" class="text-2xl font-bold mt-1 text-amber-600">-</div>
+          <div class="text-xs text-slate-500 mt-1">指定避難所</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">65歳以上比率</div>
+          <div id="kpi-elder" class="text-2xl font-bold mt-1 text-navy-600">-</div>
+          <div class="text-xs text-slate-500 mt-1">高齢化率</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <h2 class="text-base font-semibold mb-3">年齢別人口（5歳階級）</h2>
+          <div class="chart-box"><canvas id="ageChart"></canvas></div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <h2 class="text-base font-semibold mb-3">男女比</h2>
+          <div class="chart-box"><canvas id="genderChart"></canvas></div>
+        </div>
+      </div>
+      <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+        <h2 class="text-base font-semibold mb-3">町別人口 Top 15</h2>
+        <div class="chart-box"><canvas id="townChart"></canvas></div>
+      </div>
+      <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+        <h2 class="text-base font-semibold mb-3">指定避難所一覧</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-slate-500 border-b border-slate-200">
+              <tr><th class="text-left py-2 px-2">名称</th><th class="text-left py-2 px-2">所在地</th><th class="text-left py-2 px-2">避難対象地区</th></tr>
+            </thead>
+            <tbody id="shelterBody" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="border-t border-slate-200 mt-10 py-6 text-center text-xs text-slate-500">
+    <div style="margin-bottom:8px"><a href="kessan.html" style="color:#1e40af;text-decoration:underline">◀ 磐田市 令和7年度決算まとめ へ</a></div>
+    <div style="margin-bottom:8px"><a href="cyber-space.html" style="color:#1e40af;text-decoration:underline">▶ cyber-space へ</a></div>
+    データ出典: 袋井市公式ウェブサイト / 人口2026年9月末、避難所2025年4月時点
+  </footer>
+  <script id="city-data" type="application/json">{"ageBuckets": [{"label": "0歳〜4歳", "male": 1469, "female": 1405, "total": 2874}, {"label": "5歳〜9歳", "male": 1891, "female": 1832, "total": 3723}, {"label": "10歳〜14歳", "male": 2213, "female": 2058, "total": 4271}, {"label": "15歳〜19歳", "male": 2428, "female": 2156, "total": 4584}, {"label": "20歳〜24歳", "male": 2514, "female": 2102, "total": 4616}, {"label": "25歳〜29歳", "male": 2500, "female": 2104, "total": 4604}, {"label": "30歳〜34歳", "male": 2520, "female": 2132, "total": 4652}, {"label": "35歳〜39歳", "male": 2768, "female": 2452, "total": 5220}, {"label": "40歳〜44歳", "male": 3075, "female": 2870, "total": 5945}, {"label": "45歳〜49歳", "male": 3363, "female": 3008, "total": 6371}, {"label": "50歳〜54歳", "male": 3450, "female": 3201, "total": 6651}, {"label": "55歳〜59歳", "male": 3127, "female": 2818, "total": 5945}, {"label": "60歳〜64歳", "male": 2402, "female": 2254, "total": 4656}, {"label": "65歳〜69歳", "male": 2477, "female": 2557, "total": 5034}, {"label": "70歳〜74歳", "male": 2622, "female": 2698, "total": 5320}, {"label": "75歳〜79歳", "male": 2748, "female": 2786, "total": 5534}, {"label": "80歳〜84歳", "male": 1434, "female": 1752, "total": 3186}, {"label": "85歳〜89歳", "male": 847, "female": 1291, "total": 2138}, {"label": "90歳〜94歳", "male": 341, "female": 815, "total": 1156}, {"label": "95歳〜99歳", "male": 104, "female": 277, "total": 381}, {"label": "100歳以上", "male": 5, "female": 53, "total": 58}], "towns": [{"town": "浅羽", "households": 0, "male": 0, "female": 0, "total": 4333}, {"town": "久能", "households": 0, "male": 0, "female": 0, "total": 3723}, {"town": "高尾", "households": 0, "male": 0, "female": 0, "total": 3620}, {"town": "豊沢", "households": 0, "male": 0, "female": 0, "total": 3159}, {"town": "川井", "households": 0, "male": 0, "female": 0, "total": 3085}, {"town": "諸井", "households": 0, "male": 0, "female": 0, "total": 2623}, {"town": "愛野", "households": 0, "male": 0, "female": 0, "total": 2371}, {"town": "堀越", "households": 0, "male": 0, "female": 0, "total": 2220}, {"town": "下山梨", "households": 0, "male": 0, "female": 0, "total": 1948}, {"town": "国本", "households": 0, "male": 0, "female": 0, "total": 1943}, {"town": "可睡の杜", "households": 0, "male": 0, "female": 0, "total": 1825}, {"town": "鷲巣", "households": 0, "male": 0, "female": 0, "total": 1741}, {"town": "広岡", "households": 0, "male": 0, "female": 0, "total": 1698}, {"town": "宇刈", "households": 0, "male": 0, "female": 0, "total": 1601}, {"town": "新池", "households": 0, "male": 0, "female": 0, "total": 1546}, {"town": "浅名", "households": 0, "male": 0, "female": 0, "total": 1510}, {"town": "上山梨", "households": 0, "male": 0, "female": 0, "total": 1468}, {"town": "春岡", "households": 0, "male": 0, "female": 0, "total": 1459}, {"town": "村松", "households": 0, "male": 0, "female": 0, "total": 1398}, {"town": "岡崎", "households": 0, "male": 0, "female": 0, "total": 1378}, {"town": "湊", "households": 0, "male": 0, "female": 0, "total": 1371}, {"town": "山科", "households": 0, "male": 0, "female": 0, "total": 1227}, {"town": "太田", "households": 0, "male": 0, "female": 0, "total": 1089}, {"town": "梅山", "households": 0, "male": 0, "female": 0, "total": 1005}, {"town": "松原", "households": 0, "male": 0, "female": 0, "total": 997}, {"town": "神長", "households": 0, "male": 0, "female": 0, "total": 966}, {"town": "山崎", "households": 0, "male": 0, "female": 0, "total": 905}, {"town": "春岡一丁目", "households": 0, "male": 0, "female": 0, "total": 851}, {"town": "深見", "households": 0, "male": 0, "female": 0, "total": 819}, {"town": "愛野東一丁目", "households": 0, "male": 0, "female": 0, "total": 800}, {"town": "富里", "households": 0, "male": 0, "female": 0, "total": 769}, {"town": "萱間", "households": 0, "male": 0, "female": 0, "total": 729}, {"town": "浅岡", "households": 0, "male": 0, "female": 0, "total": 703}, {"town": "青木町", "households": 0, "male": 0, "female": 0, "total": 662}, {"town": "愛野南一丁目", "households": 0, "male": 0, "female": 0, "total": 653}, {"town": "長溝", "households": 0, "male": 0, "female": 0, "total": 648}, {"town": "延久", "households": 0, "male": 0, "female": 0, "total": 647}, {"town": "木原", "households": 0, "male": 0, "female": 0, "total": 623}, {"town": "田町二丁目", "households": 0, "male": 0, "female": 0, "total": 618}, {"town": "小山", "households": 0, "male": 0, "female": 0, "total": 591}, {"town": "堀越三丁目", "households": 0, "male": 0, "female": 0, "total": 590}, {"town": "小川町", "households": 0, "male": 0, "female": 0, "total": 587}, {"town": "栄町", "households": 0, "male": 0, "female": 0, "total": 584}, {"town": "高尾町", "households": 0, "male": 0, "female": 0, "total": 581}, {"town": "旭町二丁目", "households": 0, "male": 0, "female": 0, "total": 572}, {"town": "見取", "households": 0, "male": 0, "female": 0, "total": 568}, {"town": "豊住", "households": 0, "male": 0, "female": 0, "total": 568}, {"town": "方丈六丁目", "households": 0, "male": 0, "female": 0, "total": 555}, {"town": "清水町", "households": 0, "male": 0, "female": 0, "total": 549}, {"town": "上山梨三丁目", "households": 0, "male": 0, "female": 0, "total": 548}, {"town": "袋井", "households": 0, "male": 0, "female": 0, "total": 524}, {"town": "愛野南二丁目", "households": 0, "male": 0, "female": 0, "total": 511}, {"town": "土橋", "households": 0, "male": 0, "female": 0, "total": 510}, {"town": "新堀", "households": 0, "male": 0, "female": 0, "total": 510}, {"town": "堀越五丁目", "households": 0, "male": 0, "female": 0, "total": 488}, {"town": "大野", "households": 0, "male": 0, "female": 0, "total": 479}, {"town": "東同笠", "households": 0, "male": 0, "female": 0, "total": 471}, {"town": "睦町", "households": 0, "male": 0, "female": 0, "total": 457}, {"town": "旭町一丁目", "households": 0, "male": 0, "female": 0, "total": 456}, {"town": "愛野東二丁目", "households": 0, "male": 0, "female": 0, "total": 436}, {"town": "愛野南四丁目", "households": 0, "male": 0, "female": 0, "total": 434}, {"town": "堀越二丁目", "households": 0, "male": 0, "female": 0, "total": 432}, {"town": "徳光", "households": 0, "male": 0, "female": 0, "total": 431}, {"town": "堀越一丁目", "households": 0, "male": 0, "female": 0, "total": 430}, {"town": "月見町", "households": 0, "male": 0, "female": 0, "total": 421}, {"town": "下山梨一丁目", "households": 0, "male": 0, "female": 0, "total": 419}, {"town": "中", "households": 0, "male": 0, "female": 0, "total": 419}, {"town": "天神町一丁目", "households": 0, "male": 0, "female": 0, "total": 414}, {"town": "掛之上", "households": 0, "male": 0, "female": 0, "total": 409}, {"town": "春岡二丁目", "households": 0, "male": 0, "female": 0, "total": 408}, {"town": "葵町一丁目", "households": 0, "male": 0, "female": 0, "total": 396}, {"town": "浅羽一色", "households": 0, "male": 0, "female": 0, "total": 381}, {"town": "友永", "households": 0, "male": 0, "female": 0, "total": 375}, {"town": "中新田", "households": 0, "male": 0, "female": 0, "total": 359}, {"town": "泉町一丁目", "households": 0, "male": 0, "female": 0, "total": 357}, {"town": "西田", "households": 0, "male": 0, "female": 0, "total": 350}, {"town": "大谷", "households": 0, "male": 0, "female": 0, "total": 349}, {"town": "山田", "households": 0, "male": 0, "female": 0, "total": 341}, {"town": "方丈一丁目", "households": 0, "male": 0, "female": 0, "total": 340}, {"town": "上山梨五丁目", "households": 0, "male": 0, "female": 0, "total": 340}, {"town": "川会", "households": 0, "male": 0, "female": 0, "total": 331}, {"town": "西同笠", "households": 0, "male": 0, "female": 0, "total": 326}, {"town": "砂本町", "households": 0, "male": 0, "female": 0, "total": 322}, {"town": "上山梨一丁目", "households": 0, "male": 0, "female": 0, "total": 317}, {"town": "天神町三丁目", "households": 0, "male": 0, "female": 0, "total": 310}, {"town": "愛野南三丁目", "households": 0, "male": 0, "female": 0, "total": 301}, {"town": "上山梨二丁目", "households": 0, "male": 0, "female": 0, "total": 297}, {"town": "下山梨二丁目", "households": 0, "male": 0, "female": 0, "total": 288}, {"town": "泉町二丁目", "households": 0, "male": 0, "female": 0, "total": 284}, {"town": "方丈四丁目", "households": 0, "male": 0, "female": 0, "total": 282}, {"town": "横井", "households": 0, "male": 0, "female": 0, "total": 278}, {"town": "葵町二丁目", "households": 0, "male": 0, "female": 0, "total": 243}, {"town": "沖山梨", "households": 0, "male": 0, "female": 0, "total": 226}, {"town": "田町一丁目", "households": 0, "male": 0, "female": 0, "total": 218}, {"town": "太郎助", "households": 0, "male": 0, "female": 0, "total": 212}, {"town": "天神町二丁目", "households": 0, "male": 0, "female": 0, "total": 207}, {"town": "山名町", "households": 0, "male": 0, "female": 0, "total": 206}, {"town": "大門", "households": 0, "male": 0, "female": 0, "total": 206}, {"town": "松袋井", "households": 0, "male": 0, "female": 0, "total": 199}, {"town": "彦島", "households": 0, "male": 0, "female": 0, "total": 194}, {"town": "方丈五丁目", "households": 0, "male": 0, "female": 0, "total": 193}, {"town": "方丈二丁目", "households": 0, "male": 0, "female": 0, "total": 178}, {"town": "葵町三丁目", "households": 0, "male": 0, "female": 0, "total": 171}, {"town": "新屋三丁目", "households": 0, "male": 0, "female": 0, "total": 170}, {"town": "三門町", "households": 0, "male": 0, "female": 0, "total": 162}, {"town": "永楽町", "households": 0, "male": 0, "female": 0, "total": 156}, {"town": "堀越四丁目", "households": 0, "male": 0, "female": 0, "total": 156}, {"town": "上山梨六丁目", "households": 0, "male": 0, "female": 0, "total": 155}, {"town": "新屋四丁目", "households": 0, "male": 0, "female": 0, "total": 153}, {"town": "方丈三丁目", "households": 0, "male": 0, "female": 0, "total": 147}, {"town": "新屋二丁目", "households": 0, "male": 0, "female": 0, "total": 140}, {"town": "西ケ崎", "households": 0, "male": 0, "female": 0, "total": 120}, {"town": "初越", "households": 0, "male": 0, "female": 0, "total": 100}], "shelters": [{"name": "三川コミュニティセンター（さんさん会館）", "address": "三川", "target": "2階※1"}, {"name": "三川小学校", "address": "三川", "target": "3階※1"}, {"name": "三川幼稚園", "address": "三川", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "宇刈いきいきセンター", "address": "宇刈", "target": "1階"}, {"name": "山梨こども園", "address": "宇刈", "target": "1階"}, {"name": "山名小学校", "address": "宇刈", "target": "3階"}, {"name": "山名コミュニティセンター", "address": "上山梨", "target": "2階"}, {"name": "月見の里学遊館", "address": "上山梨", "target": "2階"}, {"name": "周南中学校", "address": "下山梨", "target": "4階"}, {"name": "今井コミュニティセンター", "address": "今井", "target": "2階※2"}, {"name": "今井小学校", "address": "今井", "target": "3階※2"}, {"name": "今井幼稚園", "address": "今井", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "静岡県温室農業協同組合クラウンメロン支所", "address": "今井", "target": "2階"}, {"name": "県立袋井商業高校", "address": "袋井北", "target": "4階"}, {"name": "若草こども園", "address": "袋井北", "target": "2階"}, {"name": "袋井北小学校", "address": "袋井北", "target": "3階"}, {"name": "袋井北コミュニティセンター", "address": "袋井北", "target": "2階※2"}, {"name": "若葉こども園", "address": "袋井北", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "袋井市総合体育館（さわやかアリーナ）", "address": "袋井北", "target": "2階"}, {"name": "袋井西小学校", "address": "川井", "target": "4階※2"}, {"name": "袋井西幼稚園", "address": "川井", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "袋井西コミュニティセンター(彩雲館）", "address": "袋井", "target": "1階 家屋倒壊等氾濫想定区域内のため除外"}, {"name": "袋井中学校", "address": "袋井", "target": "4階※2 武道館は家屋倒壊等氾濫想定区域内で鉄骨造のため除外"}, {"name": "袋井東幼稚園", "address": "袋井東", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "袋井東小学校", "address": "袋井東", "target": "3階"}, {"name": "袋井東コミュニティセンター（かつもく館）", "address": "袋井東", "target": "2階"}, {"name": "天理教山名大教会", "address": "駅前", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "袋井南コミュニティセンター（南風館）", "address": "駅前", "target": "2階"}, {"name": "袋井南小学校", "address": "高尾", "target": "3階"}, {"name": "袋井南中学校", "address": "豊沢・愛野", "target": "4階"}, {"name": "県立袋井高校", "address": "豊沢・愛野", "target": "3階 指定避難所は、体育館・柔剣道場・卓球場・槙緑館。指定緊急避難場所は、運動場・体育館。"}, {"name": "小笠山総合運動公園", "address": "豊沢・愛野", "target": "6階 指定避難所は、ｴｺﾊﾟｱﾘｰﾅ、ｻﾌﾞｱﾘｰﾅ。指定緊急避難場所は、ｻﾌﾞｱﾘｰﾅ、駐車場。"}, {"name": "静岡理工科大学", "address": "豊沢・愛野", "target": "5階"}, {"name": "豊沢コミュニティセンター（豊沢ふれあい会館）", "address": "豊沢・愛野", "target": "1階"}, {"name": "県立袋井特別支援学校", "address": "高南", "target": "3階"}, {"name": "高南コミュニティセンター（きぼう館）", "address": "高南", "target": "2階"}, {"name": "袋井体育センター", "address": "高南", "target": "2階"}, {"name": "サンライフ袋井", "address": "高南", "target": "2階"}, {"name": "高南小学校", "address": "高南", "target": "3階"}, {"name": "子育てセンターにじいろ", "address": "高南", "target": "1階 指定避難所は、遊戯室、ランチルーム"}, {"name": "田原幼稚園", "address": "田原", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "田原農村総合管理センター", "address": "田原", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "浅羽東小学校", "address": "浅羽北", "target": "3階"}, {"name": "浅羽東こども園", "address": "浅羽北", "target": "1階"}, {"name": "浅羽北コミュニティセンター", "address": "浅羽北", "target": "1階"}, {"name": "浅羽北小学校", "address": "浅羽北", "target": "2階"}, {"name": "浅羽北幼稚園", "address": "浅羽北", "target": "1階"}, {"name": "メロープラザ", "address": "浅羽北", "target": "2階※2"}, {"name": "浅羽中学校", "address": "浅羽北", "target": "3階※2"}, {"name": "浅羽西幼稚園", "address": "浅羽西", "target": "1階"}, {"name": "浅羽西コミュニティセンター", "address": "浅羽西", "target": "2階"}, {"name": "中遠クリーンセンター", "address": "笠原", "target": "3階"}, {"name": "風見の丘", "address": "笠原", "target": "1階"}, {"name": "岡崎会館", "address": "笠原", "target": "2階"}, {"name": "旧笠原保育所", "address": "笠原", "target": "1階"}, {"name": "笠原こども園", "address": "笠原", "target": "1階"}, {"name": "笠原コミュニティセンター", "address": "笠原", "target": "2階"}, {"name": "笠原コミュニティセンタープラザホール", "address": "笠原", "target": "1階"}, {"name": "笠原小学校", "address": "笠原", "target": "3階"}, {"name": "浅羽東コミュニティセンター", "address": "浅羽東", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "浅羽南幼稚園", "address": "浅羽南", "target": "1階 １階が洪水浸水想定区域内のため除外"}, {"name": "浅羽南小学校", "address": "浅羽南", "target": "3階※2"}], "meta": {"populationNote": "令和8年10月1日(9月末)", "shelterNote": "2025年4月1日", "households": 37819, "source": "袋井市公式ウェブサイト", "note": "大字別世帯・男女の公表なし。世帯は公式総数、男女は年齢別合計。避難所は指定62/施設63"}}</script>
+  <script>
+  (function(){
+    const loading = document.getElementById('loading');
+    const errorBox = document.getElementById('error');
+    const content = document.getElementById('content');
+    try {
+      const raw = document.getElementById('city-data').textContent;
+      const D = JSON.parse(raw);
+      const towns = D.towns;
+      const ageBuckets = D.ageBuckets;
+      const shelters = D.shelters;
+      const totalPop = ageBuckets.reduce((s,b)=>s+b.total,0);
+      const totalHH = D.meta.households;
+      const maleTotal = ageBuckets.reduce((s,b)=>s+b.male,0);
+      const femaleTotal = ageBuckets.reduce((s,b)=>s+b.female,0);
+      const elder = ageBuckets.filter(b=>parseInt(b.label)>=65).reduce((s,b)=>s+b.total,0);
+      const elderRate = (elder/totalPop*100).toFixed(1);
+      document.getElementById('kpi-pop').textContent = totalPop.toLocaleString();
+      document.getElementById('kpi-hh').textContent = totalHH.toLocaleString();
+      document.getElementById('kpi-sh').textContent = shelters.length.toLocaleString();
+      document.getElementById('kpi-elder').textContent = elderRate + '%';
+      document.getElementById('updated').textContent = '人口: ' + D.meta.populationNote + ' / 避難所: ' + D.meta.shelterNote;
+      new Chart(document.getElementById('ageChart'), {
+        type: 'bar',
+        data: { labels: ageBuckets.map(b=>b.label), datasets: [
+          { label: '男性', data: ageBuckets.map(b=>b.male), backgroundColor: 'rgba(20,54,94,0.85)', borderRadius: 4 },
+          { label: '女性', data: ageBuckets.map(b=>b.female), backgroundColor: 'rgba(2,132,199,0.8)', borderRadius: 4 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#334155' } } },
+          scales: { x: { stacked: true, ticks: { color: '#64748b', maxRotation: 45, minRotation: 45 }, grid: { color: 'rgba(100,116,139,0.15)' } },
+                   y: { stacked: true, ticks: { color: '#64748b' }, grid: { color: 'rgba(100,116,139,0.15)' } } }
+        }
+      });
+      new Chart(document.getElementById('genderChart'), {
+        type: 'doughnut',
+        data: { labels: ['男性','女性'], datasets: [{ data: [maleTotal, femaleTotal], backgroundColor: ['rgba(20,54,94,0.9)','rgba(2,132,199,0.9)'], borderWidth: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#334155' } } } }
+      });
+      const top15 = towns.slice(0,15);
+      new Chart(document.getElementById('townChart'), {
+        type: 'bar',
+        data: { labels: top15.map(t=>t.town), datasets: [{ label: '人口', data: top15.map(t=>t.total), backgroundColor: 'rgba(29,78,137,0.85)', borderRadius: 4 }] },
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: { x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(100,116,139,0.15)' } },
+                   y: { ticks: { color: '#64748b' }, grid: { display: false } } }
+        }
+      });
+      const tbody = document.getElementById('shelterBody');
+      shelters.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td class="py-2 px-2 font-medium">' + s.name + '</td>' +
+          '<td class="py-2 px-2 text-slate-600">' + s.address + '</td>' +
+          '<td class="py-2 px-2 text-slate-600 text-xs">' + (s.target||'') + '</td>';
+        tbody.appendChild(tr);
+      });
+      loading.classList.add('hidden');
+      content.classList.remove('hidden');
+    } catch (e) {
+      loading.classList.add('hidden');
+      errorBox.textContent = 'データの読み込みに失敗しました: ' + e.message;
+      errorBox.classList.remove('hidden');
+    }
+  })();
+  </script>
 </body>
 </html>
