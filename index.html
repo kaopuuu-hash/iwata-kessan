@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="1995〜2000年初期の個人ホームページ文化を完全再現したパーソナルスペース。">
-  <title>☆★ Welcome to My Cyber Space ★☆</title>
+  <title>☆★ My Cyber Secret Base ★☆</title>
   <style>
     /* ==========================================================
        1995〜2000年初期レトロ・パーソナルホームページ再現スタイル
@@ -286,6 +286,11 @@
       font-size: 0.85rem;
       color: #333;
     }
+    .fake-photo svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
 
     /* フォーム・ボタン（90年代GUI風） */
     .retro-btn {
@@ -399,6 +404,35 @@
     .site-footer p { margin: 4px 0; }
     .tiny { font-size: 0.75rem; color: #666; }
 
+    .bgm-row { margin: 6px 0; }
+
+    /* 88x31 ミニバナー列 */
+    .mini-banners {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .banner88 {
+      width: 88px;
+      height: 31px;
+      display: grid;
+      place-content: center;
+      text-align: center;
+      font-size: 0.6rem;
+      font-weight: bold;
+      line-height: 1.2;
+      border: 2px outset #fff;
+      text-decoration: none;
+    }
+    .banner88:hover { color: #fff; }
+    .b-red { background: #cc0000; color: #ffff00; }
+    .b-blue { background: #000080; color: #00ffff; }
+    .b-green { background: #005500; color: #ffff00; }
+    .b-yellow { background: #ffff00; color: #000000; }
+    .b-black { background: #000000; color: #00ff00; }
+
     /* レスポンシブ対応（スマホでも90年代風を維持） */
     @media (max-width: 768px) {
       .layout { grid-template-columns: 1fr; }
@@ -429,6 +463,10 @@
         <span>【重要】相互リンク募集中です！ / キリ番踏み逃げ厳禁！ / 漢字Talkから更新中！ / ゆっくりしていってね！！</span>
       </div>
 
+      <div class="bgm-row">
+        <button id="bgm-toggle" type="button" class="retro-btn">♪ BGMを鳴らす（ピコピコ）</button>
+      </div>
+
       <div class="header-meta">
         [Since 1999.04.01]　|　[Last Update: <span id="last-updated">2026/11/02</span>]　|　[推奨ブラウザ：Netscape / IE4.0以上]
       </div>
@@ -440,7 +478,7 @@
         <h2>◆ MENU ◆</h2>
         <ul class="menu-list">
           <li><a href="#about">■ TOP / はじめに</a></li>
-          <li><a href="seisaku.html">■ 制作手法</a></li>
+          <li><a href="https://kaopuuu-hash.github.io/iwata-kessan/seisaku.html">■ 制作手法</a></li>
           <li><a href="#profile">■ 管理人のプロフィール</a></li>
           <li><a href="#diary">■ 激動の管理人日記</a></li>
           <li><a href="#gallery">■ 懐古写真館</a></li>
@@ -461,6 +499,14 @@
         <div class="netscape-badge">
           <small>Netscape Navigator<br>Best Viewed</small>
         </div>
+
+        <div class="mini-banners" aria-label="相互リンクバナー">
+          <span class="banner88 b-red">LINK<br>FREE!</span>
+          <span class="banner88 b-blue">相互リンク<br>募集中!!</span>
+          <span class="banner88 b-green">Netscape<br>Best Viewed</span>
+          <span class="banner88 b-yellow">56k<br>MODEM対応</span>
+          <span class="banner88 b-black">UNDER<br>CONSTRUCTION</span>
+        </div>
       </nav>
 
       <!-- メインコンテンツ -->
@@ -471,13 +517,13 @@
           <p>当ホームページへようこそお越しくださいました。<br>
           ここは、管理人が趣味で集めたガジェットや、日々の思いつきを書き殴る個人サイトです。</p>
           <p>フレーム構造やLZH圧縮、MIDI BGM（準備中）など、あの頃のネットカルチャーの息吹をそのまま現代に蘇らせました。</p>
-          <div class="notice">※ 当サイトはリンクフリーです。バナーは直リンク厳禁でお持ち帰りください。</div>
+          <div class="notice">※ 当サイトはリンクフリーです。バナーは直リンク厳禁でお持ち帰りください。<br>※ ここは遊び場です。数字の本編は <a href="https://kaopuuu-hash.github.io/iwata-kessan/kessan.html">決算まとめ</a>・<a href="https://kaopuuu-hash.github.io/iwata-kessan/dashboard.html">ダッシュボード</a>へどうぞ！</div>
         </section>
 
         <section id="seisaku" class="panel">
           <h2>◆ 制作手法 ◆</h2>
           <p>このサイトの制作方法（AIエージェントによるデータ分析・制作）と、このサイトについての注記は、別ページにまとめました。</p>
-          <p><a href="seisaku.html">▶ 制作手法ページへ</a></p>
+          <p><a href="https://kaopuuu-hash.github.io/iwata-kessan/seisaku.html">▶ 制作手法ページへ</a></p>
         </section>
 
         <section id="profile" class="panel">
@@ -505,9 +551,9 @@
           <h2>◆ 懐古写真館（Photo Gallery） ◆</h2>
           <p>思い出のハードウェアや旅先の風景（準備中）</p>
           <div class="gallery-grid">
-            <div class="fake-photo">CRT Monitor<br><small>17インチ・トリニトロン</small></div>
-            <div class="fake-photo">Floppy Disk<br><small>3.5インチ 2HD</small></div>
-            <div class="fake-photo">Modem<br><small>アナログ 56kbps</small></div>
+            <div class="fake-photo"><svg viewBox="0 0 200 122" role="img" aria-label="CRTモニターのイラスト"><title>CRTモニター</title><rect x="35" y="10" width="130" height="92" rx="8" fill="#ddd5c3" stroke="#7a7a7a" stroke-width="3"/><rect x="46" y="20" width="108" height="72" rx="5" fill="#3a3a3a"/><rect x="52" y="26" width="96" height="60" fill="#06181f"/><polygon points="52,26 90,26 70,86 52,86" fill="#ffffff" opacity="0.06"/><line x1="52" y1="36" x2="148" y2="36" stroke="#33ff66" stroke-width="1" opacity="0.14"/><line x1="52" y1="46" x2="148" y2="46" stroke="#33ff66" stroke-width="1" opacity="0.14"/><line x1="52" y1="56" x2="148" y2="56" stroke="#33ff66" stroke-width="1" opacity="0.14"/><line x1="52" y1="66" x2="148" y2="66" stroke="#33ff66" stroke-width="1" opacity="0.14"/><line x1="52" y1="76" x2="148" y2="76" stroke="#33ff66" stroke-width="1" opacity="0.14"/><text x="60" y="52" font-family="monospace" font-size="14" fill="#33ff66">C:\&gt;_</text><text x="60" y="70" font-family="monospace" font-size="9" fill="#33ff66" opacity="0.8">WIN95 起動中...</text><circle cx="150" cy="95" r="2.5" fill="#33ff33"/><rect x="88" y="102" width="24" height="10" fill="#c9c1ad" stroke="#7a7a7a" stroke-width="2"/><rect x="72" y="112" width="56" height="8" rx="2" fill="#c9c1ad" stroke="#7a7a7a" stroke-width="2"/></svg>CRT Monitor<br><small>17インチ・トリニトロン</small></div>
+            <div class="fake-photo"><svg viewBox="0 0 200 122" role="img" aria-label="フロッピーディスクのイラスト"><title>フロッピーディスク</title><rect x="60" y="6" width="80" height="98" rx="4" fill="#1c1c9c" stroke="#111144" stroke-width="2"/><rect x="78" y="6" width="44" height="30" fill="#cfcfcf" stroke="#808080" stroke-width="2"/><rect x="90" y="10" width="20" height="14" fill="#222222"/><rect x="66" y="46" width="68" height="50" fill="#f5f5f5" stroke="#999999" stroke-width="1"/><rect x="66" y="46" width="68" height="8" fill="#cc0000"/><text x="72" y="72" font-family="monospace" font-size="15" font-weight="bold" fill="#cc0000">2HD</text><path d="M72,80 q6,-6 12,0 t12,0 t12,0 t12,0" stroke="#333399" stroke-width="1.5" fill="none"/><rect x="126" y="90" width="8" height="8" fill="#111111"/><rect x="60" y="90" width="8" height="8" fill="#111111"/></svg>Floppy Disk<br><small>3.5インチ 2HD</small></div>
+            <div class="fake-photo"><svg viewBox="0 0 200 122" role="img" aria-label="モデムのイラスト"><title>アナログモデム</title><path d="M155,70 C180,70 180,100 196,100" stroke="#1a1a1a" stroke-width="3" fill="none"/><rect x="190" y="94" width="8" height="12" rx="1" fill="#333333"/><rect x="25" y="48" width="130" height="44" rx="5" fill="#ddd5c3" stroke="#7a7a7a" stroke-width="3"/><circle cx="40" cy="60" r="3.5" fill="#33ff33"/><circle cx="55" cy="60" r="3.5" fill="#ff3333"/><circle cx="70" cy="60" r="3.5" fill="#ffcc00"/><circle cx="85" cy="60" r="3.5" fill="#33ff33"/><circle cx="100" cy="60" r="3.5" fill="#ff3333"/><text x="33" y="84" font-family="monospace" font-size="10" fill="#444444">56K FAX MODEM</text><rect x="130" y="56" width="16" height="8" fill="#3a3a3a"/></svg>Modem<br><small>アナログ 56kbps</small></div>
           </div>
         </section>
 
@@ -546,13 +592,13 @@
         <section id="links" class="panel">
           <h2>★ リンク＆ウェブリング ★</h2>
           <ul class="link-list">
-            <li><a href="kessan.html">■ 磐田市 令和7年度決算まとめ（管理人の真面目ページ）</a> <span class="new-badge">NEW!</span></li>
-            <li><a href="dashboard.html">■ 磐田市オープンデータ ダッシュボード</a></li>
-            <li><a href="analysis.html">■ 財政分析（決算の詳細分析）</a></li>
-            <li><a href="method.html">■ 分析手法（数字の読み方）</a></li>
-            <li><a href="sources.html">■ 出典・参考資料</a></li>
-            <li><a href="fukuroi.html">■ 袋井市オープンデータ ダッシュボード</a></li>
-            <li><a href="mori.html">■ 森町 オープンデータ ダッシュボード</a></li>
+            <li><a href="https://kaopuuu-hash.github.io/iwata-kessan/kessan.html">■ 磐田市 令和7年度決算まとめ（管理人の真面目ページ）</a> <span class="new-badge">NEW!</span></li>
+            <li><a href="https://kaopuuu-hash.github.io/iwata-kessan/dashboard.html">■ 磐田市オープンデータ ダッシュボード</a></li>
+            <li><a href="https://kaopuuu-hash.github.io/iwata-kessan/analysis.html">■ 財政分析（決算の詳細分析）</a></li>
+            <li><a href="https://kaopuuu-hash.github.io/iwata-kessan/method.html">■ 分析手法（数字の読み方）</a></li>
+            <li><a href="https://kaopuuu-hash.github.io/iwata-kessan/sources.html">■ 出典・参考資料</a></li>
+            <li><a href="https://kaopuuu-hash.github.io/iwata-kessan/fukuroi.html">■ 袋井市オープンデータ ダッシュボード</a></li>
+            <li><a href="https://kaopuuu-hash.github.io/iwata-kessan/mori.html">■ 森町 オープンデータ ダッシュボード</a></li>
             <li><a href="#about">■ 管理人の秘密の裏サイト</a> <span class="new-badge">NEW!</span></li>
             <li><a href="#games">■ 相互リンク募集中（メールください）</a></li>
             <li><a href="https://www.yahoo.co.jp" target="_blank" rel="noopener">■ Yahoo! JAPAN (あの頃の定番)</a></li>
@@ -618,8 +664,8 @@
     (() => {
       // アクセスカウンターの処理
       const countKey = "retro_v1999_visit_count";
-      const stored = Number(localStorage.getItem(countKey) || "12344");
-      const count = Number.isFinite(stored) && stored >= 0 ? stored + 1 : 12345;
+      const stored = Number(localStorage.getItem(countKey) || "11");
+      const count = Number.isFinite(stored) && stored >= 0 ? stored + 1 : 12;
       localStorage.setItem(countKey, String(count));
 
       const countEl = document.getElementById("visit-count");
@@ -721,6 +767,33 @@
           if (res) {
             res.textContent = fortunes[Math.floor(Math.random() * fortunes.length)];
           }
+        });
+      }
+
+      // BGMトグル（WebAudio生成・デフォOFF）
+      const bgmBtn = document.getElementById("bgm-toggle");
+      let audioCtx = null, bgmTimer = null, bgmStep = 0;
+      const melody = [523, 659, 784, 659, 880, 784, 659, 523];
+      if (bgmBtn) {
+        bgmBtn.addEventListener("click", () => {
+          if (bgmTimer) {
+            clearInterval(bgmTimer); bgmTimer = null;
+            if (audioCtx) audioCtx.close(); audioCtx = null;
+            bgmBtn.textContent = "♪ BGMを鳴らす（ピコピコ）";
+            return;
+          }
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          bgmTimer = setInterval(() => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "square";
+            osc.frequency.value = melody[bgmStep % melody.length];
+            gain.gain.value = 0.05;
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.18);
+            bgmStep++;
+          }, 220);
+          bgmBtn.textContent = "■ BGMを止める";
         });
       }
 
