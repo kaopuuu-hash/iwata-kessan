@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Tech Showcase 2026 — 最新Web技術デモ</title>
+<meta name="description" content="最新のWebテクノロジーを詰め込んだデモページ">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --fg: #e8e8f0;
+  --muted: #8a8aa0;
+  --accent: #7c5cff;
+  --accent2: #00d4ff;
+  --card: #14141f;
+  --border: #2a2a3a;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --err: #f87171;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "Inter", "Noto Sans JP", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: var(--accent2); text-decoration: none; }
+
+/* ---- Container Queries ---- */
+.card-grid {
+  container-type: inline-size;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+@container (min-width: 600px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@container (min-width: 900px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---- CSS Nesting ---- */
+.hero {
+  position: relative;
+  padding: 6rem 2rem 4rem;
+  text-align: center;
+  background: radial-gradient(ellipse at top, #1a1a3a 0%, var(--bg) 70%);
+  & h1 {
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+  }
+  & p { color: var(--muted); max-width: 600px; margin: 0 auto 2rem; }
+  & .badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent2);
+  }
+}
+
+/* ---- CSS :has() ---- */
+.feature-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: transform 0.3s, border-color 0.3s;
+  &:hover { transform: translateY(-4px); border-color: var(--accent); }
+  &:has(input:checked) {
+    border-color: var(--ok);
+    background: linear-gradient(135deg, #14141f, #0f2a1f);
+  }
+}
+.feature-card input { accent-color: var(--ok); }
+
+/* ---- Scroll-driven animations ---- */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: fadeUp linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- @property ---- */
+@property --hue {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+.rainbow {
+  background: linear-gradient(90deg, hsl(var(--hue), 80%, 60%), hsl(calc(var(--hue)+60), 80%, 60%));
+  animation: hueShift 4s linear infinite;
+}
+@keyframes hueShift { to { --hue: 360; } }
+
+/* ---- Popover API ---- */
+[popover] {
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+::backdrop { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+
+/* ---- Layout ---- */
+section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+.sub { color: var(--muted); margin-bottom: 2rem; }
+.grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.2s, filter 0.2s;
+}
+.btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+.btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--fg); }
+.status {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  background: #1a1a2a;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-family: monospace;
+}
+.status .dot { width: 8px; height: 8px; border-radius: 50%; }
+.status.ok .dot { background: var(--ok); }
+.status.warn .dot { background: var(--warn); }
+.status.err .dot { background: var(--err); }
+canvas { border-radius: 12px; background: #000; width: 100%; height: 300px; display: block; }
+video { border-radius: 12px; width: 100%; }
+code { background: #1a1a2a; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+pre {
+  background: #0d0d18;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+}
+footer { text-align: center; padding: 3rem 2rem; color: var(--muted); border-top: 1px solid var(--border); }
+
+/* ---- サイト共通ナビ（gnav） ---- */
+.gnav{background:#14365e;color:#fff}
+.gnav .wrap{max-width:1080px;margin:0 auto;padding:0 16px;display:flex;flex-wrap:wrap;gap:2px}
+.gnav a{color:#fff;text-decoration:none;font-size:.85rem;padding:9px 10px}
+.gnav a:hover{background:rgba(255,255,255,.14)}
+.gnav a[aria-current="page"]{background:rgba(255,255,255,.2);font-weight:700}
+</style>
+</head>
+<body>
+<nav class="gnav" aria-label="サイト共通メニュー">
+<div class="wrap">
+<a href="index.html">トップ</a>
+<a href="cyber-space.html">cyber-space</a>
+<a href="kessan.html">決算概要</a>
+<a href="analysis.html">財政分析</a>
+<a href="dashboard.html">Dashboard（磐田）</a>
+<a href="fukuroi.html">袋井Dashboard</a>
+<a href="mori.html">森町Dashboard</a>
+<a href="method.html">分析手法</a>
+<a href="sources.html">出典・参考資料</a>
+<a href="seisaku.html">制作手法</a>
+<a href="showcase.html" aria-current="page">Web Tech Showcase</a>
+</div>
+</nav>
+
+
+
+<header class="hero">
+  <div class="badge">🚀 Web Tech Showcase 2026</div>
+  <h1>最新Web技術デモ</h1>
+  <p>CSS・JavaScript・Web API の最新機能を1ページに詰め込んだテストページ。各セクションでサポート状況を確認できます。</p>
+  <button class="btn" popovertarget="info-pop">Popoverを開く</button>
+  <div id="info-pop" popover>
+    <h3>Popover API</h3>
+    <p>ネイティブのポップオーバー。JSなしで開閉できます。</p>
+    <button class="btn secondary" popovertarget="info-pop" popovertargetaction="hide">閉じる</button>
+  </div>
+</header>
+
+<section class="reveal">
+  <h2>🎨 CSS最新機能</h2>
+  <p class="sub">Container Queries / :has() / @property / Nesting / Scroll-driven</p>
+  <div class="card-grid">
+    <div class="feature-card">
+      <h3>Container Queries</h3>
+      <p>親要素のサイズに応じてスタイル変更。このグリッドがそうです。</p>
+      <label><input type="checkbox"> チェックしてハイライト</label>
+    </div>
+    <div class="feature-card">
+      <h3>:has() セレクタ</h3>
+      <p>子要素の状態で親をスタイリング。上のチェックで確認。</p>
+      <label><input type="checkbox"> 有効化</label>
+    </div>
+    <div class="feature-card">
+      <h3>@property + Houdini</h3>
+      <div class="rainbow" style="height:40px;border-radius:8px;margin-top:0.5rem;"></div>
+      <p>カスタムプロパティのアニメーション。</p>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <h2>🧩 Web Components</h2>
+  <p class="sub">Custom Elements + Shadow DOM</p>
+  <div class="grid">
+    <tech-card title="Web Component" desc="Shadow DOMでスタイルが隔離されます。" count="42"></tech-card>
+    <tech-card title="再利用可能" desc="任意の場所で使えます。" count="7"></tech-card>
+    <tech-card title="カプセル化" desc="外部CSSの影響を受けません。" count="99"></tech-card>
+  </div>
+</section>
+
+<section class="reveal">
+  <h2>🎮 Canvas / WebGPU</h2>
+  <p class="sub">2D Canvas アニメーション（WebGPUは対応ブラウザで）</p>
+  <canvas id="cvs"></canvas>
+  <p class="sub" id="gpu-status"></p>
+</section>
+
+<section class="reveal">
+  <h2>🎤 Web Speech API</h2>
+  <p class="sub">音声認識と音声合成</p>
+  <div class="grid">
+    <div class="feature-card">
+      <h3>音声認識</h3>
+      <button class="btn" id="rec-btn">録音開始</button>
+      <p id="rec-out" style="margin-top:1rem;color:var(--muted);">—</p>
+    </div>
+    <div class="feature-card">
+      <h3>音声合成</h3>
+      <button class="btn" id="tts-btn">読み上げ</button>
+      <p style="margin-top:1rem;color:var(--muted);">「最新Web技術デモへようこそ」</p>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <h2>📁 File System Access API</h2>
+  <p class="sub">ローカルファイルの読み書き（対応ブラウザのみ）</p>
+  <button class="btn" id="fs-btn">ファイルを開く</button>
+  <pre id="fs-out">—</pre>
+</section>
+
+<section class="reveal">
+  <h2>🔗 Web Share API</h2>
+  <p class="sub">ネイティブ共有シート</p>
+  <button class="btn" id="share-btn">このページを共有</button>
+</section>
+
+<section class="reveal">
+  <h2>⚙️ Service Worker / PWA</h2>
+  <p class="sub">オフライン対応・キャッシュ</p>
+  <div class="status" id="sw-status"><span class="dot"></span>確認中...</div>
+</section>
+
+<section class="reveal">
+  <h2>👁️ Intersection Observer</h2>
+  <p class="sub">スクロールに応じた表示検知（このセクションが表示されたら発火）</p>
+  <div class="status ok" id="io-status"><span class="dot"></span>待機中</div>
+</section>
+
+<section class="reveal">
+  <h2>📊 APIサポート状況</h2>
+  <p class="sub">このブラウザでの対応状況</p>
+  <div id="support" class="grid"></div>
+</section>
+
+<footer>
+  <p>Web Tech Showcase 2026 — テスト用デモページ</p>
+  <p style="font-size:0.8rem;margin-top:0.5rem;">単一HTMLファイル / 外部通信なし</p>
+</footer>
+
+<script>
+// ---- Web Component ----
+// 安全: 静的デモ値のみをinnerHTMLに挿入（ユーザー入力はtextContent使用）
+class TechCard extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: 'open' });
+    const title = this.getAttribute('title') || '';
+    const desc = this.getAttribute('desc') || '';
+    const count = this.getAttribute('count') || '0';
+    shadow.innerHTML = `
+      <style>
+        :host { display: block; }
+        .c {
+          background: linear-gradient(135deg, #1a1a2e, #14141f);
+          border: 1px solid #2a2a3a;
+          border-radius: 16px;
+          padding: 1.5rem;
+          transition: transform 0.3s;
+        }
+        .c:hover { transform: translateY(-4px); }
+        h3 { color: #7c5cff; margin-bottom: 0.5rem; }
+        .num { font-size: 2rem; font-weight: 800; color: #00d4ff; }
+      </style>
+      <div class="c">
+        <div class="num">${count}</div>
+        <h3>${title}</h3>
+        <p>${desc}</p>
+      </div>
+    `;
+  }
+}
+customElements.define('tech-card', TechCard);
+
+// ---- Canvas animation ----
+const canvas = document.getElementById('cvs');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resize() {
+  canvas.width = canvas.clientWidth * devicePixelRatio;
+  canvas.height = 300 * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+resize();
+window.addEventListener('resize', resize);
+for (let i = 0; i < 80; i++) {
+  particles.push({
+    x: Math.random() * canvas.clientWidth,
+    y: Math.random() * 300,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: (Math.random() - 0.5) * 1.5,
+    r: Math.random() * 2 + 1,
+    hue: Math.random() * 360
+  });
+}
+function draw() {
+  ctx.fillStyle = 'rgba(10,10,15,0.15)';
+  ctx.fillRect(0, 0, canvas.clientWidth, 300);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > canvas.clientWidth) p.vx *= -1;
+    if (p.y < 0 || p.y > 300) p.vy *= -1;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `hsl(${p.hue}, 80%, 60%)`;
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ---- WebGPU check ----
+(async () => {
+  const el = document.getElementById('gpu-status');
+  if (navigator.gpu) {
+    try {
+      const adapter = await navigator.gpu.requestAdapter();
+      el.textContent = adapter ? 'WebGPU: 対応 ✓' : 'WebGPU: アダプタなし';
+      el.style.color = adapter ? 'var(--ok)' : 'var(--warn)';
+    } catch (e) { el.textContent = 'WebGPU: エラー'; el.style.color = 'var(--err)'; }
+  } else {
+    el.textContent = 'WebGPU: 非対応（Canvas 2Dで表示中）';
+    el.style.color = 'var(--warn)';
+  }
+})();
+
+// ---- Speech Recognition ----
+const recBtn = document.getElementById('rec-btn');
+const recOut = document.getElementById('rec-out');
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SR) {
+  const rec = new SR();
+  rec.lang = 'ja-JP';
+  rec.continuous = false;
+  rec.onresult = e => { recOut.textContent = e.results[0][0].transcript; };
+  rec.onend = () => { recBtn.textContent = '録音開始'; };
+  recBtn.addEventListener('click', () => {
+    if (recBtn.textContent === '録音開始') { rec.start(); recBtn.textContent = '停止'; }
+    else { rec.stop(); }
+  });
+} else {
+  recBtn.disabled = true;
+  recOut.textContent = '非対応ブラウザ';
+}
+
+// ---- TTS ----
+document.getElementById('tts-btn').addEventListener('click', () => {
+  const u = new SpeechSynthesisUtterance('最新Web技術デモへようこそ');
+  u.lang = 'ja-JP';
+  speechSynthesis.speak(u);
+});
+
+// ---- File System Access ----
+const fsBtn = document.getElementById('fs-btn');
+const fsOut = document.getElementById('fs-out');
+if (window.showOpenFilePicker) {
+  fsBtn.addEventListener('click', async () => {
+    try {
+      const [handle] = await window.showOpenFilePicker();
+      const file = await handle.getFile();
+      const text = await file.text();
+      fsOut.textContent = text.slice(0, 1000);
+    } catch (e) { fsOut.textContent = 'キャンセルまたはエラー'; }
+  });
+} else {
+  fsBtn.disabled = true;
+  fsOut.textContent = 'File System Access API 非対応';
+}
+
+// ---- Web Share ----
+const shareBtn = document.getElementById('share-btn');
+if (navigator.share) {
+  shareBtn.addEventListener('click', () => {
+    navigator.share({ title: document.title, url: location.href }).catch(() => {});
+  });
+} else {
+  shareBtn.disabled = true;
+  shareBtn.textContent = 'Web Share 非対応';
+}
+
+// ---- Service Worker ----
+const swStatus = document.getElementById('sw-status');
+if ('serviceWorker' in navigator) {
+  // inline SW via blob
+  const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(self.clients.claim())); self.addEventListener('fetch', e => {});`;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const url = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(url).then(() => {
+    swStatus.className = 'status ok';
+    swStatus.innerHTML = '<span class="dot"></span>Service Worker 登録済';
+  }).catch(e => {
+    swStatus.className = 'status warn';
+    swStatus.innerHTML = '<span class="dot"></span>登録失敗（file://では制限あり）';
+  });
+} else {
+  swStatus.className = 'status err';
+  swStatus.innerHTML = '<span class="dot"></span>非対応';
+}
+
+// ---- Intersection Observer ----
+const ioStatus = document.getElementById('io-status');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      ioStatus.className = 'status ok';
+      ioStatus.innerHTML = '<span class="dot"></span>検知: このセクションが表示されました ✓';
+    }
+  });
+}, { threshold: 0.5 });
+io.observe(ioStatus.parentElement);
+
+// ---- Support matrix ----
+const apis = [
+  ['Container Queries', CSS.supports('container-type', 'inline-size')],
+  ['CSS :has()', CSS.supports('selector(:has(*))')],
+  ['CSS Nesting', CSS.supports('selector(&)')],
+  ['@property', 'registerProperty' in CSS],
+  ['Scroll-driven anim', CSS.supports('animation-timeline', 'view()')],
+  ['Popover API', 'popover' in HTMLElement.prototype],
+  ['Web Components', 'customElements' in window],
+  ['WebGPU', !!navigator.gpu],
+  ['Speech Recognition', !!SR],
+  ['Speech Synthesis', 'speechSynthesis' in window],
+  ['File System Access', !!window.showOpenFilePicker],
+  ['Web Share', !!navigator.share],
+  ['Service Worker', 'serviceWorker' in navigator],
+  ['IntersectionObserver', 'IntersectionObserver' in window],
+  ['View Transitions', 'startViewTransition' in document],
+  ['Web Workers', 'Worker' in window],
+];
+const support = document.getElementById('support');
+apis.forEach(([name, ok]) => {
+  const d = document.createElement('div');
+  d.className = 'feature-card';
+  d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;">
+    <span>${name}</span>
+    <span class="status ${ok ? 'ok' : 'err'}"><span class="dot"></span>${ok ? '対応' : '非対応'}</span>
+  </div>`;
+  support.appendChild(d);
+});
+
+// ---- View Transitions (demo link) ----
+document.querySelectorAll('a.vt').forEach(a => {
+  a.addEventListener('click', e => {
+    if (document.startViewTransition) {
+      e.preventDefault();
+      document.startViewTransition(() => { location.href = a.href; });
+    }
+  });
+});
+</script>
+</body>
+</html>
