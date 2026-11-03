@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>掛川市オープンデータ ダッシュボード</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { navy: {50:'#f0f4fa',100:'#dce6f2',200:'#b9cfe6',600:'#1d4e89',700:'#173e6e',800:'#14365e',900:'#0f2a4a'} } } } }</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+  .card { transition: transform .2s ease, box-shadow .2s ease; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -8px rgba(15,23,42,.18); }
+  .spinner { border: 3px solid rgba(20,54,94,.15); border-top-color: #14365e; border-radius: 50%; width: 36px; height: 36px; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .chart-box { height: 320px; position: relative; }
+  .chart-box canvas { height: 100% !important; max-height: 320px; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+  <header class="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div>
+        <h1 class="text-xl sm:text-2xl font-bold tracking-tight">掛川市オープンデータ ダッシュボード</h1>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">人口動態・防災施設の可視化 / Kakegawa City Open Data</p>
+      </div>
+      <div class="text-right text-xs text-slate-500">
+        <div>出典: 掛川市オープンデータ</div>
+        <div id="updated" class="mt-1"></div>
+      </div>
+    </div>
+  </header>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div class="bg-amber-50 border border-amber-300 rounded-xl p-3 text-amber-800 text-sm">注意: 人口は2026年5月末、避難所は2026年時点のデータです。最新情報は掛川市HPで確認してください。</div>
+    <div id="loading" class="flex flex-col items-center justify-center py-20 gap-4">
+      <div class="spinner"></div>
+      <p class="text-slate-500 text-sm">データを読み込み中...</p>
+    </div>
+    <div id="error" class="hidden bg-red-50 border border-red-300 rounded-xl p-4 text-red-700 text-sm"></div>
+    <section id="content" class="hidden space-y-6">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">総人口</div>
+          <div id="kpi-pop" class="text-2xl font-bold mt-1 text-navy-800">-</div>
+          <div class="text-xs text-slate-500 mt-1">2026年9月末</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">総世帯数</div>
+          <div id="kpi-hh" class="text-2xl font-bold mt-1 text-sky-700">-</div>
+          <div class="text-xs text-slate-500 mt-1">町別合計</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">避難所数</div>
+          <div id="kpi-sh" class="text-2xl font-bold mt-1 text-amber-600">-</div>
+          <div class="text-xs text-slate-500 mt-1">指定避難所</div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <div class="text-xs text-slate-500">65歳以上比率</div>
+          <div id="kpi-elder" class="text-2xl font-bold mt-1 text-navy-600">-</div>
+          <div class="text-xs text-slate-500 mt-1">高齢化率</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <h2 class="text-base font-semibold mb-3">年齢別人口（5歳階級）</h2>
+          <div class="chart-box"><canvas id="ageChart"></canvas></div>
+        </div>
+        <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+          <h2 class="text-base font-semibold mb-3">男女比</h2>
+          <div class="chart-box"><canvas id="genderChart"></canvas></div>
+        </div>
+      </div>
+      <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+        <h2 class="text-base font-semibold mb-3">人口ピラミッド</h2>
+        <div class="chart-box"><canvas id="townChart"></canvas></div>
+      </div>
+      <div class="card bg-white border border-slate-200 rounded-2xl p-4">
+        <h2 class="text-base font-semibold mb-3">指定避難所一覧</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-slate-500 border-b border-slate-200">
+              <tr><th class="text-left py-2 px-2">名称</th><th class="text-left py-2 px-2">所在地</th><th class="text-left py-2 px-2">収容人数</th></tr>
+            </thead>
+            <tbody id="shelterBody" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+        <p class="text-xs text-slate-500 mt-3">※ 一部の避難所では位置情報が欠落しているため、本ページでは位置情報を掲載していません。</p>
+      </div>
+    </section>
+  </main>
+  <footer class="border-t border-slate-200 mt-10 py-6 text-center text-xs text-slate-500">
+    <div style="margin-bottom:8px"><a href="index.html" style="color:#1e40af;text-decoration:underline">管理人のホームページへ</a></div>
+    <div style="margin-bottom:8px"><a href="kessan.html" style="color:#1e40af;text-decoration:underline">◀ 掛川市 へ</a></div>
+    <div style="margin-bottom:8px"><a href="cyber-space.html" style="color:#1e40af;text-decoration:underline">▶ cyber-space へ</a></div>
+    データ出典: 掛川市公式ウェブサイト / 人口2026年5月末、避難所2026年時点
+  </footer>
+  <script id="kakegawa-data" type="application/json">{"totalPop": 113872, "male": 57388, "female": 56484, "households": 48854, "ageBuckets": [{"label": "0歳〜4歳", "male": 1869, "female": 1763, "total": 3632}, {"label": "5歳〜9歳", "male": 2452, "female": 2359, "total": 4811}, {"label": "10歳〜14歳", "male": 2845, "female": 2685, "total": 5530}, {"label": "15歳〜19歳", "male": 2790, "female": 2728, "total": 5518}, {"label": "20歳〜24歳", "male": 2817, "female": 2420, "total": 5237}, {"label": "25歳〜29歳", "male": 2873, "female": 2511, "total": 5384}, {"label": "30歳〜34歳", "male": 3067, "female": 2621, "total": 5688}, {"label": "35歳〜39歳", "male": 3563, "female": 3134, "total": 6697}, {"label": "40歳〜44歳", "male": 3979, "female": 3605, "total": 7584}, {"label": "45歳〜49歳", "male": 4234, "female": 3776, "total": 8010}, {"label": "50歳〜54歳", "male": 4474, "female": 4001, "total": 8475}, {"label": "55歳〜59歳", "male": 3732, "female": 3607, "total": 7339}, {"label": "60歳〜64歳", "male": 3436, "female": 3343, "total": 6779}, {"label": "65歳〜69歳", "male": 3524, "female": 3628, "total": 7152}, {"label": "70歳〜74歳", "male": 3868, "female": 3875, "total": 7743}, {"label": "75歳〜79歳", "male": 3914, "female": 4087, "total": 8001}, {"label": "80歳〜84歳", "male": 2019, "female": 2469, "total": 4488}, {"label": "85歳以上", "male": 1932, "female": 3872, "total": 5804}], "shelters": [{"name": "磐田化学工場（株）大須賀工場造粒工場棟", "address": "山崎2464", "capacity": "4126"}, {"name": "本谷公民館", "address": "山崎6011-3", "capacity": "1175"}, {"name": "西田町公民館", "address": "西大渕4226", "capacity": "920"}, {"name": "大工町ゲートボール場", "address": "西大渕5288-3南側", "capacity": "668"}, {"name": "大工町公民館", "address": "横須賀189", "capacity": "1414"}, {"name": "横須賀高校", "address": "横須賀1491-1", "capacity": "896"}, {"name": "横須賀小学校", "address": "横須賀1110", "capacity": "596"}, {"name": "（株）遠興", "address": "横須賀1409-2", "capacity": "56"}, {"name": "ウィル掛川", "address": "横須賀1198-1", "capacity": "4630"}, {"name": "ビレッジハウス大須賀集会所", "address": "西大渕4340-3", "capacity": "538"}, {"name": "ビレッジハウス大須賀３階以上", "address": "西大渕4306-9", "capacity": "1656"}, {"name": "津波避難タワー「今沢」", "address": "西大渕1563-1", "capacity": "921"}, {"name": "今沢公民館", "address": "西大渕1661-1", "capacity": "419"}, {"name": "川原崎公会堂", "address": "西大渕4306-10", "capacity": "470"}, {"name": "ＳＰＯＯＮⅢ（アパート）", "address": "西大渕4288-1", "capacity": "807"}, {"name": "洋望台１号公園", "address": "洋望台3-3", "capacity": "1261"}, {"name": "野賀区公民館", "address": "大渕13563-2", "capacity": "526"}, {"name": "野賀区ゲートボール場", "address": "大渕13580西側", "capacity": "526"}, {"name": "熊野神社", "address": "大渕14290", "capacity": "1304"}, {"name": "大渕小学校", "address": "大渕5602", "capacity": "1473"}, {"name": "（老健）あおばケアガーデン", "address": "大渕4345", "capacity": "904"}, {"name": "岡原公民館", "address": "大渕12076-2", "capacity": "512"}, {"name": "コミュニティセンターはまかぜ", "address": "大渕5168-1", "capacity": "1115"}, {"name": "新明園", "address": "大渕12677", "capacity": "1226.2899"}, {"name": "クロネコヤマト掛川大東センター北", "address": "大渕13214-1", "capacity": "269.3121667"}, {"name": "東大谷公民館", "address": "大渕11420-1", "capacity": "721.9748667"}, {"name": "野中公民館", "address": "大渕10810-2", "capacity": "543.6476"}, {"name": "岩瀬造園前", "address": "大渕10619-2", "capacity": "222.6618333"}, {"name": "大渕農村環境改善センター（アイク）", "address": "大渕6881-2", "capacity": "484.4"}, {"name": "藤塚公民館", "address": "大渕7333-1", "capacity": "351.2175"}, {"name": "藤塚公園", "address": "大渕7333西側広場", "capacity": "536.8341333"}, {"name": "雨垂公民館", "address": "大渕8343-1", "capacity": "802.8802333"}, {"name": "美感ホール", "address": "亀の甲1丁目13-7", "capacity": "263"}, {"name": "文化会館シオーネ", "address": "大坂7373", "capacity": "401.12337"}], "meta": {"populationNote": "2026年5月末", "shelterNote": "掛川市オープンデータ"}}</script>
+  <script>
+  (function(){
+    const loading = document.getElementById('loading');
+    const errorBox = document.getElementById('error');
+    const content = document.getElementById('content');
+    try {
+      const raw = document.getElementById('kakegawa-data').textContent;
+      const D = JSON.parse(raw);
+      const ageBuckets = D.ageBuckets;
+      const shelters = D.shelters;
+      const totalPop = D.totalPop;
+      const totalHH = D.households;
+      const maleTotal = D.male;
+      const femaleTotal = D.female;
+      const elder = ageBuckets.filter(b=>parseInt(b.label)>=65).reduce((s,b)=>s+b.total,0);
+      const elderRate = (elder/totalPop*100).toFixed(1);
+      document.getElementById('kpi-pop').textContent = totalPop.toLocaleString();
+      document.getElementById('kpi-hh').textContent = totalHH.toLocaleString();
+      document.getElementById('kpi-sh').textContent = shelters.length.toLocaleString();
+      document.getElementById('kpi-elder').textContent = elderRate + '%';
+      document.getElementById('updated').textContent = '人口: ' + D.meta.populationNote + ' / 避難所: ' + D.meta.shelterNote;
+      new Chart(document.getElementById('ageChart'), {
+        type: 'bar',
+        data: { labels: ageBuckets.map(b=>b.label), datasets: [
+          { label: '男性', data: ageBuckets.map(b=>b.male), backgroundColor: 'rgba(20,54,94,0.85)', borderRadius: 4 },
+          { label: '女性', data: ageBuckets.map(b=>b.female), backgroundColor: 'rgba(2,132,199,0.8)', borderRadius: 4 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#334155' } } },
+          scales: { x: { stacked: true, ticks: { color: '#64748b', maxRotation: 45, minRotation: 45 }, grid: { color: 'rgba(100,116,139,0.15)' } },
+                   y: { stacked: true, ticks: { color: '#64748b' }, grid: { color: 'rgba(100,116,139,0.15)' } } }
+        }
+      });
+      new Chart(document.getElementById('genderChart'), {
+        type: 'doughnut',
+        data: { labels: ['男性','女性'], datasets: [{ data: [maleTotal, femaleTotal], backgroundColor: ['rgba(20,54,94,0.9)','rgba(2,132,199,0.9)'], borderWidth: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#334155' } } } }
+      });
+      // Population pyramid
+      new Chart(document.getElementById('townChart'), {
+        type: 'bar',
+        data: { labels: ageBuckets.map(b=>b.label), datasets: [
+          { label: '男性', data: ageBuckets.map(b=>-b.male), backgroundColor: 'rgba(20,54,94,0.85)', borderRadius: 4 },
+          { label: '女性', data: ageBuckets.map(b=>b.female), backgroundColor: 'rgba(2,132,199,0.8)', borderRadius: 4 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+          plugins: { legend: { labels: { color: '#334155' } } },
+          scales: { x: { ticks: { color: '#64748b', callback: v=>Math.abs(v).toLocaleString() }, grid: { color: 'rgba(100,116,139,0.15)' } },
+                   y: { ticks: { color: '#64748b' }, grid: { display: false } } }
+        }
+      });
+      const tbody = document.getElementById('shelterBody');
+      shelters.filter(s=>s.capacity).forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td class="py-2 px-2 font-medium">' + s.name + '</td>' +
+          '<td class="py-2 px-2 text-slate-600">' + s.address + '</td>' +
+          '<td class="py-2 px-2 text-slate-600 text-xs">' + (s.capacity||'-') + '</td>';
+        tbody.appendChild(tr);
+      });
+      loading.classList.add('hidden');
+      content.classList.remove('hidden');
+    } catch (e) {
+      loading.classList.add('hidden');
+      errorBox.textContent = 'データの読み込みに失敗しました: ' + e.message;
+      errorBox.classList.remove('hidden');
+    }
+  })();
+  </script>
+</body>
+</html>
