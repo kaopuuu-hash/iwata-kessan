@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="静岡市 公共施設の徒歩アクセス空白地帯 — ボロノイ図による分析と改善案">
+<title>静岡市 公共施設の徒歩アクセス空白地帯</title>
+<style>
+  :root { --blue:#2E75B6; --orange:#ED7D31; --gray:#595959; --bg:#f7f9fc; --line:#d9e2ec; --text:#1f2933; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Yu Gothic","Meiryo",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.75; }
+  header { background:linear-gradient(135deg,#1b5e20,#2e7d32); color:#fff; padding:56px 24px 44px; }
+  header .wrap { max-width:1080px; margin:0 auto; }
+  header h1 { margin:0 0 8px; font-size:30px; }
+  header p { margin:0; opacity:.92; font-size:15px; }
+  .badge { display:inline-block; background:rgba(255,255,255,.18); padding:4px 10px; border-radius:999px; font-size:12px; margin-top:12px; }
+  main { max-width:1080px; margin:0 auto; padding:32px 20px 70px; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin:0 0 30px; }
+  .kpi { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px; }
+  .kpi .label { font-size:12.5px; color:var(--gray); }
+  .kpi .value { font-size:28px; font-weight:700; color:#2e7d32; line-height:1.2; margin-top:4px; }
+  .kpi .sub { font-size:12px; color:var(--gray); margin-top:4px; }
+  section { background:#fff; border:1px solid var(--line); border-radius:12px; padding:24px 26px; margin-bottom:24px; }
+  h2 { font-size:20px; margin:0 0 14px; padding-left:12px; border-left:5px solid var(--orange); }
+  h3 { font-size:15px; margin:18px 0 8px; }
+  p { margin:0 0 12px; }
+  ul { margin:0 0 12px; padding-left:20px; }
+  li { margin:4px 0; }
+  table { width:100%; border-collapse:collapse; font-size:14px; margin:10px 0; }
+  th,td { border-bottom:1px solid var(--line); padding:9px 8px; text-align:left; vertical-align:top; }
+  th { background:#eef4fa; font-weight:600; }
+  img { width:100%; height:auto; border-radius:8px; display:block; }
+  .fig { margin:14px 0 6px; }
+  .caption { font-size:12px; color:var(--gray); margin:0 0 16px; }
+  .links { display:flex; flex-wrap:wrap; gap:12px; margin:16px 0; }
+  .btn { display:inline-block; padding:11px 18px; border-radius:8px; background:#2e7d32; color:#fff; text-decoration:none; font-weight:600; font-size:14px; }
+  .btn.secondary { background:#fff; color:#2e7d32; border:1px solid #2e7d32; }
+  .note { font-size:12.5px; color:var(--gray); }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:720px){ .two { grid-template-columns:1fr; } header h1 { font-size:22px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>静岡市 公共施設の徒歩アクセス空白地帯</h1>
+    <p>ボロノイ図で「施設の勢力圏」を可視化し、地震時の徒歩避難リスクを分析</p>
+    <span class="badge">Open Data Experimental Lab ／ 2026-09</span>
+  </div>
+</header>
+<main>
+
+<div class="kpis">
+  <div class="kpi"><div class="label">対象施設数</div><div class="value">658</div><div class="sub">690件から重複・市外・異常を除外</div></div>
+  <div class="kpi"><div class="label">推計居住人口</div><div class="value">約675,500人</div><div class="sub">500mメッシュ（2020年国勢調査）</div></div>
+  <div class="kpi"><div class="label">徒歩500m以内</div><div class="value">70.5%</div><div class="sub">476,300人</div></div>
+  <div class="kpi"><div class="label">徒歩1km超（空白）</div><div class="value">3.2%</div><div class="sub">21,897人・447メッシュ</div></div>
+</div>
+
+<section>
+  <h2>要約</h2>
+  <p>静岡市が公開する公共施設690件と2020年国勢調査の500mメッシュ人口を用いて、各居住地から最寄り公共施設までの直線距離を計算し、ボロノイ図で「施設の勢力圏」を可視化しました。さらに距離が1kmを超える居住域を「徒歩アクセスの空白地帯」として抽出し、改善優先候補地を貪欲法で算出しました。</p>
+  <p><b>結論：</b>市街地（葵区南部・駿河区・清水区市街）はほぼ100%カバーされていますが、<b>葵区北部・梅ヶ島・井川・玉川など中山間部と、清水区の山間・湾岸端部</b>に明確な徒歩空白が集中しています。市域全体では「1km圏外」は3.2%にとどまりますが、空白地帯に住む人の多くは高齢者で、地震時の徒歩避難リスクが高い状態です。</p>
+  <div class="links">
+    <a class="btn" href="report.md">📄 レポート全文（Markdown）</a>
+  </div>
+</section>
+
+<section>
+  <h2>1. 全市域の空白地帯マップ</h2>
+  <div class="fig"><img src="figures/final_overview.png" alt="全市域の空白地帯"></div>
+  <p class="caption">図1 全市域。灰=市域、青線=ボロノイ区画、青点=公共施設658、赤□=徒歩空白メッシュ（1km超）、★=改善候補地。</p>
+  <p>ボロノイ区画が極端に広い＝周辺に施設が少ない。葵区北部の南アルプス・井川・梅ヶ島地区では、市域の約6割を占める中山間部に施設がごく少数しかなく、区画が巨大化しています。</p>
+</section>
+
+<section>
+  <h2>2. 市街地拡大図</h2>
+  <div class="fig"><img src="figures/final_urban.png" alt="市街地拡大図"></div>
+  <p class="caption">図2 市街地の空白メッシュ（赤□）と改善候補地（★）。葵区北五丁目・清水区梅ヶ谷など市街地外縁の空白が見える。</p>
+</section>
+
+<section>
+  <h2>3. ボロノイ図（施設の勢力圏）</h2>
+  <div class="two">
+    <div>
+      <div class="fig"><img src="figures/map_overview.png" alt="ボロノイ全体図"></div>
+      <p class="caption">図3 全市域のボロノイ区画。</p>
+    </div>
+    <div>
+      <div class="fig"><img src="figures/map_urban.png" alt="市街地ボロノイ"></div>
+      <p class="caption">図4 市街地のボロノイ区画。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>4. 区別の空白地帯</h2>
+  <div class="two">
+    <div>
+      <div class="fig"><img src="figures/map_ward_aoi.png" alt="葵区"></div>
+      <p class="caption">図5 葵区。空白は北部全域と市街地北部外縁に二極化。</p>
+    </div>
+    <div>
+      <div class="fig"><img src="figures/map_ward_suruga.png" alt="駿河区"></div>
+      <p class="caption">図6 駿河区。空白は丸子・大谷の西縁に集中（最小）。</p>
+    </div>
+  </div>
+  <div class="fig"><img src="figures/map_ward_shimizu.png" alt="清水区"></div>
+  <p class="caption">図7 清水区。梅ヶ谷・谷津町と北東山間部に分散。</p>
+  <table>
+    <tr><th>区</th><th>人口</th><th>1km圏外人口</th><th>割合</th><th>空白メッシュ数</th></tr>
+    <tr><td>葵区</td><td>256,380</td><td>9,777</td><td>3.8%</td><td>265</td></tr>
+    <tr><td>駿河区</td><td>199,853</td><td>3,250</td><td>1.6%</td><td>28</td></tr>
+    <tr><td>清水区</td><td>218,282</td><td>8,830</td><td>4.0%</td><td>152</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>5. 徒歩空白メッシュ（1km超）の人口上位</h2>
+  <table>
+    <tr><th>順位</th><th>推計人口</th><th>単身高齢世帯</th><th>最寄施設距離</th><th>地区</th></tr>
+    <tr><td>1</td><td>1,118</td><td>165</td><td>1,164m</td><td>葵区 北五丁目</td></tr>
+    <tr><td>2</td><td>1,066</td><td>18</td><td>1,076m</td><td>駿河区 大谷</td></tr>
+    <tr><td>3</td><td>918</td><td>48</td><td>1,015m</td><td>葵区 北</td></tr>
+    <tr><td>4</td><td>800</td><td>42</td><td>1,044m</td><td>清水区 梅ヶ谷</td></tr>
+    <tr><td>5</td><td>797</td><td>29</td><td>1,283m</td><td>清水区 谷津町二丁目</td></tr>
+    <tr><td>6</td><td>676</td><td>29</td><td>1,387m</td><td>葵区 足久保口組</td></tr>
+    <tr><td>7</td><td>458</td><td>25</td><td>1,115m</td><td>駿河区 丸子</td></tr>
+    <tr><td>8</td><td>430</td><td>21</td><td>2,149m</td><td>清水区 中之郷</td></tr>
+  </table>
+  <p class="note">北五丁目（人口1,118人・単身高齢165世帯）は徒歩空白の中で最大の人口を抱え、高齢単身も突出して多い＝最優先地区。</p>
+</section>
+
+<section>
+  <h2>6. 孤立リスク施設（ボロノイ区画が過大）</h2>
+  <table>
+    <tr><th>順位</th><th>区画面積</th><th>施設名</th><th>所在地</th></tr>
+    <tr><td>1</td><td>165.0 km²</td><td>南アルプス赤石温泉 白樺荘</td><td>葵区田代</td></tr>
+    <tr><td>2</td><td>160.5 km²</td><td>百間洞山の家</td><td>葵区岩崎</td></tr>
+    <tr><td>3</td><td>73.2 km²</td><td>田代熊ノ平小屋</td><td>葵区田代</td></tr>
+    <tr><td>4</td><td>44.6 km²</td><td>南アルプス井川オートキャンプ場</td><td>葵区田代</td></tr>
+    <tr><td>5</td><td>36.2 km²</td><td>梅ヶ島新田温泉浴場</td><td>葵区梅ヶ島</td></tr>
+  </table>
+  <p class="note">上位はすべて葵区北部の温泉・山小屋など「避難所にならない施設」。ボロノイ区画の巨大化がそのまま孤立リスクを示す。</p>
+</section>
+
+<section>
+  <h2>7. 改善案 — 優先配置候補地</h2>
+  <table>
+    <tr><th>優先</th><th>座標</th><th>追加被覆人口</th><th>想定エリア</th></tr>
+    <tr><td>1</td><td>35.0354, 138.4031</td><td>+2,466人</td><td>葵区 北五丁目周辺</td></tr>
+    <tr><td>2</td><td>35.0688, 138.4719</td><td>+1,506人</td><td>清水区 中河内・杉山方面</td></tr>
+    <tr><td>3</td><td>35.0479, 138.4344</td><td>+1,356人</td><td>清水区 梅ヶ谷・山切</td></tr>
+    <tr><td>4</td><td>34.9563, 138.4344</td><td>+1,334人</td><td>駿河区 大谷周辺</td></tr>
+    <tr><td>5</td><td>34.9396, 138.3281</td><td>+994人</td><td>駿河区 丸子</td></tr>
+    <tr><td>6</td><td>35.0479, 138.3531</td><td>+963人</td><td>葵区 足久保</td></tr>
+    <tr><td>7</td><td>35.0729, 138.5219</td><td>+822人</td><td>清水区 谷津町・興津</td></tr>
+    <tr><td>8</td><td>34.9896, 138.2906</td><td>+630人</td><td>葵区 谷津・西部山間</td></tr>
+  </table>
+  <p>これら8地点を追加すると、<b>1km圏の人口カバー率が 96.8% → 98.2%</b> に改善（約1万人の圏外人口を削減）。既存の公共公益施設への機能付加で対応可能なエリアです。</p>
+</section>
+
+<section>
+  <h2>8. 推奨避難拠点（空白の人口クラスタ）</h2>
+  <table>
+    <tr><th>順位</th><th>クラスタ人口</th><th>単身高齢</th><th>地区</th></tr>
+    <tr><td>1</td><td>14,516</td><td>827</td><td>平山（清水区北縁〜葵区東縁の帯）</td></tr>
+    <tr><td>2</td><td>2,990</td><td>151</td><td>大原（葵区西部山間）</td></tr>
+    <tr><td>3</td><td>1,919</td><td>101</td><td>丸子（駿河区西縁）</td></tr>
+    <tr><td>4</td><td>1,334</td><td>32</td><td>大谷（駿河区・清水区境）</td></tr>
+    <tr><td>5</td><td>290</td><td>28</td><td>有東木（葵区北部）</td></tr>
+    <tr><td>6</td><td>220</td><td>9</td><td>蒲原（清水区北東）</td></tr>
+    <tr><td>7</td><td>177</td><td>6</td><td>三保（清水区）</td></tr>
+    <tr><td>8</td><td>113</td><td>10</td><td>梅ヶ島（葵区山間）</td></tr>
+  </table>
+  <p class="note">クラスタ1は市街地を囲む「外縁リング」で、複数の小学校・公民館を面的に指定する必要がある。クラスタ2〜4は地区単位の拠点整備が有効。</p>
+</section>
+
+<section>
+  <h2>9. 方法と限界</h2>
+  <ul>
+    <li><b>座標系</b>：JGD2011（EPSG:6668）から UTM第54帯（EPSG:6692）に投影し、メートル単位で実距離を計算。</li>
+    <li><b>施設点の整理</b>：市域外・誤座標を除去し、同一座標の棟単位重複を間引き、658代表点に。</li>
+    <li><b>ボロノイ図</b>：658施設を母点とするボロノイ分割を作成し、市域ポリゴンでクリップ。</li>
+    <li><b>徒歩圏カバレッジ</b>：各500mメッシュ中心から最寄り施設までの距離を計算。境界メッシュは市域内面積比で人口を按分。</li>
+    <li><b>限界</b>：距離は直線距離（道路・傾斜・河川は未考慮）。中山間部では実歩行距離はさらに長い。施設の避難所指定・耐震性・浸水想定は別途の考慮が必要。本分析は平常時の施設分布を徒歩距離の代理指標として用いている。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>10. データとライセンス</h2>
+  <table>
+    <tr><th>データ</th><th>出典</th><th>ライセンス</th></tr>
+    <tr><td>静岡市公共施設情報（690件）</td><td>静岡県オープンデータ（2026-09-09更新）</td><td>CC BY</td></tr>
+    <tr><td>行政区域ポリゴン</td><td>国土数値情報 N03（2023年版）</td><td>国交省オープンデータ</td></tr>
+    <tr><td>500mメッシュ人口・世帯</td><td>e-Stat 統計GIS（2020年国勢調査）</td><td>CC BY 4.0</td></tr>
+  </table>
+  <div class="links">
+    <a class="btn secondary" href="data/top_gaps.csv">top_gaps.csv</a>
+    <a class="btn secondary" href="data/improvement_candidates.csv">improvement_candidates.csv</a>
+    <a class="btn secondary" href="data/recommended_hubs_named.csv">recommended_hubs_named.csv</a>
+    <a class="btn secondary" href="data/isolated_facilities.csv">isolated_facilities.csv</a>
+    <a class="btn secondary" href="data/gap_meshes_1000m.csv">gap_meshes_1000m.csv</a>
+    <a class="btn secondary" href="data/summary_stats.json">summary_stats.json</a>
+  </div>
+  <p class="note">再現スクリプト：analyze3.py〜analyze7.py（projects/shizuoka_analysis/）。本ページのレポート全文は <a href="report.md" style="color:#2e7d32">report.md</a> を参照。</p>
+</section>
+
+</main>
+<footer>Open Data Experimental Lab ／ 静岡市公共施設の徒歩アクセス空白地帯 ／ <a href="../index.html" style="color:var(--gray)">← トップへ戻る</a> ／ <a href="../../index.html" style="color:var(--gray)">管理人のホームページへ</a></footer>
+</body>
+</html>

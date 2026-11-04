@@ -1,0 +1,164 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="静岡の気候はどう変わったか — 1940-2025年 時系列分析（気象庁一次データ）">
+<title>静岡の気候はどう変わったか — 1940-2025年</title>
+<style>
+  :root { --blue:#2E75B6; --orange:#ED7D31; --gray:#595959; --bg:#f7f9fc; --line:#d9e2ec; --text:#1f2933; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Yu Gothic","Meiryo",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.75; }
+  header { background:linear-gradient(135deg,#0f2f4f,#2E75B6); color:#fff; padding:56px 24px 44px; }
+  header .wrap { max-width:1080px; margin:0 auto; }
+  header h1 { margin:0 0 8px; font-size:32px; letter-spacing:.02em; }
+  header p { margin:0; opacity:.92; font-size:15px; }
+  .badge { display:inline-block; background:rgba(255,255,255,.18); padding:4px 10px; border-radius:999px; font-size:12px; margin-top:12px; }
+  main { max-width:1080px; margin:0 auto; padding:32px 20px 70px; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin:0 0 30px; }
+  .kpi { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px; }
+  .kpi .label { font-size:12.5px; color:var(--gray); }
+  .kpi .value { font-size:28px; font-weight:700; color:var(--blue); line-height:1.2; margin-top:4px; }
+  .kpi .sub { font-size:12px; color:var(--gray); margin-top:4px; }
+  section { background:#fff; border:1px solid var(--line); border-radius:12px; padding:24px 26px; margin-bottom:24px; }
+  h2 { font-size:20px; margin:0 0 14px; padding-left:12px; border-left:5px solid var(--orange); }
+  h3 { font-size:15px; margin:18px 0 8px; }
+  p { margin:0 0 12px; }
+  ul { margin:0 0 12px; padding-left:20px; }
+  li { margin:4px 0; }
+  table { width:100%; border-collapse:collapse; font-size:14px; margin:10px 0; }
+  th,td { border-bottom:1px solid var(--line); padding:9px 8px; text-align:left; vertical-align:top; }
+  th { background:#eef4fa; font-weight:600; }
+  .ok { color:#1a7f37; font-weight:700; }
+  .no { color:#b42318; font-weight:700; }
+  .hold { color:#b54708; font-weight:700; }
+  img { width:100%; height:auto; border-radius:8px; display:block; }
+  .fig { margin:14px 0 6px; }
+  .caption { font-size:12px; color:var(--gray); margin:0 0 16px; }
+  .links { display:flex; flex-wrap:wrap; gap:12px; margin:16px 0; }
+  .btn { display:inline-block; padding:11px 18px; border-radius:8px; background:var(--blue); color:#fff; text-decoration:none; font-weight:600; font-size:14px; }
+  .btn.secondary { background:#fff; color:var(--blue); border:1px solid var(--blue); }
+  .note { font-size:12.5px; color:var(--gray); }
+  footer { text-align:center; color:var(--gray); font-size:12px; padding:20px 0 40px; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:720px){ .two { grid-template-columns:1fr; } header h1 { font-size:24px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>静岡の気候はどう変わったか</h1>
+    <p>1940-2025年の時系列分析 — 気象庁の公開一次データによる実験</p>
+    <span class="badge">Open Data Experimental Lab ／ 最終更新 2026-11-04</span>
+  </div>
+</header>
+<main>
+
+<div class="kpis">
+  <div class="kpi"><div class="label">年平均気温の上昇率</div><div class="value">+0.26℃</div><div class="sub">/10年（95%CI +0.22〜+0.30）</div></div>
+  <div class="kpi"><div class="label">86年間の上昇量</div><div class="value">約+2.2℃</div><div class="sub">1940→2025（Senトレンド）</div></div>
+  <div class="kpi"><div class="label">観測史上最高の年平均</div><div class="value">18.7℃</div><div class="sub">2024年（平年比 +1.8℃）</div></div>
+  <div class="kpi"><div class="label">年降水量の傾向</div><div class="value">有意でない</div><div class="sub">p=0.48（Mann-Kendall）</div></div>
+</div>
+
+<section>
+  <h2>要約</h2>
+  <p>静岡（気象庁 47656）の年平均気温は、1940-2025年の86年間で <b>10年あたり +0.26℃</b>（100年あたり +2.6℃）上昇しました。Mann-Kendall検定 p&lt;0.001、OLSでも +0.27℃/10年、別地点の浜松でも +0.26℃/10年と一致し、地域的な温暖化と判断できます。</p>
+  <p>一方、<b>「冬の方が夏より速く暖まる」という仮説は支持されませんでした</b>（差の95%信頼区間が0を含む）。また、<b>年降水量・年最大日降水量には長期トレンドが検出されず</b>、「静岡では大雨が増えている」と単純には言えません。</p>
+  <div class="links">
+    <a class="btn" href="dashboard.html">📊 ダッシュボードを開く</a>
+    <a class="btn secondary" href="report.docx">📄 レポート（Word）をダウンロード</a>
+  </div>
+</section>
+
+<section>
+  <h2>1. 年平均気温 — 明確な上昇</h2>
+  <div class="fig"><img src="figures/fig1_temperature_trend.png" alt="年平均気温の推移"></div>
+  <p class="caption">図1 静岡の年平均気温の平年差（1991-2020年平均基準）。オレンジ線はSenトレンド。</p>
+  <p>1941-1970年平均 15.73℃ → 1996-2025年平均 17.16℃（+1.43℃）。2024年は観測史上最高の18.7℃（平年比 +1.8℃）でした。</p>
+</section>
+
+<section>
+  <h2>2. 月別の昇温 — 3月が最も速い</h2>
+  <div class="fig"><img src="figures/fig2_monthly_trend.png" alt="月別の昇温速度"></div>
+  <p class="caption">図2 月別の気温上昇率（℃/10年）。ひげは95%信頼区間。</p>
+  <p>12か月すべてで有意な上昇。最も速いのは3月（+0.368℃/10年）、最も遅いのは7月（+0.186℃/10年）。冬（12・1・2月）は +0.256、夏（6・7・8月）は +0.221℃/10年で、差は有意ではありません。</p>
+</section>
+
+<section>
+  <h2>3. 降水量 — 長期トレンドは検出されない</h2>
+  <div class="fig"><img src="figures/fig3_precipitation.png" alt="降水量の推移"></div>
+  <p class="caption">図3 年降水量（左）と年最大日降水量（右）。</p>
+  <table>
+    <tr><th>指標</th><th>10年あたり</th><th>p値</th><th>判定</th></tr>
+    <tr><td>年降水量</td><td>+12.0 mm</td><td>0.48</td><td class="no">有意でない</td></tr>
+    <tr><td>年最大日降水量</td><td>+0.7 mm</td><td>0.83</td><td class="no">有意でない</td></tr>
+    <tr><td>年最大1時間降水量</td><td>+1.5 mm</td><td>0.052</td><td class="hold">境界（判断保留）</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>4. 変化点 — 直線トレンド以上の「段差」はない</h2>
+  <p>トレンドを除いた残差にPettitt検定を行うと p=0.33（変化点2017年）で、直線トレンド以上の段差は検出されませんでした。トレンドを除かずに同じ検定をすると1988年が「変化点」に選ばれます（p=2.8e-11）が、これは温暖化トレンドの途中を拾った見かけの結果です。</p>
+</section>
+
+<section>
+  <h2>5. 昇温は近年ほど加速している</h2>
+  <div class="fig"><img src="figures/fig4_sensitivity.png" alt="開始年による感度"></div>
+  <p class="caption">図4 分析開始年ごとの年平均気温の上昇率。</p>
+  <p>1940年開始 +0.26、1980年開始 +0.45℃/10年。近年ほど昇温が速いことを示しますが、「100年あたり」の値は期間の取り方に依存します。</p>
+</section>
+
+<section>
+  <h2>6. 別地点との照合 — 浜松でも同じ傾向</h2>
+  <div class="fig"><img src="figures/fig5_station_compare.png" alt="静岡と浜松の比較"></div>
+  <p class="caption">図5 静岡と浜松の年平均気温。年々変動の相関 r=0.985。</p>
+  <p>浜松でも +0.265℃/10年（p&lt;0.001）の上昇が確認され、静岡との年々変動の相関は r=0.985。地域的な現象と判断できます。</p>
+</section>
+
+<section>
+  <h2>7. 仮説の判定</h2>
+  <table>
+    <tr><th>仮説</th><th>結果</th><th>根拠</th></tr>
+    <tr><td>H1: 年平均気温は有意に上昇している</td><td class="ok">支持</td><td>+0.26℃/10年、p&lt;0.001、3手法で一致</td></tr>
+    <tr><td>H2: 冬の昇温は夏より大きい</td><td class="no">不支持</td><td>差 +0.034℃/10年、CIが0を含む</td></tr>
+    <tr><td>H3: 年降水量・年最大日降水量にトレンドはない</td><td class="ok">支持</td><td>p=0.48 / 0.83</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>8. 注意と限界</h2>
+  <ul>
+    <li><b>1地点</b>の観測データです。静岡県全体・日本全体を代表しません。</li>
+    <li>相関は因果ではありません。雷日数・霧日数の変化は観測体制や都市化の影響を含みます。</li>
+    <li>2026年は年途中のため除外。欠測：1958年2・10・11月、2011年3月。</li>
+    <li>「100年あたり」の値は開始年に依存します。</li>
+    <li>年別表に日数項目がないため、熱帯夜などの日単位の分析は未実施。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>9. 再現性</h2>
+  <p>独立検証 6/6 項目合格。生HTMLの独立再解析は最大差 0.00℃、月別→年平均の再計算は最大差 0.05℃、Sen/OLS/Spearman の3手法が一致しました。別AIエージェントのコードレビューでも核となる結論は支持されました（Pettitt実装のバグ1件を発見・修正）。</p>
+  <p class="note">再現手順は <code>README.md</code>、全数値は <code>output/results.json</code>、検証詳細は <code>verification.md</code> を参照。ソースコードは <code>src/</code> に公開しています。</p>
+</section>
+
+<section>
+  <h2>11. 他の実験</h2>
+  <p>同じ Open Data Experimental Lab で実施した別の実験です。</p>
+  <div class="links">
+    <a class="btn" href="shizuoka_facilities/index.html">🏙️ 静岡市 公共施設の徒歩アクセス空白地帯</a>
+  </div>
+  <p class="note">静岡市690施設と500mメッシュ人口を用いて、地震時の徒歩避難リスクをボロノイ図で可視化した実験。葵区北部・清水区山間部に空白が集中していることが判明。</p>
+</section>
+
+<section>
+  <h2>10. データとライセンス</h2>
+  <p>使用データはすべて気象庁の公開一次データです。</p>
+  <p class="note">出典：気象庁ホームページ「過去の気象データ検索」（https://www.data.jma.go.jp/stats/etrn/）を加工して作成 ／ ライセンス：公共データ利用規約（第1.0版）</p>
+</section>
+
+</main>
+<footer>Open Data Experimental Lab ／ 2026-11-04 ／ <a href="dashboard.html" style="color:var(--gray)">Dashboard</a> ／ <a href="../index.html" style="color:var(--gray)">管理人のホームページへ</a></footer>
+</body>
+</html>
