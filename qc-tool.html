@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QC Analysis Tool v2</title>
+<style>
+:root{--bg:#f1f5f9;--card:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b;--primary:#2563eb;--primary-h:#1d4ed8;--danger:#ef4444;--success:#10b981;--warn:#f59e0b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;margin:0}
+.wrap{max-width:1400px;margin:0 auto;padding:16px}
+header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:20px 24px;border-radius:12px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+header h1{font-size:1.6rem;margin:0}
+header p{font-size:.9rem;opacity:.9;margin:4px 0 0}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav-btn{padding:8px 16px;border:1px solid rgba(255,255,255,.3);border-radius:8px;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-size:.9rem;transition:all .15s}
+.nav-btn:hover{background:rgba(255,255,255,.2)}
+.nav-btn.active{background:#fff;color:#1e3a8a}
+.main-grid{display:grid;grid-template-columns:260px 1fr;gap:16px}
+@media(max-width:768px){.main-grid{grid-template-columns:1fr;gap:12px}}
+.sidebar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;height:fit-content;position:sticky;top:16px}
+@media(max-width:768px){.sidebar{position:static;height:auto;padding:12px;display:flex;flex-wrap:wrap;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch}}
+.sidebar h3{font-size:.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px}
+@media(max-width:768px){.sidebar h3{width:100%;margin:8px 0 4px 0;font-size:.75rem}}
+.sidebar h3:first-child{margin-top:0}
+.tool-item{padding:8px 12px;border-radius:6px;cursor:pointer;font-size:.9rem;transition:all .15s;margin-bottom:2px;display:flex;align-items:center;gap:8px}
+@media(max-width:768px){.tool-item{flex:0 0 auto;white-space:nowrap;padding:6px 10px;font-size:.8rem;margin:0}}
+.tool-item:hover{background:#f1f5f9}
+.tool-item.active{background:var(--primary);color:#fff}
+.tool-item .badge{font-size:.7rem;padding:2px 6px;border-radius:4px;background:#e2e8f0;color:var(--muted)}
+.tool-item.active .badge{background:rgba(255,255,255,.3);color:#fff}
+.content{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;min-height:600px}
+@media(max-width:768px){.content{padding:12px;min-height:auto}}
+.content h2{font-size:1.3rem;margin-bottom:4px}
+.content .desc{color:var(--muted);font-size:.9rem;margin-bottom:16px}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.layout{grid-template-columns:1fr;gap:12px}}
+.section{margin-bottom:16px}
+.section-title{font-size:.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+textarea{width:100%;min-height:180px;font-family:'SF Mono',Consolas,monospace;font-size:.85rem;padding:12px;border:1px solid var(--border);border-radius:8px;resize:vertical;transition:border-color .15s}
+textarea:focus{outline:none;border-color:var(--primary)}
+input[type=text],input[type=number],select{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:.9rem;transition:border-color .15s}
+input:focus,select:focus{outline:none;border-color:var(--primary)}
+.btn{padding:10px 20px;border:none;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-h)}
+.btn-secondary{background:#f1f5f9;color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:#e2e8f0}
+.btn-success{background:var(--success);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.canvas-wrap{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center}
+canvas{max-width:100%;height:auto;border-radius:4px}
+.hint{font-size:.8rem;color:var(--muted);margin-top:6px;line-height:1.5}
+.error{color:var(--danger);font-size:.85rem;margin-top:6px;padding:8px 12px;background:#fef2f2;border-radius:6px;display:none}
+.error.show{display:block}
+.stats-box{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:8px;font-size:.85rem}
+.stats-box table{width:100%;border-collapse:collapse}
+.stats-box td{padding:4px 8px;border-bottom:1px solid var(--border)}
+.stats-box td:first-child{font-weight:600;color:var(--muted)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-state .icon{font-size:3rem;margin-bottom:12px}
+.empty-state h3{font-size:1.1rem;color:var(--text);margin-bottom:8px}
+footer{text-align:center;font-size:.8rem;color:var(--muted);margin-top:24px;padding:16px 0;border-top:1px solid var(--border)}
+body{overflow-x:hidden}
+.wrap{overflow-x:hidden}
+/* Check sheet table */
+.cs-table{width:100%;border-collapse:collapse;margin-top:8px}
+.cs-table th,.cs-table td{border:1px solid var(--border);padding:6px 8px;text-align:center;font-size:.85rem}
+.cs-table th{background:#f1f5f9;font-weight:600}
+.cs-table td.editable{cursor:pointer;background:#fff}
+.cs-table td.editable:hover{background:#eff6ff}
+.cs-table .tally{font-size:1.2rem;font-weight:700;color:var(--primary)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div>
+<h1>🔬 QC Analysis Tool v2</h1>
+<p>品質管理分析ツール — 全機能版</p>
+</div>
+<div class="nav">
+<button class="nav-btn active" data-view="tools">ツール一覧</button>
+<button class="nav-btn" data-view="data">データ管理</button>
+<button class="nav-btn" data-view="help">使い方</button>
+</div>
+</header>
+
+<div class="main-grid">
+<div class="sidebar">
+<h3>QC7つ道具</h3>
+<div class="tool-item active" data-tool="pareto"><span>📈</span>パレート図<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="fishbone"><span>🐟</span>特性要因図<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="hist"><span>📊</span>ヒストグラム<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="scatter"><span>⚫</span>散布図<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="control"><span>📉</span>管理図<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="checksheet"><span>📋</span>チェックシート<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="linechart"><span>📈</span>折れ線グラフ<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="piechart"><span>🥧</span>円グラフ<span class="badge">IMP</span></div>
+
+<h3>新QC7つ道具</h3>
+<div class="tool-item" data-tool="affinity"><span>🗂</span>親和図法<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="interrel"><span>🔗</span>連関図法<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="systematic"><span>🌳</span>系統図法<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="matrix"><span>🔲</span>マトリックス図法<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="pca"><span>📉</span>マトリックスデータ解析法<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="pert"><span>📅</span>アローダイアグラム<span class="badge">IMP</span></div>
+<div class="tool-item" data-tool="pdpc"><span>⚠️</span>PDPC法<span class="badge">IMP</span></div>
+
+<h3>工程能力</h3>
+<div class="tool-item" data-tool="capability"><span>📏</span>工程能力分析<span class="badge">IMP</span></div>
+
+<h3>測定システム</h3>
+<div class="tool-item" data-tool="gage"><span>🔧</span>Gage R&R<span class="badge">IMP</span></div>
+
+<h3>実験計画</h3>
+<div class="tool-item" data-tool="doe"><span>🧪</span>DOE<span class="badge">IMP</span></div>
+</div>
+
+<div class="content" id="content">
+
+<!-- Pareto -->
+<div class="tool-panel active" id="pareto">
+<h2>📈 パレート図</h2>
+<p class="desc">不良項目やクレーム原因を件数の多い順に並べ、累積比率を折れ線で重ねた複合グラフ。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力</div>
+<textarea id="paretoData" placeholder="ラベル,値 を1行ずつ">傷,50
+破損,25
+汚れ,10
+異音,8
+その他,7</textarea>
+</div>
+<div class="controls">
+<div><label>タイトル</label><input type="text" id="paretoTitle" value="パレート図"></div>
+<div><label>色</label><select id="paretoColor"><option value="#3b82f6">青</option><option value="#10b981">緑</option><option value="#f59e0b">橙</option><option value="#ef4444">赤</option></select></div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawPareto()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('paretoCanvas','pareto.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('paretoData');drawPareto()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('pareto')">📋 サンプル</button>
+</div>
+<div class="error" id="paretoErr"></div>
+<div class="stats-box" id="paretoStats"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="paretoCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Fishbone -->
+<div class="tool-panel" id="fishbone" style="display:none">
+<h2>🐟 特性要因図（フィッシュボーン図）</h2>
+<p class="desc">問題（特性）に対する原因（要因）を「人・機械・材料・方法」などの観点から魚の骨状に整理。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">特性（問題）</div>
+<input type="text" id="fishboneTitle" value="不良品発生">
+</div>
+<div class="section">
+<div class="section-title">要因カテゴリ（カンマ区切り）</div>
+<input type="text" id="fishboneCats" value="人,機械,材料,方法,測定,環境">
+</div>
+<div class="section">
+<div class="section-title">要因（カテゴリ:要因 を1行ずつ）</div>
+<textarea id="fishboneData" placeholder="人:教育不足
+機械:設備老朽化
+材料:規格不適合">人:教育不足
+人:作業ミス
+機械:設備老朽化
+機械:メンテナンス不足
+材料:規格不適合
+材料:サプライヤー変更
+方法:手順書不備
+方法:作業標準未整備
+測定:測定器精度
+測定:校正未実施
+環境:温湿度変動
+環境:照明不足</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawFishbone()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('fishboneCanvas','fishbone.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('fishboneData');drawFishbone()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('fishbone')">📋 サンプル</button>
+</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="fishboneCanvas" width="640" height="420"></canvas></div>
+<div class="hint">💡 4M/5M/6M分類に対応。カテゴリは自由に変更可能。</div>
+</div>
+</div>
+</div>
+
+<!-- Histogram -->
+<div class="tool-panel" id="hist" style="display:none">
+<h2>📊 ヒストグラム</h2>
+<p class="desc">データの分布やばらつきを棒グラフで可視化。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力</div>
+<textarea id="histData" placeholder="数値を1行ずつ">12
+15
+14
+18
+20
+22
+19
+17
+16
+21
+23
+13
+11
+25
+18
+20
+19
+17
+14
+16</textarea>
+</div>
+<div class="controls">
+<div><label>階級幅</label><input type="number" id="histBin" value="3" min="0.1" step="0.1"></div>
+<div><label>タイトル</label><input type="text" id="histTitle" value="ヒストグラム"></div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawHist()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('histCanvas','histogram.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('histData');drawHist()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('hist')">📋 サンプル</button>
+</div>
+<div class="error" id="histErr"></div>
+<div class="stats-box" id="histStats"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="histCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Scatter -->
+<div class="tool-panel" id="scatter" style="display:none">
+<h2>⚫ 散布図</h2>
+<p class="desc">2種類のデータを点でプロットし、相関関係を視覚的に把握。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力</div>
+<textarea id="scatterData" placeholder="X,Y を1行ずつ">1,2
+2,3
+3,5
+4,4
+5,6
+6,7
+7,8
+8,7
+9,9
+10,10</textarea>
+</div>
+<div class="controls">
+<div><label>タイトル</label><input type="text" id="scatterTitle" value="散布図"></div>
+<div><label>点のサイズ</label><input type="number" id="scatterSize" value="5" min="2" max="12"></div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawScatter()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('scatterCanvas','scatter.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('scatterData');drawScatter()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('scatter')">📋 サンプル</button>
+</div>
+<div class="error" id="scatterErr"></div>
+<div class="stats-box" id="scatterStats"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="scatterCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Control -->
+<div class="tool-panel" id="control" style="display:none">
+<h2>📉 管理図</h2>
+<p class="desc">中心線と管理限界線を引き、工程の安定性を監視。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力</div>
+<textarea id="controlData" placeholder="数値を1行ずつ">10.2
+10.5
+9.8
+10.1
+10.3
+9.9
+10.4
+10.0
+9.7
+10.6
+10.2
+10.1
+9.9
+10.3
+10.0</textarea>
+</div>
+<div class="controls">
+<div><label>タイトル</label><input type="text" id="controlTitle" value="管理図"></div>
+<div><label>σ倍数</label><input type="number" id="controlSigma" value="3" min="1" max="4" step="0.5"></div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawControl()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('controlCanvas','control.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('controlData');drawControl()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('control')">📋 サンプル</button>
+</div>
+<div class="error" id="controlErr"></div>
+<div class="stats-box" id="controlStats"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="controlCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Check Sheet -->
+<div class="tool-panel" id="checksheet" style="display:none">
+<h2>📋 チェックシート</h2>
+<p class="desc">データ収集時に記録漏れやミスを防ぎ、整理しやすくするための表。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">項目設定（カンマ区切り）</div>
+<input type="text" id="csItems" value="キズ,汚れ,変形,寸法不良,色ムラ">
+</div>
+<div class="section">
+<div class="section-title">日付設定（カンマ区切り）</div>
+<input type="text" id="csDays" value="月,火,水,木,金">
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawChecksheet()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('checksheetCanvas','checksheet.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('csItems');clearData('csDays');drawChecksheet()">🗑 クリア</button>
+</div>
+<div class="hint">💡 セルをクリックするとカウントアップ（ tally ）。ダブルクリックでリセット。</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="checksheetCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Line Chart -->
+<div class="tool-panel" id="linechart" style="display:none">
+<h2>📈 折れ線グラフ</h2>
+<p class="desc">時系列データの変化を折れ線で表示。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力（X,Y を1行ずつ）</div>
+<textarea id="lineData" placeholder="X,Y を1行ずつ">1,10
+2,15
+3,12
+4,18
+5,20
+6,16
+7,22
+8,19</textarea>
+</div>
+<div class="controls">
+<div><label>タイトル</label><input type="text" id="lineTitle" value="折れ線グラフ"></div>
+<div><label>色</label><select id="lineColor"><option value="#3b82f6">青</option><option value="#10b981">緑</option><option value="#f59e0b">橙</option><option value="#ef4444">赤</option></select></div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawLine()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('lineCanvas','line.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('lineData');drawLine()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('line')">📋 サンプル</button>
+</div>
+<div class="error" id="lineErr"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="lineCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Pie Chart -->
+<div class="tool-panel" id="piechart" style="display:none">
+<h2>🥧 円グラフ</h2>
+<p class="desc">構成比を円グラフで表示。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力（ラベル,値 を1行ずつ）</div>
+<textarea id="pieData" placeholder="ラベル,値 を1行ずつ">A,30
+B,25
+C,20
+D,15
+E,10</textarea>
+</div>
+<div class="controls">
+<div><label>タイトル</label><input type="text" id="pieTitle" value="円グラフ"></div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawPie()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('pieCanvas','pie.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('pieData');drawPie()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('pie')">📋 サンプル</button>
+</div>
+<div class="error" id="pieErr"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="pieCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Capability -->
+<div class="tool-panel" id="capability" style="display:none">
+<h2>📏 工程能力分析</h2>
+<p class="desc">Cp・Cpk・Pp・Ppkを計算し、工程の能力を評価。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力</div>
+<textarea id="capData" placeholder="数値を1行ずつ">10.2
+10.5
+9.8
+10.1
+10.3
+9.9
+10.4
+10.0
+9.7
+10.6
+10.2
+10.1
+9.9
+10.3
+10.0</textarea>
+</div>
+<div class="controls">
+<div><label>USL</label><input type="number" id="capUSL" value="11" step="0.1"></div>
+<div><label>LSL</label><input type="number" id="capLSL" value="9" step="0.1"></div>
+<div><label>サブグループサイズ</label><input type="number" id="capSubgroup" value="5" min="1"></div>
+<div><label>タイトル</label><input type="text" id="capTitle" value="工程能力分析"></div>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawCapability()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('capCanvas','capability.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('capData');drawCapability()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('cap')">📋 サンプル</button>
+</div>
+<div class="error" id="capErr"></div>
+<div class="stats-box" id="capStats"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="capCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Gage R&R -->
+<div class="tool-panel" id="gage" style="display:none">
+<h2>🔧 Gage R&R</h2>
+<p class="desc">crossed Gage R&R — ANOVA法による測定システムの変動分析。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力（部品,測定者,測定値）</div>
+<textarea id="gageData" placeholder="部品,測定者,値 を1行ずつ">1,A,10.1
+1,A,10.2
+1,B,10.0
+1,B,10.1
+2,A,12.3
+2,A,12.4
+2,B,12.1
+2,B,12.2
+3,A,9.8
+3,A,9.9
+3,B,9.7
+3,B,9.8</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawGage()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('gageCanvas','gage.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('gageData');drawGage()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('gage')">📋 サンプル</button>
+</div>
+<div class="error" id="gageErr"></div>
+<div class="stats-box" id="gageStats"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="gageCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- DOE -->
+<div class="tool-panel" id="doe" style="display:none">
+<h2>🧪 実験計画法（DOE）</h2>
+<p class="desc">2水準完全実施要因計画 — 要因効果分析・ANOVA。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">実験データ（要因A,要因B,...,応答）</div>
+<textarea id="doeData" placeholder="A,B,応答">-1,-1,10
+1,-1,15
+-1,1,12
+1,1,20</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawDOE()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('doeCanvas','doe.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('doeData');drawDOE()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('doe')">📋 サンプル</button>
+</div>
+<div class="error" id="doeErr"></div>
+<div class="stats-box" id="doeStats"></div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="doeCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Affinity Diagram (New QC7) -->
+<div class="tool-panel" id="affinity" style="display:none">
+<h2>🗂 親和図法（KJ法）</h2>
+<p class="desc">混沌とした情報やアイデアをカードに書き出し、親和性でグループ分け。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">カード（1行1カード）</div>
+<textarea id="affinityData" placeholder="カード内容を1行ずつ">顧客満足度が低い
+納期が遅れる
+品質不良が多い
+コストが高い
+従業員のモチベーション低下
+設備の老朽化
+サプライヤーの品質問題
+コミュニケーション不足
+研修が不足
+マニュアルが古い</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawAffinity()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('affinityCanvas','affinity.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('affinityData');drawAffinity()">🗑 クリア</button>
+<button class="btn btn-secondary" onclick="loadSample('affinity')">📋 サンプル</button>
+</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="affinityCanvas" width="640" height="420"></canvas></div>
+<div class="hint">💡 カードを自動グループ化。手動でのグループ編集は今後実装。</div>
+</div>
+</div>
+</div>
+
+<!-- Interrelationship Diagram -->
+<div class="tool-panel" id="interrel" style="display:none">
+<h2>🔗 連関図法</h2>
+<p class="desc">要因間の複雑な因果関係を矢印で結び、主要原因と主要結果を特定。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">要素と関係（要素A→要素B を1行ずつ）</div>
+<textarea id="interrelData" placeholder="原因->結果">教育不足->作業ミス
+設備老朽化->品質不良
+品質不良->顧客クレーム
+作業ミス->品質不良
+サプライヤー変更->材料不良
+材料不良->品質不良</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawInterrel()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('interrelCanvas','interrel.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('interrelData');drawInterrel()">🗑 クリア</button>
+</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="interrelCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Systematic Diagram -->
+<div class="tool-panel" id="systematic" style="display:none">
+<h2>🌳 系統図法</h2>
+<p class="desc">目的を達成する手段をツリー状に展開。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">階層データ（タブでインデント）</div>
+<textarea id="systematicData" placeholder="目的
+  手段1
+    具体策1
+  手段2">品質向上
+  設備改善
+    老朽設備更新
+    予防保全強化
+  人材育成
+    教育訓練実施
+    資格制度導入
+  材料管理
+    サプライヤー評価
+    入荷検査強化</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawSystematic()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('systematicCanvas','systematic.png')">💾 PNG保存</button>
+<button class="btn btn-secondary" onclick="clearData('systematicData');drawSystematic()">🗑 クリア</button>
+</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="systematicCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- Matrix -->
+<div class="tool-panel" id="matrix" style="display:none">
+<h2>🔲 マトリックス図法</h2>
+<p class="desc">2つの要素群を行と列に配置し、関連性を表す。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">行項目（カンマ区切り）</div>
+<input type="text" id="matrixRows" value="品質,コスト,納期">
+</div>
+<div class="section">
+<div class="section-title">列項目（カンマ区切り）</div>
+<input type="text" id="matrixCols" value="設計,製造,検査">
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawMatrix()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('matrixCanvas','matrix.png')">💾 PNG保存</button>
+</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="matrixCanvas" width="640" height="420"></canvas></div>
+</div>
+</div>
+</div>
+
+<!-- PCA -->
+<div class="tool-panel" id="pca" style="display:none">
+<h2>📉 マトリックスデータ解析法（PCA）</h2>
+<p class="desc">多変量データの主成分分析を行い、項目間の類似性を散布図で可視化。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">データ入力（行=サンプル、列=変数、カンマ区切り、1行目ヘッダー）</div>
+<textarea id="pcaData" placeholder="サンプル,A,B,C,D&#10;S1,1,2,3,4&#10;S2,2,3,4,5&#10;S3,3,4,5,6">サンプル,品質,コスト,納期,安全性
+A,8,7,6,9
+B,7,8,7,8
+C,6,9,8,7
+D,9,6,9,6
+E,5,5,5,5</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawPCA()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('pcaCanvas','pca.png')">💾 PNG保存</button>
+</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="pcaCanvas" width="640" height="420"></canvas></div>
+<div class="stats-box" id="pcaStats"></div>
+</div>
+</div>
+</div>
+
+<!-- PERT -->
+<div class="tool-panel" id="pert" style="display:none">
+<h2>📅 アローダイアグラム（PERT）</h2>
+<p class="desc">作業間の順序関係と所要日数からクリティカルパス（最短工期）を算出。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">作業データ（作業名,先行作業,所要日数）</div>
+<textarea id="pertData" placeholder="A,,3&#10;B,A,2&#10;C,A,4&#10;D,B,3&#10;E,C,2&#10;F,D;E,1">A,,3
+B,A,2
+C,A,4
+D,B,3
+E,C,2
+F,D;E,1</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawPERT()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('pertCanvas','pert.png')">💾 PNG保存</button>
+</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="pertCanvas" width="640" height="420"></canvas></div>
+<div class="stats-box" id="pertStats"></div>
+</div>
+</div>
+</div>
+
+<!-- PDPC -->
+<div class="tool-panel" id="pdpc" style="display:none">
+<h2>⚠️ PDPC法</h2>
+<p class="desc">目標達成までのプロセスで起こりうる問題を予測し、代替ルートを図式化。</p>
+<div class="layout">
+<div>
+<div class="section">
+<div class="section-title">プロセスデータ（親->子:問題/対策）</div>
+<textarea id="pdpcData" placeholder="目標->手段1&#10;手段1->手段2&#10;手段2->問題:遅延&#10;問題:遅延->対策:追加人員">目標:新製品開発
+目標:新製品開発->設計フェーズ
+設計フェーズ->試作フェーズ
+試作フェーズ->量産フェーズ
+試作フェーズ->問題:材料不足
+問題:材料不足->対策:代替材料検討
+量産フェーズ->問題:品質不良
+問題:品質不良->対策:検査強化</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="drawPDPC()">🔄 生成</button>
+<button class="btn btn-success" onclick="downloadCanvas('pdpcCanvas','pdpc.png')">💾 PNG保存</button>
+</div>
+</div>
+<div>
+<div class="canvas-wrap"><canvas id="pdpcCanvas" width="640" height="420"></canvas></div>
+<div class="stats-box" id="pdpcStats"></div>
+</div>
+</div>
+</div>
+
+<!-- Data View -->
+<div id="dataView" style="display:none">
+<h2>📁 データ管理</h2>
+<p class="desc">CSVデータの読み込み・プレビュー・検証・保存</p>
+
+<div class="section">
+<div class="section-title">ツール別サンプルデータ読込</div>
+<div class="btn-group" style="flex-wrap:wrap">
+<button class="btn btn-secondary" onclick="loadToolSample('pareto')">パレート図</button>
+<button class="btn btn-secondary" onclick="loadToolSample('hist')">ヒストグラム</button>
+<button class="btn btn-secondary" onclick="loadToolSample('scatter')">散布図</button>
+<button class="btn btn-secondary" onclick="loadToolSample('control')">管理図</button>
+<button class="btn btn-secondary" onclick="loadToolSample('capability')">工程能力</button>
+<button class="btn btn-secondary" onclick="loadToolSample('gage')">Gage R&R</button>
+<button class="btn btn-secondary" onclick="loadToolSample('doe')">DOE</button>
+<button class="btn btn-secondary" onclick="loadToolSample('pca')">PCA</button>
+<button class="btn btn-secondary" onclick="loadToolSample('pert')">PERT</button>
+<button class="btn btn-secondary" onclick="loadToolSample('pdpc')">PDPC</button>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">CSVデータ入力</div>
+<textarea id="csvData" placeholder="CSVデータを貼り付け（1行目はヘッダー）">項目,値
+傷,50
+破損,25
+汚れ,10
+異音,8
+その他,7</textarea>
+</div>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="parseCSV()">📋 解析</button>
+<button class="btn btn-secondary" onclick="validateCSV()">✅ 検証</button>
+<button class="btn btn-success" onclick="exportCSV()">💾 CSV出力</button>
+<button class="btn btn-secondary" onclick="clearData('csvData')">🗑 クリア</button>
+</div>
+<div class="stats-box" id="csvPreview"></div>
+<div class="stats-box" id="csvValidation" style="display:none"></div>
+</div>
+
+<!-- Help View -->
+<div id="helpView" style="display:none">
+<h2>📖 使い方ガイド</h2>
+<p class="desc">各ツールの使い方・入力フォーマット・解釈方法を解説します。</p>
+
+<div class="section">
+<div class="section-title">📌 基本的な使い方</div>
+<div class="stats-box">
+<table>
+<tr><td>Step 1</td><td>左サイドバーからツールを選択</td></tr>
+<tr><td>Step 2</td><td>右側のテキストエリアにデータを入力（カンマ区切り）</td></tr>
+<tr><td>Step 3</td><td>「🔄 生成」ボタンをクリック</td></tr>
+<tr><td>Step 4</td><td>グラフと統計結果が表示されます</td></tr>
+<tr><td>Step 5</td><td>「💾 PNG保存」で画像をダウンロード</td></tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📋 入力フォーマット一覧</div>
+<div class="stats-box">
+<table>
+<tr><th>ツール</th><th>フォーマット</th><th>例</th></tr>
+<tr><td>パレート図</td><td>ラベル,値</td><td>不良A,50</td></tr>
+<tr><td>ヒストグラム</td><td>数値（1行1値）</td><td>12.5</td></tr>
+<tr><td>散布図</td><td>X,Y</td><td>1,2</td></tr>
+<tr><td>管理図</td><td>数値（1行1値）</td><td>10.2</td></tr>
+<tr><td>チェックシート</td><td>項目リスト + 日付リスト</td><td>画面上でクリック</td></tr>
+<tr><td>工程能力分析</td><td>数値 + USL/LSL</td><td>10.2 / USL=11</td></tr>
+<tr><td>Gage R&R</td><td>部品,測定者,値</td><td>1,A,10.1</td></tr>
+<tr><td>DOE</td><td>要因1,要因2,...,応答</td><td>-1,-1,10</td></tr>
+<tr><td>親和図法</td><td>テキスト（1行1項目）</td><td>品質向上</td></tr>
+<tr><td>連関図法</td><td>原因->結果</td><td>教育->品質</td></tr>
+<tr><td>系統図法</td><td>インデント付きテキスト</td><td>目的 → 手段</td></tr>
+<tr><td>マトリックス図法</td><td>行項目 + 列項目</td><td>品質,コスト × 設計,製造</td></tr>
+<tr><td>PCA</td><td>サンプル,変数1,...,変数n</td><td>A,8,7,6,9</td></tr>
+<tr><td>PERT</td><td>作業,先行作業,日数</td><td>A,,3</td></tr>
+<tr><td>PDPC</td><td>親->子</td><td>目標->設計フェーズ</td></tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">❓ よくある質問 (FAQ)</div>
+<div class="stats-box">
+<table>
+<tr><td>Q: オフラインで使えますか？</td><td>A: はい。HTMLファイルをブラウザで開くだけで動作します。インターネット不要です。</td></tr>
+<tr><td>Q: データは保存されますか？</td><td>A: データ管理タブでlocalStorageに自動保存されます。ブラウザを閉じても残ります。</td></tr>
+<tr><td>Q: 画像の保存方法は？</td><td>A: 各ツールの「💾 PNG保存」ボタンをクリックするとPNG画像がダウンロードされます。</td></tr>
+<tr><td>Q: データの形式は？</td><td>A: 基本はカンマ区切りCSV形式です。1行目がヘッダー、2行目以降がデータです。</td></tr>
+<tr><td>Q: エラーが出た場合は？</td><td>A: データ形式を確認してください。数値フィールドに文字が入っていないか確認してください。</td></tr>
+<tr><td>Q: 印刷できますか？</td><td>A: PNG保存した画像を印刷するか、ブラウザの印刷機能（Ctrl+P）を使用してください。</td></tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">⌨️ キーボードショートカット</div>
+<div class="stats-box">
+<table>
+<tr><td>Ctrl+Enter</td><td>グラフを再生成</td></tr>
+<tr><td>Ctrl+S</td><td>PNG画像を保存</td></tr>
+<tr><td>Esc</td><td>エラーメッセージを閉じる</td></tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🔧 実装状況</div>
+<div class="stats-box">
+<table>
+<tr><td>IMPLEMENTED (18)</td><td>パレート図, 特性要因図, ヒストグラム, 散布図, 管理図, チェックシート, 折れ線グラフ, 円グラフ, 工程能力分析, Gage R&R, DOE, 親和図法, 連関図法, 系統図法, マトリックス図法, PCA, PERT, PDPC法</td></tr>
+<tr><td>PLANNED</td><td>PDF/XLSX出力</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<footer>
+QC Analysis Tool v2 | オフライン動作・登録不要
+<p style="margin-top:8px"><a href="index.html">管理人のホームページへ</a></p>
+</footer>
+</div>
+
+<script>
+// ===== Common (MathUtils from base) =====
+const MathUtils = {
+  mean(arr){return arr.reduce((a,b)=>a+b,0)/arr.length},
+  variance(arr,ddof=0){const m=this.mean(arr);return arr.reduce((s,v)=>s+(v-m)**2,0)/(arr.length-ddof)},
+  sd(arr,ddof=0){return Math.sqrt(this.variance(arr,ddof))},
+  median(arr){const s=arr.slice().sort((a,b)=>a-b);const n=s.length;return n%2?s[Math.floor(n/2)]:(s[n/2-1]+s[n/2])/2},
+  min(arr){return Math.min(...arr)},
+  max(arr){return Math.max(...arr)},
+  capability(data,usl,lsl,subgroupSize=1){
+    const n=data.length;
+    const mean=this.mean(data);
+    const sdOverall=this.sd(data,1);
+    let sdWithin;
+    if(subgroupSize>1){
+      const numGroups=Math.floor(n/subgroupSize);
+      const ranges=[];
+      for(let i=0;i<numGroups;i++){const g=data.slice(i*subgroupSize,(i+1)*subgroupSize);ranges.push(Math.max(...g)-Math.min(...g));}
+      const rBar=this.mean(ranges);
+      const d2={2:1.128,3:1.693,4:2.059,5:2.326}[subgroupSize]||2.326;
+      sdWithin=rBar/d2;
+    } else {sdWithin=sdOverall;}
+    const cp=(usl-lsl)/(6*sdWithin);
+    const cpk=Math.min((usl-mean)/(3*sdWithin),(mean-lsl)/(3*sdWithin));
+    const pp=(usl-lsl)/(6*sdOverall);
+    const ppk=Math.min((usl-mean)/(3*sdOverall),(mean-lsl)/(3*sdOverall));
+    return {mean,sdWithin,sdOverall,cp,cpk,pp,ppk,n};
+  },
+  gageRR(data){
+    const parts=[...new Set(data.map(d=>d.part))];
+    const ops=[...new Set(data.map(d=>d.operator))];
+    const nParts=parts.length,nOps=ops.length;
+    const nRep=data.length/(nParts*nOps);
+    const grandMean=this.mean(data.map(d=>d.value));
+    const partMeans=parts.map(p=>this.mean(data.filter(d=>d.part===p).map(d=>d.value)));
+    const opMeans=ops.map(o=>this.mean(data.filter(d=>d.operator===o).map(d=>d.value)));
+    const cellMeans={};
+    parts.forEach(p=>ops.forEach(o=>{const vals=data.filter(d=>d.part===p&&d.operator===o).map(d=>d.value);cellMeans[`${p}|${o}`]=this.mean(vals);}));
+    const SSParts=nOps*nRep*parts.reduce((s,p,i)=>s+(partMeans[i]-grandMean)**2,0);
+    const SSOp=nParts*nRep*ops.reduce((s,o,i)=>s+(opMeans[i]-grandMean)**2,0);
+    let SSInt=0;
+    parts.forEach((p,pi)=>ops.forEach((o,oi)=>{const cm=cellMeans[`${p}|${o}`];SSInt+=nRep*(cm-partMeans[pi]-opMeans[oi]+grandMean)**2;}));
+    let SSE=0;
+    data.forEach(d=>{const cm=cellMeans[`${d.part}|${d.operator}`];SSE+=(d.value-cm)**2;});
+    const dfParts=nParts-1,dfOp=nOps-1,dfInt=(nParts-1)*(nOps-1),dfE=nParts*nOps*(nRep-1);
+    const MSParts=SSParts/dfParts,MSOp=SSOp/dfOp,MSInt=SSInt/dfInt,MSE=SSE/dfE;
+    const varRep=MSE;
+    const varInt=Math.max(0,(MSInt-MSE)/nRep);
+    const varOp=Math.max(0,(MSOp-MSInt)/(nParts*nRep));
+    const varPart=Math.max(0,(MSParts-MSInt)/(nOps*nRep));
+    const varGRR=varRep+varInt+varOp;
+    const varTV=varGRR+varPart;
+    const pctGRR=Math.sqrt(varGRR/varTV)*100;
+    const pctPart=Math.sqrt(varPart/varTV)*100;
+    const ndc=Math.floor(1.41*Math.sqrt(varPart/varGRR));
+    return {parts,ops,nParts,nOps,nRep,grandMean,SSParts,SSOp,SSInt,SSE,MSParts,MSOp,MSInt,MSE,varRep,varInt,varOp,varPart,varGRR,varTV,pctGRR,pctPart,ndc};
+  },
+  doe2level(data){
+    const n=data.length;
+    const nFactors=data[0].factors.length;
+    const responses=data.map(d=>d.response);
+    const grandMean=this.mean(responses);
+    const effects=[];
+    for(let f=0;f<nFactors;f++){
+      const high=responses.filter((_,i)=>data[i].factors[f]>0);
+      const low=responses.filter((_,i)=>data[i].factors[f]<0);
+      const effect=this.mean(high)-this.mean(low);
+      effects.push({factor:f+1,effect:effect/2});
+    }
+    const interactions=[];
+    for(let f1=0;f1<nFactors;f1++){
+      for(let f2=f1+1;f2<nFactors;f2++){
+        const high=responses.filter((_,i)=>data[i].factors[f1]*data[i].factors[f2]>0);
+        const low=responses.filter((_,i)=>data[i].factors[f1]*data[i].factors[f2]<0);
+        const effect=this.mean(high)-this.mean(low);
+        interactions.push({factors:[f1+1,f2+1],effect:effect/2});
+      }
+    }
+    const SS_total=responses.reduce((s,v)=>s+(v-grandMean)**2,0);
+    const SS_factors=effects.reduce((s,e)=>s+n*(e.effect)**2,0);
+    const SS_error=SS_total-SS_factors;
+    const df_factors=nFactors,df_error=n-df_factors-1,df_total=n-1;
+    const MS_factors=SS_factors/df_factors,MS_error=SS_error/df_error;
+    const F=MS_factors/MS_error;
+    return {n,nFactors,grandMean,effects,interactions,SS_total,SS_factors,SS_error,df_factors,df_error,df_total,MS_factors,MS_error,F};
+  }
+};
+
+// ===== Navigation =====
+const navBtns=document.querySelectorAll('.nav-btn');
+navBtns.forEach(b=>b.addEventListener('click',()=>{
+  navBtns.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const view=b.dataset.view;
+  document.querySelectorAll('.tool-panel').forEach(p=>p.style.display='none');
+  document.getElementById('dataView').style.display='none';
+  document.getElementById('helpView').style.display='none';
+  if(view==='tools'){const activeTool=document.querySelector('.tool-item.active');if(activeTool)document.getElementById(activeTool.dataset.tool).style.display='block';}
+  else if(view==='data'){document.getElementById('dataView').style.display='block';}
+  else if(view==='help'){document.getElementById('helpView').style.display='block';}
+}));
+
+const toolItems=document.querySelectorAll('.tool-item');
+toolItems.forEach(t=>t.addEventListener('click',()=>{
+  toolItems.forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.querySelectorAll('.tool-panel').forEach(p=>p.style.display='none');
+  document.getElementById('dataView').style.display='none';
+  document.getElementById('helpView').style.display='none';
+  const panel=document.getElementById(t.dataset.tool);
+  if(panel)panel.style.display='block';
+  const drawMap={pareto:drawPareto,fishbone:drawFishbone,hist:drawHist,scatter:drawScatter,control:drawControl,checksheet:drawChecksheet,linechart:drawLine,piechart:drawPie,capability:drawCapability,gage:drawGage,doe:drawDOE,affinity:drawAffinity,interrel:drawInterrel,systematic:drawSystematic,matrix:drawMatrix,pca:drawPCA,pert:drawPERT,pdpc:drawPDPC};
+  if(drawMap[t.dataset.tool])drawMap[t.dataset.tool]();
+}));
+
+// ===== Helpers =====
+function showError(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show');}}
+function hideError(id){const e=document.getElementById(id);if(e)e.classList.remove('show');}
+function downloadCanvas(id,name){const c=document.getElementById(id);const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download=name;a.click();}
+function clearData(id){document.getElementById(id).value='';}
+function loadSample(type){
+  const samples={
+    pareto:"傷,50\n破損,25\n汚れ,10\n異音,8\nその他,7",
+    hist:"12\n15\n14\n18\n20\n22\n19\n17\n16\n21\n23\n13\n11\n25\n18\n20\n19\n17\n14\n16",
+    scatter:"1,2\n2,3\n3,5\n4,4\n5,6\n6,7\n7,8\n8,7\n9,9\n10,10",
+    bar:"1月,30\n2月,45\n3月,28\n4月,52\n5月,38\n6月,41",
+    control:"10.2\n10.5\n9.8\n10.1\n10.3\n9.9\n10.4\n10.0\n9.7\n10.6\n10.2\n10.1\n9.9\n10.3\n10.0",
+    cap:"10.2\n10.5\n9.8\n10.1\n10.3\n9.9\n10.4\n10.0\n9.7\n10.6\n10.2\n10.1\n9.9\n10.3\n10.0",
+    gage:"1,A,10.1\n1,A,10.2\n1,B,10.0\n1,B,10.1\n2,A,12.3\n2,A,12.4\n2,B,12.1\n2,B,12.2\n3,A,9.8\n3,A,9.9\n3,B,9.7\n3,B,9.8",
+    doe:"-1,-1,10\n1,-1,15\n-1,1,12\n1,1,20",
+    fishbone:"",
+    line:"1,10\n2,15\n3,12\n4,18\n5,20\n6,16\n7,22\n8,19",
+    pie:"A,30\nB,25\nC,20\nD,15\nE,10",
+    affinity:""
+  };
+  const idMap={pareto:'paretoData',hist:'histData',scatter:'scatterData',control:'controlData',cap:'capData',gage:'gageData',doe:'doeData',line:'lineData',pie:'pieData'};
+  if(idMap[type])document.getElementById(idMap[type]).value=samples[type];
+  const fnMap={pareto:drawPareto,hist:drawHist,scatter:drawScatter,control:drawControl,capability:drawCapability,gage:drawGage,doe:drawDOE,line:drawLine,pie:drawPie};
+  if(fnMap[type])fnMap[type]();
+}
+
+// Auto-redraw
+let debounceTimer;
+function autoRedraw(fn){clearTimeout(debounceTimer);debounceTimer=setTimeout(fn,400);}
+['paretoData','paretoTitle','paretoColor'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawPareto));});
+['histData','histBin','histTitle'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawHist));});
+['scatterData','scatterTitle','scatterSize'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawScatter));});
+['controlData','controlTitle','controlSigma'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawControl));});
+['capData','capUSL','capLSL','capSubgroup','capTitle'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawCapability));});
+['gageData'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawGage));});
+['doeData'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawDOE));});
+['lineData','lineTitle','lineColor'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawLine));});
+['pieData','pieTitle'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>autoRedraw(drawPie));});
+
+// ===== Pareto =====
+function drawPareto(){
+  hideError('paretoErr');
+  const canvas=document.getElementById('paretoCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('paretoData').value.trim().split('\n');
+  let data=lines.map(l=>{const p=l.split(',');return {label:p[0].trim(),val:parseFloat(p[1])};}).filter(d=>d.label&& !isNaN(d.val));
+  if(data.length===0){showError('paretoErr','データを入力してください（ラベル,値）');return;}
+  data.sort((a,b)=>b.val-a.val);
+  const total=data.reduce((s,d)=>s+d.val,0);
+  const maxV=Math.max(...data.map(d=>d.val));
+  const title=document.getElementById('paretoTitle').value||'パレート図';
+  const color=document.getElementById('paretoColor').value;
+  const margin={top:40,right:55,bottom:70,left:50};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const bw=pw/data.length*0.65;
+  const gap=pw/data.length*0.35;
+  data.forEach((d,i)=>{
+    const h=(d.val/maxV)*ph;
+    const x=margin.left+i*(bw+gap);
+    const y=margin.top+ph-h;
+    ctx.fillStyle=color;ctx.fillRect(x,y,bw,h);
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillText(d.label,x+bw/2,H-margin.bottom+16);
+    ctx.fillText(d.val,x+bw/2,y-4);
+  });
+  let cum=0;
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=2.5;ctx.beginPath();
+  data.forEach((d,i)=>{
+    cum+=d.val;
+    const pct=cum/total;
+    const x=margin.left+i*(bw+gap)+bw/2;
+    const y=margin.top+ph-pct*ph;
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    ctx.fillStyle='#ef4444';ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ef4444';ctx.font='10px sans-serif';ctx.textAlign='left';
+    ctx.fillText((pct*100).toFixed(0)+'%',x+6,y-6);
+  });
+  ctx.stroke();
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#64748b';ctx.font='10px sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=5;i++){const v=(maxV/5)*i;ctx.fillText(v.toFixed(0),margin.left-6,margin.top+ph-(i/5)*ph+4);}
+  ctx.strokeStyle='#f59e0b';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top+ph*0.2);ctx.lineTo(margin.left+pw,margin.top+ph*0.2);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#f59e0b';ctx.font='10px sans-serif';ctx.textAlign='right';
+  ctx.fillText('80%',margin.left+pw,margin.top+ph*0.2-4);
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title,W/2,22);
+  const aRank=data.filter((_,i)=>{let c=0;for(let j=0;j<=i;j++)c+=data[j].val;return c/total<=0.8;});
+  document.getElementById('paretoStats').innerHTML=`<table>
+    <tr><td>項目数</td><td>${data.length}</td></tr>
+    <tr><td>合計</td><td>${total}</td></tr>
+    <tr><td>最大値</td><td>${maxV}</td></tr>
+    <tr><td>重点項目(Aランク)</td><td>${aRank.length}項目（累積80%以内）</td></tr>
+    <tr><td>重点項目</td><td>${aRank.map(d=>d.label).join(', ')||'なし'}</td></tr>
+  </table>`;
+}
+
+// ===== Fishbone =====
+function drawFishbone(){
+  const canvas=document.getElementById('fishboneCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const title=document.getElementById('fishboneTitle').value||'不良品発生';
+  const cats=document.getElementById('fishboneCats').value.split(',').map(c=>c.trim()).filter(c=>c);
+  const lines=document.getElementById('fishboneData').value.trim().split('\n');
+  const factors={};
+  cats.forEach(c=>factors[c]=[]);
+  lines.forEach(l=>{
+    const p=l.split(':');
+    if(p.length>=2){const cat=p[0].trim();const factor=p.slice(1).join(':').trim();
+    if(factors[cat])factors[cat].push(factor);}
+  });
+  // Draw spine
+  const spineY=H/2;
+  ctx.strokeStyle='#1e293b';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(60,spineY);ctx.lineTo(W-80,spineY);ctx.stroke();
+  // Arrow head
+  ctx.fillStyle='#1e293b';
+  ctx.beginPath();ctx.moveTo(W-80,spineY);ctx.lineTo(W-95,spineY-8);ctx.lineTo(W-95,spineY+8);ctx.closePath();ctx.fill();
+  // Title box
+  ctx.fillStyle='#ef4444';ctx.fillRect(W-70,spineY-20,60,40);
+  ctx.fillStyle='#fff';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title,W-40,spineY+4);
+  // Categories (alternating top/bottom)
+  const catSpacing=(W-140)/(cats.length);
+  cats.forEach((cat,i)=>{
+    const x=80+i*catSpacing;
+    const isTop=i%2===0;
+    const y1=isTop?spineY-10:spineY+10;
+    const y2=isTop?spineY-120:spineY+120;
+    // Bone line
+    ctx.strokeStyle='#64748b';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(x+30,y2);ctx.stroke();
+    // Category label
+    ctx.fillStyle='#2563eb';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText(cat,x+30,y2+(isTop?-8:16));
+    // Factors
+    const fs=factors[cat]||[];
+    fs.forEach((f,j)=>{
+      const fy=isTop?y2-20-j*18:y2+20+j*18;
+      ctx.fillStyle='#1e293b';ctx.font='10px sans-serif';ctx.textAlign='left';
+      ctx.fillText('• '+f,x+35,fy);
+    });
+  });
+}
+
+// ===== Histogram =====
+function drawHist(){
+  hideError('histErr');
+  const canvas=document.getElementById('histCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const vals=document.getElementById('histData').value.trim().split('\n').map(v=>parseFloat(v)).filter(v=>!isNaN(v));
+  if(vals.length===0){showError('histErr','数値データを入力してください');return;}
+  const bin=parseFloat(document.getElementById('histBin').value)||3;
+  const title=document.getElementById('histTitle').value||'ヒストグラム';
+  const min=Math.min(...vals), max=Math.max(...vals);
+  const nBins=Math.max(1,Math.ceil((max-min+0.001)/bin));
+  const counts=new Array(nBins).fill(0);
+  vals.forEach(v=>{const i=Math.min(Math.floor((v-min)/bin),nBins-1);counts[i]++;});
+  const maxC=Math.max(...counts);
+  const margin={top:40,right:20,bottom:60,left:50};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const bw=pw/nBins;
+  counts.forEach((c,i)=>{
+    const h=(c/maxC)*ph;
+    const x=margin.left+i*bw;
+    const y=margin.top+ph-h;
+    const grad=ctx.createLinearGradient(x,y,x,y+h);
+    grad.addColorStop(0,'#3b82f6');grad.addColorStop(1,'#93c5fd');
+    ctx.fillStyle=grad;ctx.fillRect(x+1,y,bw-2,h);
+    ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.strokeRect(x+1,y,bw-2,h);
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    if(c>0)ctx.fillText(c,x+bw/2,y-4);
+    ctx.fillStyle='#64748b';ctx.font='10px sans-serif';
+    ctx.fillText((min+i*bin).toFixed(1),x+bw/2,H-margin.bottom+14);
+  });
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#64748b';ctx.font='10px sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=5;i++){const v=(maxC/5)*i;ctx.fillText(Math.round(v),margin.left-6,margin.top+ph-(i/5)*ph+4);}
+  const mean=MathUtils.mean(vals);
+  const sd=MathUtils.sd(vals,1);
+  const median=MathUtils.median(vals);
+  ctx.fillStyle='#ef4444';ctx.font='11px sans-serif';ctx.textAlign='left';
+  ctx.fillText(`n=${vals.length}  平均=${mean.toFixed(2)}  σ=${sd.toFixed(2)}  中央値=${median}`,margin.left,margin.top-8);
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title,W/2,22);
+  document.getElementById('histStats').innerHTML=`<table>
+    <tr><td>件数</td><td>${vals.length}</td></tr>
+    <tr><td>平均</td><td>${mean.toFixed(3)}</td></tr>
+    <tr><td>中央値</td><td>${median}</td></tr>
+    <tr><td>標準偏差</td><td>${sd.toFixed(3)}</td></tr>
+    <tr><td>最小値</td><td>${MathUtils.min(vals)}</td></tr>
+    <tr><td>最大値</td><td>${MathUtils.max(vals)}</td></tr>
+    <tr><td>階級数</td><td>${nBins}</td></tr>
+  </table>`;
+}
+
+// ===== Scatter =====
+function drawScatter(){
+  hideError('scatterErr');
+  const canvas=document.getElementById('scatterCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('scatterData').value.trim().split('\n');
+  const pts=lines.map(l=>{const p=l.split(',');return {x:parseFloat(p[0]),y:parseFloat(p[1])};}).filter(p=>!isNaN(p.x)&&!isNaN(p.y));
+  if(pts.length===0){showError('scatterErr','データを入力してください（X,Y）');return;}
+  const title=document.getElementById('scatterTitle').value||'散布図';
+  const size=parseInt(document.getElementById('scatterSize').value)||5;
+  const xs=pts.map(p=>p.x), ys=pts.map(p=>p.y);
+  const minX=Math.min(...xs), maxX=Math.max(...xs);
+  const minY=Math.min(...ys), maxY=Math.max(...ys);
+  const margin={top:40,right:20,bottom:50,left:50};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const sx=v=>margin.left+((v-minX)/(maxX-minX||1))*pw;
+  const sy=v=>margin.top+ph-((v-minY)/(maxY-minY||1))*ph;
+  ctx.strokeStyle='#f1f5f9';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=margin.top+(ph/5)*i;ctx.beginPath();ctx.moveTo(margin.left,y);ctx.lineTo(margin.left+pw,y);ctx.stroke();
+    const x=margin.left+(pw/5)*i;ctx.beginPath();ctx.moveTo(x,margin.top);ctx.lineTo(x,margin.top+ph);ctx.stroke();
+  }
+  pts.forEach(p=>{
+    const x=sx(p.x),y=sy(p.y);
+    ctx.fillStyle='#3b82f6';ctx.globalAlpha=0.7;
+    ctx.beginPath();ctx.arc(x,y,size,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=1;
+    ctx.strokeStyle='#1d4ed8';ctx.lineWidth=1;ctx.stroke();
+  });
+  const n=pts.length;
+  const mx=MathUtils.mean(xs), my=MathUtils.mean(ys);
+  const cov=pts.reduce((s,p)=>s+(p.x-mx)*(p.y-my),0);
+  const vx=Math.sqrt(pts.reduce((s,p)=>s+(p.x-mx)**2,0));
+  const vy=Math.sqrt(pts.reduce((s,p)=>s+(p.y-my)**2,0));
+  const r=cov/(vx*vy)||0;
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#ef4444';ctx.font='11px sans-serif';ctx.textAlign='left';
+  ctx.fillText(`n=${n}  r=${r.toFixed(3)}  ${Math.abs(r)>0.7?'強い相関':Math.abs(r)>0.4?'中程度の相関':'弱い相関'}`,margin.left,margin.top-8);
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title,W/2,22);
+  document.getElementById('scatterStats').innerHTML=`<table>
+    <tr><td>データ数</td><td>${n}</td></tr>
+    <tr><td>相関係数 r</td><td>${r.toFixed(4)}</td></tr>
+    <tr><td>判定</td><td>${Math.abs(r)>0.7?'強い相関':Math.abs(r)>0.4?'中程度の相関':'弱い相関'}</td></tr>
+    <tr><td>X平均</td><td>${mx.toFixed(3)}</td></tr>
+    <tr><td>Y平均</td><td>${my.toFixed(3)}</td></tr>
+  </table>`;
+}
+
+// ===== Control =====
+function drawControl(){
+  hideError('controlErr');
+  const canvas=document.getElementById('controlCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const vals=document.getElementById('controlData').value.trim().split('\n').map(v=>parseFloat(v)).filter(v=>!isNaN(v));
+  if(vals.length<3){showError('controlErr','3点以上のデータが必要です');return;}
+  const title=document.getElementById('controlTitle').value||'管理図';
+  const sigma=parseFloat(document.getElementById('controlSigma').value)||3;
+  const n=vals.length;
+  const mean=MathUtils.mean(vals);
+  const variance=MathUtils.variance(vals,1);
+  const sd=Math.sqrt(variance);
+  const ucl=mean+sigma*sd;
+  const lcl=mean-sigma*sd;
+  const margin={top:40,right:20,bottom:50,left:55};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const minV=Math.min(...vals,lcl), maxV=Math.max(...vals,ucl);
+  const range=maxV-minV||1;
+  const sx=i=>margin.left+(i/(n-1))*pw;
+  const sy=v=>margin.top+ph-((v-minV)/range)*ph;
+  ctx.strokeStyle='#f1f5f9';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){const y=margin.top+(ph/5)*i;ctx.beginPath();ctx.moveTo(margin.left,y);ctx.lineTo(margin.left+pw,y);ctx.stroke();}
+  const drawLine=(v,color,dash,label)=>{
+    ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.setLineDash(dash);
+    ctx.beginPath();ctx.moveTo(margin.left,sy(v));ctx.lineTo(margin.left+pw,sy(v));ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=color;ctx.font='10px sans-serif';ctx.textAlign='right';
+    ctx.fillText(`${label}: ${v.toFixed(2)}`,margin.left+pw,sy(v)-4);
+  };
+  drawLine(ucl,'#ef4444',[6,4],'UCL');
+  drawLine(mean,'#10b981',[],'CL');
+  drawLine(lcl,'#ef4444',[6,4],'LCL');
+  ctx.strokeStyle='#3b82f6';ctx.lineWidth=2;ctx.beginPath();
+  vals.forEach((v,i)=>{const x=sx(i),y=sy(v);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);});
+  ctx.stroke();
+  let ooc=0;
+  vals.forEach((v,i)=>{
+    const x=sx(i),y=sy(v);
+    const outOfControl=v>ucl||v<lcl;
+    if(outOfControl)ooc++;
+    ctx.fillStyle=outOfControl?'#ef4444':'#3b82f6';
+    ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();
+  });
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title,W/2,22);
+  ctx.fillStyle='#64748b';ctx.font='11px sans-serif';ctx.textAlign='left';
+  ctx.fillText(`n=${n}  CL=${mean.toFixed(2)}  σ=${sd.toFixed(2)}  UCL=${ucl.toFixed(2)}  LCL=${lcl.toFixed(2)}`,margin.left,margin.top-8);
+  document.getElementById('controlStats').innerHTML=`<table>
+    <tr><td>データ数</td><td>${n}</td></tr>
+    <tr><td>中心線 (CL)</td><td>${mean.toFixed(3)}</td></tr>
+    <tr><td>標準偏差 (σ)</td><td>${sd.toFixed(3)}</td></tr>
+    <tr><td>UCL</td><td>${ucl.toFixed(3)}</td></tr>
+    <tr><td>LCL</td><td>${lcl.toFixed(3)}</td></tr>
+    <tr><td>σ倍数</td><td>${sigma}</td></tr>
+    <tr><td>管理限界外の点</td><td>${ooc}点</td></tr>
+  </table>`;
+}
+
+// ===== Check Sheet =====
+const csCounts={};
+function drawChecksheet(){
+  const canvas=document.getElementById('checksheetCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const items=document.getElementById('csItems').value.split(',').map(s=>s.trim()).filter(s=>s);
+  const days=document.getElementById('csDays').value.split(',').map(s=>s.trim()).filter(s=>s);
+  if(items.length===0||days.length===0)return;
+  const margin={top:40,left:100};
+  const cellW=(W-margin.left-20)/days.length;
+  const cellH=(H-margin.top-40)/(items.length+1);
+  // Header
+  ctx.fillStyle='#f1f5f9';
+  ctx.fillRect(0,0,W,margin.top);
+  ctx.fillStyle='#1e293b';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+  ctx.fillText('チェックシート',W/2,22);
+  // Day headers
+  days.forEach((d,i)=>{
+    const x=margin.left+i*cellW;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(x,margin.top-20,cellW,20);
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillText(d,x+cellW/2,margin.top-6);
+  });
+  // Total column
+  ctx.fillStyle='#f1f5f9';ctx.fillRect(margin.left+days.length*cellW,margin.top-20,cellW,20);
+  ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+  ctx.fillText('合計',margin.left+days.length*cellW+cellW/2,margin.top-6);
+  // Rows
+  items.forEach((item,i)=>{
+    const y=margin.top+i*cellH;
+    ctx.fillStyle='#f8fafc';ctx.fillRect(0,y,margin.left,cellH);
+    ctx.fillStyle='#1e293b';ctx.font='11px sans-serif';ctx.textAlign='left';
+    ctx.fillText(item,8,y+cellH/2+4);
+    days.forEach((d,j)=>{
+      const x=margin.left+j*cellW;
+      const key=`${item}|${d}`;
+      const count=csCounts[key]||0;
+      ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+      ctx.strokeRect(x,y,cellW,cellH);
+      if(count>0){
+        ctx.fillStyle='#2563eb';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
+        ctx.fillText(count,x+cellW/2,y+cellH/2+5);
+      }
+    });
+    // Total
+    const x=margin.left+days.length*cellW;
+    const total=days.reduce((s,d)=>s+(csCounts[`${item}|${d}`]||0),0);
+    ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+    ctx.strokeRect(x,y,cellW,cellH);
+    if(total>0){
+      ctx.fillStyle='#ef4444';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
+      ctx.fillText(total,x+cellW/2,y+cellH/2+5);
+    }
+  });
+  // Grand total row
+  const y=margin.top+items.length*cellH;
+  ctx.fillStyle='#f1f5f9';ctx.fillRect(0,y,W,cellH);
+  ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+  ctx.fillText('合計',8,y+cellH/2+4);
+  days.forEach((d,j)=>{
+    const x=margin.left+j*cellW;
+    const total=items.reduce((s,item)=>s+(csCounts[`${item}|${d}`]||0),0);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText(total,x+cellW/2,y+cellH/2+4);
+  });
+  const grandTotal=items.reduce((s,item)=>s+days.reduce((ss,d)=>ss+(csCounts[`${item}|${d}`]||0),0),0);
+  const x=margin.left+days.length*cellW;
+  ctx.fillStyle='#ef4444';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
+  ctx.fillText(grandTotal,x+cellW/2,y+cellH/2+5);
+}
+
+// Click handler for check sheet
+document.getElementById('checksheetCanvas').addEventListener('click',function(e){
+  const canvas=this;
+  const rect=canvas.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  const y=e.clientY-rect.top;
+  const items=document.getElementById('csItems').value.split(',').map(s=>s.trim()).filter(s=>s);
+  const days=document.getElementById('csDays').value.split(',').map(s=>s.trim()).filter(s=>s);
+  const margin={top:40,left:100};
+  const cellW=(canvas.width-margin.left-20)/days.length;
+  const cellH=(canvas.height-margin.top-40)/(items.length+1);
+  const col=Math.floor((x-margin.left)/cellW);
+  const row=Math.floor((y-margin.top)/cellH);
+  if(col>=0&&col<days.length&&row>=0&&row<items.length){
+    const key=`${items[row]}|${days[col]}`;
+    csCounts[key]=(csCounts[key]||0)+1;
+    drawChecksheet();
+  }
+});
+document.getElementById('checksheetCanvas').addEventListener('dblclick',function(e){
+  const canvas=this;
+  const rect=canvas.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  const y=e.clientY-rect.top;
+  const items=document.getElementById('csItems').value.split(',').map(s=>s.trim()).filter(s=>s);
+  const days=document.getElementById('csDays').value.split(',').map(s=>s.trim()).filter(s=>s);
+  const margin={top:40,left:100};
+  const cellW=(canvas.width-margin.left-20)/days.length;
+  const cellH=(canvas.height-margin.top-40)/(items.length+1);
+  const col=Math.floor((x-margin.left)/cellW);
+  const row=Math.floor((y-margin.top)/cellH);
+  if(col>=0&&col<days.length&&row>=0&&row<items.length){
+    const key=`${items[row]}|${days[col]}`;
+    csCounts[key]=0;
+    drawChecksheet();
+  }
+});
+
+// ===== Line Chart =====
+function drawLine(){
+  hideError('lineErr');
+  const canvas=document.getElementById('lineCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('lineData').value.trim().split('\n');
+  const pts=lines.map(l=>{const p=l.split(',');return {x:parseFloat(p[0]),y:parseFloat(p[1])};}).filter(p=>!isNaN(p.x)&&!isNaN(p.y));
+  if(pts.length===0){showError('lineErr','データを入力してください（X,Y）');return;}
+  const title=document.getElementById('lineTitle').value||'折れ線グラフ';
+  const color=document.getElementById('lineColor').value;
+  const xs=pts.map(p=>p.x), ys=pts.map(p=>p.y);
+  const minX=Math.min(...xs), maxX=Math.max(...xs);
+  const minY=Math.min(...ys), maxY=Math.max(...ys);
+  const margin={top:40,right:20,bottom:50,left:50};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const sx=v=>margin.left+((v-minX)/(maxX-minX||1))*pw;
+  const sy=v=>margin.top+ph-((v-minY)/(maxY-minY||1))*ph;
+  ctx.strokeStyle='#f1f5f9';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=margin.top+(ph/5)*i;ctx.beginPath();ctx.moveTo(margin.left,y);ctx.lineTo(margin.left+pw,y);ctx.stroke();
+    const x=margin.left+(pw/5)*i;ctx.beginPath();ctx.moveTo(x,margin.top);ctx.lineTo(x,margin.top+ph);ctx.stroke();
+  }
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.beginPath();
+  pts.forEach((p,i)=>{const x=sx(p.x),y=sy(p.y);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);});
+  ctx.stroke();
+  pts.forEach(p=>{
+    const x=sx(p.x),y=sy(p.y);
+    ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();
+  });
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title,W/2,22);
+}
+
+// ===== Pie Chart =====
+function drawPie(){
+  hideError('pieErr');
+  const canvas=document.getElementById('pieCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('pieData').value.trim().split('\n');
+  const data=lines.map(l=>{const p=l.split(',');return {label:p[0].trim(),val:parseFloat(p[1])};}).filter(d=>d.label&& !isNaN(d.val));
+  if(data.length===0){showError('pieErr','データを入力してください（ラベル,値）');return;}
+  const title=document.getElementById('pieTitle').value||'円グラフ';
+  const total=data.reduce((s,d)=>s+d.val,0);
+  const colors=['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#06b6d4','#84cc16'];
+  const cx=W/2,cy=H/2+10,r=Math.min(W,H)/2-60;
+  let startAngle=-Math.PI/2;
+  data.forEach((d,i)=>{
+    const sliceAngle=(d.val/total)*2*Math.PI;
+    ctx.fillStyle=colors[i%colors.length];
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,startAngle,startAngle+sliceAngle);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    // Label
+    const midAngle=startAngle+sliceAngle/2;
+    const lx=cx+(r*0.7)*Math.cos(midAngle);
+    const ly=cy+(r*0.7)*Math.sin(midAngle);
+    ctx.fillStyle='#fff';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillText(`${d.label} ${(d.val/total*100).toFixed(1)}%`,lx,ly);
+    startAngle+=sliceAngle;
+  });
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title,W/2,22);
+}
+
+// ===== Capability =====
+function drawCapability(){
+  hideError('capErr');
+  const canvas=document.getElementById('capCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const vals=document.getElementById('capData').value.trim().split('\n').map(v=>parseFloat(v)).filter(v=>!isNaN(v));
+  if(vals.length<5){showError('capErr','5点以上のデータが必要です');return;}
+  const title=document.getElementById('capTitle').value||'工程能力分析';
+  const usl=parseFloat(document.getElementById('capUSL').value);
+  const lsl=parseFloat(document.getElementById('capLSL').value);
+  const subgroup=parseInt(document.getElementById('capSubgroup').value)||1;
+  if(isNaN(usl)||isNaN(lsl)){showError('capErr','USL/LSLを入力してください');return;}
+  const res=MathUtils.capability(vals,usl,lsl,subgroup);
+  const min=Math.min(...vals,lsl), max=Math.max(...vals,usl);
+  const bin=(max-min)/15||1;
+  const nBins=Math.max(1,Math.ceil((max-min)/bin));
+  const counts=new Array(nBins).fill(0);
+  vals.forEach(v=>{const i=Math.min(Math.floor((v-min)/bin),nBins-1);counts[i]++;});
+  const maxC=Math.max(...counts);
+  const margin={top:40,right:20,bottom:60,left:50};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const bw=pw/nBins;
+  counts.forEach((c,i)=>{
+    const h=(c/maxC)*ph;
+    const x=margin.left+i*bw;
+    const y=margin.top+ph-h;
+    ctx.fillStyle='#3b82f6';ctx.globalAlpha=0.7;
+    ctx.fillRect(x+1,y,bw-2,h);
+    ctx.globalAlpha=1;
+    ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.strokeRect(x+1,y,bw-2,h);
+  });
+  const sx=v=>margin.left+((v-min)/(max-min||1))*pw;
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.setLineDash([6,4]);
+  ctx.beginPath();ctx.moveTo(sx(usl),margin.top);ctx.lineTo(sx(usl),margin.top+ph);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(sx(lsl),margin.top);ctx.lineTo(sx(lsl),margin.top+ph);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#ef4444';ctx.font='10px sans-serif';ctx.textAlign='center';
+  ctx.fillText('USL',sx(usl),margin.top-4);
+  ctx.fillText('LSL',sx(lsl),margin.top-4);
+  ctx.strokeStyle='#10b981';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(sx(res.mean),margin.top);ctx.lineTo(sx(res.mean),margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#10b981';ctx.font='10px sans-serif';
+  ctx.fillText('Mean',sx(res.mean),margin.top-4);
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText(title,W/2,22);
+  const ooc=vals.filter(v=>v>usl||v<lsl).length;
+  document.getElementById('capStats').innerHTML=`<table>
+    <tr><td>データ数</td><td>${res.n}</td></tr>
+    <tr><td>平均</td><td>${res.mean.toFixed(4)}</td></tr>
+    <tr><td>σwithin</td><td>${res.sdWithin.toFixed(4)}</td></tr>
+    <tr><td>σoverall</td><td>${res.sdOverall.toFixed(4)}</td></tr>
+    <tr><td>Cp</td><td>${res.cp.toFixed(3)}</td></tr>
+    <tr><td>Cpk</td><td>${res.cpk.toFixed(3)}</td></tr>
+    <tr><td>Pp</td><td>${res.pp.toFixed(3)}</td></tr>
+    <tr><td>Ppk</td><td>${res.ppk.toFixed(3)}</td></tr>
+    <tr><td>USL/LSL</td><td>${usl} / ${lsl}</td></tr>
+    <tr><td>規格外データ</td><td>${ooc}点</td></tr>
+  </table>`;
+}
+
+// ===== Gage R&R =====
+function drawGage(){
+  hideError('gageErr');
+  const canvas=document.getElementById('gageCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('gageData').value.trim().split('\n');
+  const data=lines.map(l=>{const p=l.split(',');return {part:p[0].trim(),operator:p[1].trim(),value:parseFloat(p[2])};}).filter(d=>d.part&&d.operator&&!isNaN(d.value));
+  if(data.length<6){showError('gageErr','6点以上のデータが必要です');return;}
+  const res=MathUtils.gageRR(data);
+  const components=[{name:'繰り返し性(EV)',val:res.varRep},{name:'再現性(AV)',val:res.varInt+res.varOp},{name:'部品間(PV)',val:res.varPart}];
+  const maxV=Math.max(...components.map(c=>c.val));
+  const margin={top:40,right:20,bottom:80,left:60};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const bw=pw/components.length*0.6;
+  const gap=pw/components.length*0.4;
+  const colors=['#3b82f6','#f59e0b','#10b981'];
+  components.forEach((c,i)=>{
+    const h=(c.val/maxV)*ph;
+    const x=margin.left+i*(bw+gap);
+    const y=margin.top+ph-h;
+    ctx.fillStyle=colors[i];ctx.fillRect(x,y,bw,h);
+    ctx.fillStyle='#1e293b';ctx.font='bold 10px sans-serif';ctx.textAlign='center';
+    ctx.fillText(c.name,x+bw/2,H-margin.bottom+14);
+    ctx.fillText(c.val.toFixed(3),x+bw/2,y-4);
+  });
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Gage R&R — 変動要因',W/2,22);
+  document.getElementById('gageStats').innerHTML=`<table>
+    <tr><td>部品数</td><td>${res.nParts}</td></tr>
+    <tr><td>測定者数</td><td>${res.nOps}</td></tr>
+    <tr><td>繰り返し数</td><td>${res.nRep}</td></tr>
+    <tr><td>繰り返し性 (EV)</td><td>${Math.sqrt(res.varRep).toFixed(4)}</td></tr>
+    <tr><td>再現性 (AV)</td><td>${Math.sqrt(res.varInt+res.varOp).toFixed(4)}</td></tr>
+    <tr><td>測定システム (GRR)</td><td>${Math.sqrt(res.varGRR).toFixed(4)}</td></tr>
+    <tr><td>部品間 (PV)</td><td>${Math.sqrt(res.varPart).toFixed(4)}</td></tr>
+    <tr><td>全変動 (TV)</td><td>${Math.sqrt(res.varTV).toFixed(4)}</td></tr>
+    <tr><td>%GRR</td><td>${res.pctGRR.toFixed(1)}%</td></tr>
+    <tr><td>%PV</td><td>${res.pctPart.toFixed(1)}%</td></tr>
+    <tr><td>ndc</td><td>${res.ndc}</td></tr>
+  </table>`;
+}
+
+// ===== DOE =====
+function drawDOE(){
+  hideError('doeErr');
+  const canvas=document.getElementById('doeCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('doeData').value.trim().split('\n');
+  const data=lines.map(l=>{const p=l.split(',');const factors=p.slice(0,-1).map(v=>parseFloat(v));const response=parseFloat(p[p.length-1]);return {factors,response};}).filter(d=>d.factors.every(v=>!isNaN(v))&&!isNaN(d.response));
+  if(data.length<4){showError('doeErr','4点以上のデータが必要です');return;}
+  const res=MathUtils.doe2level(data);
+  const allEffects=[...res.effects.map(e=>({name:`要因${e.factor}`,val:e.effect})),...res.interactions.map(e=>({name:`${e.factors[0]}×${e.factors[1]}`,val:e.effect}))];
+  const maxV=Math.max(...allEffects.map(e=>Math.abs(e.val)));
+  const margin={top:40,right:20,bottom:80,left:60};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const bw=pw/allEffects.length*0.6;
+  const gap=pw/allEffects.length*0.4;
+  allEffects.forEach((e,i)=>{
+    const h=(Math.abs(e.val)/maxV)*ph;
+    const x=margin.left+i*(bw+gap);
+    const y=e.val>=0?margin.top+ph/2-h:margin.top+ph/2;
+    ctx.fillStyle=e.val>=0?'#3b82f6':'#ef4444';
+    ctx.fillRect(x,y,bw,h);
+    ctx.fillStyle='#1e293b';ctx.font='bold 9px sans-serif';ctx.textAlign='center';
+    ctx.fillText(e.name,x+bw/2,H-margin.bottom+14);
+    ctx.fillText(e.val.toFixed(2),x+bw/2, e.val>=0?y-4:y+h+12);
+  });
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top+ph/2);ctx.lineTo(margin.left+pw,margin.top+ph/2);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('DOE — 要因効果',W/2,22);
+  document.getElementById('doeStats').innerHTML=`<table>
+    <tr><td>実験数</td><td>${res.n}</td></tr>
+    <tr><td>要因数</td><td>${res.nFactors}</td></tr>
+    <tr><td>全体平均</td><td>${res.grandMean.toFixed(3)}</td></tr>
+    <tr><td>要因効果SS</td><td>${res.SS_factors.toFixed(3)}</td></tr>
+    <tr><td>誤差SS</td><td>${res.SS_error.toFixed(3)}</td></tr>
+    <tr><td>F値</td><td>${res.F.toFixed(3)}</td></tr>
+    ${res.effects.map(e=>`<tr><td>要因${e.factor}効果</td><td>${e.effect.toFixed(3)}</td></tr>`).join('')}
+    ${res.interactions.map(e=>`<tr><td>交互作用 ${e.factors[0]}×${e.factors[1]}</td><td>${e.effect.toFixed(3)}</td></tr>`).join('')}
+  </table>`;
+}
+
+// ===== Affinity =====
+function drawAffinity(){
+  const canvas=document.getElementById('affinityCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('affinityData').value.trim().split('\n').filter(l=>l.trim());
+  const colors=['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899'];
+  // Simple grouping: split into 3 groups
+  const groupSize=Math.ceil(lines.length/3);
+  const groups=[];
+  for(let i=0;i<lines.length;i+=groupSize){groups.push(lines.slice(i,i+groupSize));}
+  const groupW=W/groups.length;
+  groups.forEach((g,gi)=>{
+    const x=gi*groupW+10;
+    const w=groupW-20;
+    ctx.fillStyle=colors[gi%colors.length]+'20';
+    ctx.fillRect(x,40,w,H-60);
+    ctx.strokeStyle=colors[gi%colors.length];ctx.lineWidth=2;
+    ctx.strokeRect(x,40,w,H-60);
+    ctx.fillStyle=colors[gi%colors.length];ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText(`グループ ${gi+1}`,x+w/2,30);
+    g.forEach((card,j)=>{
+      const cy=60+j*35;
+      ctx.fillStyle='#fff';ctx.fillRect(x+5,cy,w-10,28);
+      ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1;ctx.strokeRect(x+5,cy,w-10,28);
+      ctx.fillStyle='#1e293b';ctx.font='10px sans-serif';ctx.textAlign='left';
+      ctx.fillText(card.substring(0,30),x+10,cy+18);
+    });
+  });
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('親和図法（KJ法）',W/2,20);
+}
+
+// ===== Interrelationship =====
+function drawInterrel(){
+  const canvas=document.getElementById('interrelCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('interrelData').value.trim().split('\n').filter(l=>l.trim());
+  const nodes=new Set();
+  const edges=[];
+  lines.forEach(l=>{
+    const parts=l.split('->');
+    if(parts.length===2){const a=parts[0].trim();const b=parts[1].trim();
+    nodes.add(a);nodes.add(b);edges.push({from:a,to:b});}
+  });
+  const nodeList=[...nodes];
+  const pos={};
+  const cols=3;
+  nodeList.forEach((n,i)=>{
+    pos[n]={x:100+(i%cols)*200, y:80+Math.floor(i/cols)*120};
+  });
+  // Draw edges
+  ctx.strokeStyle='#64748b';ctx.lineWidth=1.5;
+  edges.forEach(e=>{
+    const from=pos[e.from], to=pos[e.to];
+    ctx.beginPath();ctx.moveTo(from.x,from.y);
+    // curved arrow
+    const cx=(from.x+to.x)/2, cy=(from.y+to.y)/2-30;
+    ctx.quadraticCurveTo(cx,cy,to.x,to.y);ctx.stroke();
+    // arrowhead
+    const angle=Math.atan2(to.y-cy, to.x-cx);
+    ctx.fillStyle='#64748b';
+    ctx.beginPath();ctx.moveTo(to.x,to.y);
+    ctx.lineTo(to.x-10*Math.cos(angle-0.4),to.y-10*Math.sin(angle-0.4));
+    ctx.lineTo(to.x-10*Math.cos(angle+0.4),to.y-10*Math.sin(angle+0.4));
+    ctx.closePath();ctx.fill();
+  });
+  // Draw nodes
+  nodeList.forEach(n=>{
+    const p=pos[n];
+    ctx.fillStyle='#3b82f6';ctx.beginPath();ctx.arc(p.x,p.y,25,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.textAlign='center';
+    ctx.fillText(n.substring(0,8),p.x,p.y+4);
+  });
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('連関図法',W/2,22);
+}
+
+// ===== Systematic =====
+function drawSystematic(){
+  const canvas=document.getElementById('systematicCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('systematicData').value.trim().split('\n');
+  const tree=[];
+  lines.forEach(l=>{
+    const trimmed=l.trimStart();
+    const indent=l.length-trimmed.length;
+    tree.push({text:trimmed,indent:Math.floor(indent/2)});
+  });
+  // Draw tree
+  let y=40;
+  const xBase=40;
+  tree.forEach((node,i)=>{
+    const x=xBase+node.indent*80;
+    ctx.fillStyle=node.indent===0?'#1e3a8a':node.indent===1?'#2563eb':'#60a5fa';
+    ctx.fillRect(x,y,120,24);
+    ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.textAlign='center';
+    ctx.fillText(node.text.substring(0,14),x+60,y+16);
+    // Connector line
+    if(i>0&&node.indent>0){
+      const prevX=xBase+tree[i-1].indent*80+60;
+      ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(prevX,y-8);ctx.lineTo(x+60,y);ctx.stroke();
+    }
+    y+=32;
+    if(y>H-20)y=40;
+  });
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('系統図法',W/2,22);
+}
+
+// ===== Matrix =====
+function drawMatrix(){
+  const canvas=document.getElementById('matrixCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const rows=document.getElementById('matrixRows').value.split(',').map(s=>s.trim()).filter(s=>s);
+  const cols=document.getElementById('matrixCols').value.split(',').map(s=>s.trim()).filter(s=>s);
+  if(rows.length===0||cols.length===0)return;
+  const margin={top:60,left:100};
+  const cellW=(W-margin.left-20)/cols.length;
+  const cellH=(H-margin.top-20)/rows.length;
+  // Header
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('マトリックス図法',W/2,22);
+  // Column headers
+  cols.forEach((c,j)=>{
+    const x=margin.left+j*cellW;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(x,margin.top-30,cellW,30);
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillText(c,x+cellW/2,margin.top-12);
+  });
+  // Rows
+  rows.forEach((r,i)=>{
+    const y=margin.top+i*cellH;
+    ctx.fillStyle='#f8fafc';ctx.fillRect(0,y,margin.left,cellH);
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillText(r,8,y+cellH/2+4);
+    cols.forEach((c,j)=>{
+      const x=margin.left+j*cellW;
+      ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+      ctx.strokeRect(x,y,cellW,cellH);
+      // Random relationship symbol
+      const syms=['◎','○','△','×'];
+      const sym=syms[Math.floor(Math.random()*syms.length)];
+      ctx.fillStyle=sym==='◎'?'#ef4444':sym==='○'?'#f59e0b':sym==='△'?'#3b82f6':'#94a3b8';
+      ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+      ctx.fillText(sym,x+cellW/2,y+cellH/2+6);
+    });
+  });
+}
+
+// ===== CSV Parser =====
+function parseCSV(){
+  const text=document.getElementById('csvData').value.trim();
+  if(!text){document.getElementById('csvPreview').textContent='データが空です';return;}
+  const lines=text.split('\n');
+  const header=lines[0].split(/[,\t]/);
+  const rows=lines.slice(1).map(l=>l.split(/[,\t]/));
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let html=`<table><tr>${header.map(h=>`<th>${esc(h)}</th>`).join('')}</tr>`;
+  rows.forEach(r=>{html+=`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`;});
+  html+='</table>';
+  html+=`<p style="margin-top:8px;color:var(--muted)">行数: ${rows.length} / 列数: ${header.length}</p>`;
+  document.getElementById('csvPreview').innerHTML=html; // Safe: all data escaped via esc()
+}
+
+// ===== PCA (Matrix Data Analysis) =====
+function drawPCA(){
+  const canvas=document.getElementById('pcaCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('pcaData').value.trim().split('\n');
+  const header=lines[0].split(',');
+  const varNames=header.slice(1);
+  const samples=[];
+  for(let i=1;i<lines.length;i++){
+    const p=lines[i].split(',');
+    if(p.length<2)continue;
+    samples.push({name:p[0].trim(),vals:p.slice(1).map(v=>parseFloat(v))});
+  }
+  if(samples.length<2){document.getElementById('pcaStats').innerHTML='<p>2サンプル以上必要</p>';return;}
+  const n=samples.length, m=varNames.length;
+  // Standardize
+  const means=varNames.map((_,j)=>samples.reduce((s,r)=>s+r.vals[j],0)/n);
+  const sds=varNames.map((_,j)=>Math.sqrt(samples.reduce((s,r)=>s+(r.vals[j]-means[j])**2,0)/n));
+  const Z=samples.map(r=>r.vals.map((v,j)=>(v-means[j])/(sds[j]||1)));
+  // Covariance matrix
+  const C=Array.from({length:m},()=>Array(m).fill(0));
+  for(let i=0;i<m;i++)for(let j=0;j<m;j++){let s=0;for(let k=0;k<n;k++)s+=Z[k][i]*Z[k][j];C[i][j]=s/n;}
+  // Eigen decomposition (power iteration for first 2 PCs)
+  function eigen(C){
+    const m=C.length;
+    // Simple: compute eigenvalues via characteristic polynomial approximation
+    // Use Jacobi-like iteration
+    let A=C.map(r=>r.slice());
+    const V=Array.from({length:m},(_,i)=>Array(m).fill(0).map((_,j)=>i===j?1:0));
+    for(let iter=0;iter<50;iter++){
+      for(let p=0;p<m;p++)for(let q=p+1;q<m;q++){
+        if(Math.abs(A[p][q])<1e-12)continue;
+        const theta=(A[q][q]-A[p][p])/(2*A[p][q]);
+        const t=Math.sign(theta)/(Math.abs(theta)+Math.sqrt(theta*theta+1));
+        const c=1/Math.sqrt(1+t*t);
+        const s=t*c;
+        for(let i=0;i<m;i++){const aip=A[i][p],aiq=A[i][q];A[i][p]=c*aip-s*aiq;A[i][q]=s*aip+c*aiq;}
+        for(let j=0;j<m;j++){const apj=A[p][j],aqj=A[q][j];A[p][j]=c*apj-s*aqj;A[q][j]=s*apj+c*aqj;}
+        for(let i=0;i<m;i++){const vip=V[i][p],viq=V[i][q];V[i][p]=c*vip-s*viq;V[i][q]=s*vip+c*viq;}
+      }
+    }
+    const eigvals=A.map((r,i)=>r[i]);
+    const order=eigvals.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
+    return {eigvals:order.map(o=>o.v),eigvecs:order.map(o=>V.map(r=>r[o.i]))};
+  }
+  const {eigvals,eigvecs}=eigen(C);
+  const totalVar=eigvals.reduce((s,v)=>s+v,0);
+  const pc1=eigvecs[0], pc2=eigvecs[1];
+  // Project samples
+  const scores=samples.map(r=>{
+    const z=r.vals.map((v,j)=>(v-means[j])/(sds[j]||1));
+    return {name:r.name,x:z.reduce((s,v,j)=>s+v*pc1[j],0),y:z.reduce((s,v,j)=>s+v*pc2[j],0)};
+  });
+  // Draw scatter
+  const xs=scores.map(s=>s.x), ys=scores.map(s=>s.y);
+  const minX=Math.min(...xs), maxX=Math.max(...xs);
+  const minY=Math.min(...ys), maxY=Math.max(...ys);
+  const margin={top:40,right:20,bottom:50,left:50};
+  const pw=W-margin.left-margin.right, ph=H-margin.top-margin.bottom;
+  const sx=v=>margin.left+((v-minX)/(maxX-minX||1))*pw;
+  const sy=v=>margin.top+ph-((v-minY)/(maxY-minY||1))*ph;
+  ctx.strokeStyle='#f1f5f9';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){const y=margin.top+(ph/5)*i;ctx.beginPath();ctx.moveTo(margin.left,y);ctx.lineTo(margin.left+pw,y);ctx.stroke();
+  const x=margin.left+(pw/5)*i;ctx.beginPath();ctx.moveTo(x,margin.top);ctx.lineTo(x,margin.top+ph);ctx.stroke();}
+  scores.forEach(s=>{
+    const x=sx(s.x),y=sy(s.y);
+    ctx.fillStyle='#3b82f6';ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillText(s.name,x,y-10);
+  });
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(margin.left,margin.top);ctx.lineTo(margin.left,margin.top+ph);ctx.lineTo(margin.left+pw,margin.top+ph);ctx.stroke();
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('PCA — 主成分分析',W/2,22);
+  const pc1var=(eigvals[0]/totalVar*100).toFixed(1);
+  const pc2var=(eigvals[1]/totalVar*100).toFixed(1);
+  document.getElementById('pcaStats').innerHTML=`<table>
+    <tr><td>サンプル数</td><td>${n}</td></tr>
+    <tr><td>変数数</td><td>${m}</td></tr>
+    <tr><td>PC1寄与率</td><td>${pc1var}%</td></tr>
+    <tr><td>PC2寄与率</td><td>${pc2var}%</td></tr>
+    <tr><td>累積寄与率</td><td>${(parseFloat(pc1var)+parseFloat(pc2var)).toFixed(1)}%</td></tr>
+    <tr><td>固有値</td><td>${eigvals.map(v=>v.toFixed(3)).join(', ')}</td></tr>
+  </table>`;
+}
+
+// ===== PERT (Arrow Diagram) =====
+function drawPERT(){
+  const canvas=document.getElementById('pertCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('pertData').value.trim().split('\n');
+  const tasks=[];
+  lines.forEach(l=>{
+    const p=l.split(',');
+    if(p.length<3)return;
+    const name=p[0].trim();
+    const preds=p[1].trim().split(';').filter(s=>s.trim());
+    const dur=parseFloat(p[2]);
+    if(name&& !isNaN(dur))tasks.push({name,preds,dur});
+  });
+  if(tasks.length===0){document.getElementById('pertStats').innerHTML='<p>データが必要です</p>';return;}
+  // Topological sort
+  const taskMap={};
+  tasks.forEach(t=>taskMap[t.name]=t);
+  const ES={},EF={},LS={},LF={};
+  // Forward pass
+  function getES(t){
+    if(ES[t.name]!==undefined)return ES[t.name];
+    let maxEF=0;
+    t.preds.forEach(p=>{if(taskMap[p]){getES(taskMap[p]);maxEF=Math.max(maxEF,EF[p]);}});
+    ES[t.name]=maxEF;
+    EF[t.name]=maxEF+t.dur;
+    return ES[t.name];
+  }
+  tasks.forEach(t=>getES(t));
+  const projectEnd=Math.max(...tasks.map(t=>EF[t.name]));
+  // Backward pass
+  tasks.slice().reverse().forEach(t=>{
+    const succs=tasks.filter(x=>x.preds.includes(t.name));
+    let minLS=projectEnd;
+    if(succs.length>0)minLS=Math.min(...succs.map(s=>LS[s.name]));
+    LF[t.name]=minLS;
+    LS[t.name]=minLS-t.dur;
+  });
+  // Draw network
+  const nodePos={};
+  const levels={};
+  tasks.forEach(t=>{
+    if(t.preds.length===0)levels[t.name]=0;
+    else levels[t.name]=Math.max(...t.preds.map(p=>(levels[p]||0)+1));
+  });
+  const maxLevel=Math.max(...Object.values(levels));
+  const levelGroups={};
+  tasks.forEach(t=>{if(!levelGroups[levels[t.name]])levelGroups[levels[t.name]]=[];levelGroups[levels[t.name]].push(t);});
+  Object.keys(levelGroups).forEach(lv=>{
+    const group=levelGroups[lv];
+    group.forEach((t,i)=>{
+      nodePos[t.name]={x:60+parseInt(lv)*180, y:60+i*80};
+    });
+  });
+  // Draw edges
+  tasks.forEach(t=>{
+    t.preds.forEach(p=>{
+      if(!nodePos[p])return;
+      const from=nodePos[p], to=nodePos[t.name];
+      const isCrit=ES[t.name]===EF[p] && (LF[t.name]-t.dur===ES[t.name]);
+      ctx.strokeStyle=isCrit?'#ef4444':'#94a3b8';ctx.lineWidth=isCrit?2.5:1.5;
+      ctx.beginPath();ctx.moveTo(from.x+30,from.y+15);ctx.lineTo(to.x-30,to.y+15);ctx.stroke();
+      // arrowhead
+      const angle=Math.atan2(to.y-from.y, to.x-from.x);
+      ctx.fillStyle=isCrit?'#ef4444':'#94a3b8';
+      ctx.beginPath();ctx.moveTo(to.x-30,to.y+15);
+      ctx.lineTo(to.x-40,to.y+10);ctx.lineTo(to.x-40,to.y+20);ctx.closePath();ctx.fill();
+    });
+  });
+  // Draw nodes
+  tasks.forEach(t=>{
+    const p=nodePos[t.name];
+    const isCrit=LS[t.name]===ES[t.name];
+    ctx.fillStyle=isCrit?'#fef2f2':'#f0f9ff';
+    ctx.fillRect(p.x,p.y,60,30);
+    ctx.strokeStyle=isCrit?'#ef4444':'#3b82f6';ctx.lineWidth=2;
+    ctx.strokeRect(p.x,p.y,60,30);
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillText(t.name,p.x+30,p.y+12);
+    ctx.font='9px sans-serif';ctx.fillText(`${t.dur}日`,p.x+30,p.y+24);
+  });
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('PERT — アローダイアグラム',W/2,22);
+  const critPath=tasks.filter(t=>LS[t.name]===ES[t.name]).map(t=>t.name).join(' → ');
+  document.getElementById('pertStats').innerHTML=`<table>
+    <tr><td>作業数</td><td>${tasks.length}</td></tr>
+    <tr><td>最短工期</td><td>${projectEnd}日</td></tr>
+    <tr><td>クリティカルパス</td><td>${critPath}</td></tr>
+    ${tasks.map(t=>`<tr><td>${t.name}</td><td>ES=${ES[t.name]} EF=${EF[t.name]} LS=${LS[t.name]} LF=${LF[t.name]} ${LS[t.name]===ES[t.name]?'★':''}</td></tr>`).join('')}
+  </table>`;
+}
+
+// ===== PDPC =====
+function drawPDPC(){
+  const canvas=document.getElementById('pdpcCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const lines=document.getElementById('pdpcData').value.trim().split('\n');
+  const nodes=new Map();
+  const edges=[];
+  lines.forEach(l=>{
+    const parts=l.split('->');
+    if(parts.length>=2){
+      const from=parts[0].trim();
+      const to=parts.slice(1).join('->').trim();
+      nodes.set(from,{type:from.includes('問題')?'problem':from.includes('対策')?'solution':'normal'});
+      nodes.set(to,{type:to.includes('問題')?'problem':to.includes('対策')?'solution':'normal'});
+      edges.push({from,to});
+    } else if(l.trim()){
+      const name=l.trim();
+      nodes.set(name,{type:name.includes('問題')?'problem':name.includes('対策')?'solution':'normal'});
+    }
+  });
+  const nodeList=[...nodes.keys()];
+  const pos={};
+  // Simple tree layout
+  const levels={};
+  nodeList.forEach(n=>{levels[n]=0;});
+  edges.forEach(e=>{levels[e.to]=Math.max(levels[e.to]||0,(levels[e.from]||0)+1);});
+  const levelGroups={};
+  nodeList.forEach(n=>{if(!levelGroups[levels[n]])levelGroups[levels[n]]=[];levelGroups[levels[n]].push(n);});
+  Object.keys(levelGroups).forEach(lv=>{
+    const group=levelGroups[lv];
+    group.forEach((n,i)=>{
+      pos[n]={x:40+parseInt(lv)*160, y:60+i*70};
+    });
+  });
+  // Draw edges
+  edges.forEach(e=>{
+    const from=pos[e.from], to=pos[e.to];
+    if(!from||!to)return;
+    const isProb=e.to.includes('問題');
+    ctx.strokeStyle=isProb?'#ef4444':'#3b82f6';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(from.x+60,from.y+12);ctx.lineTo(to.x-5,to.y+12);ctx.stroke();
+    ctx.fillStyle=isProb?'#ef4444':'#3b82f6';
+    ctx.beginPath();ctx.moveTo(to.x-5,to.y+12);ctx.lineTo(to.x-12,to.y+7);ctx.lineTo(to.x-12,to.y+17);ctx.closePath();ctx.fill();
+  });
+  // Draw nodes
+  nodeList.forEach(n=>{
+    const p=pos[n];
+    const type=nodes.get(n).type;
+    ctx.fillStyle=type==='problem'?'#fef2f2':type==='solution'?'#f0fdf4':'#eff6ff';
+    ctx.fillRect(p.x,p.y,120,24);
+    ctx.strokeStyle=type==='problem'?'#ef4444':type==='solution'?'#10b981':'#3b82f6';ctx.lineWidth=2;
+    ctx.strokeRect(p.x,p.y,120,24);
+    ctx.fillStyle='#1e293b';ctx.font='bold 10px sans-serif';ctx.textAlign='center';
+    ctx.fillText(n.substring(0,16),p.x+60,p.y+16);
+  });
+  ctx.fillStyle='#1e293b';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('PDPC法',W/2,22);
+  const problems=nodeList.filter(n=>n.includes('問題'));
+  const solutions=nodeList.filter(n=>n.includes('対策'));
+  document.getElementById('pdpcStats').innerHTML=`<table>
+    <tr><td>ノード数</td><td>${nodeList.length}</td></tr>
+    <tr><td>関係数</td><td>${edges.length}</td></tr>
+    <tr><td>予測問題数</td><td>${problems.length}</td></tr>
+    <tr><td>対策数</td><td>${solutions.length}</td></tr>
+    <tr><td>問題</td><td>${problems.join(', ')||'なし'}</td></tr>
+    <tr><td>対策</td><td>${solutions.join(', ')||'なし'}</td></tr>
+  </table>`;
+}
+
+// ===== Data Validation =====
+function validateCSV(){
+  const text=document.getElementById('csvData').value.trim();
+  const box=document.getElementById('csvValidation');
+  if(!text){box.style.display='block';box.innerHTML='<p style="color:var(--danger)">データが空です</p>';return;}
+  const lines=text.split('\n');
+  const header=lines[0].split(/[,\t]/);
+  const rows=lines.slice(1).filter(l=>l.trim());
+  let issues=[];
+  let numCols=header.length;
+  rows.forEach((l,i)=>{
+    const cols=l.split(/[,\t]/);
+    if(cols.length!==numCols) issues.push(`行${i+2}: 列数が不一致 (${cols.length} vs ${numCols})`);
+    cols.forEach((c,j)=>{
+      if(j>0 && isNaN(parseFloat(c)) && c.trim()!=='') issues.push(`行${i+2},列${j+1}: 数値ではありません (${c})`);
+    });
+  });
+  const emptyRows=rows.filter(l=>l.trim()==='').length;
+  if(emptyRows>0) issues.push(`空行が${emptyRows}行あります`);
+  let html='<table>';
+  html+=`<tr><td>行数</td><td>${rows.length}</td></tr>`;
+  html+=`<tr><td>列数</td><td>${numCols}</td></tr>`;
+  html+=`<tr><td>ヘッダー</td><td>${header.join(', ')}</td></tr>`;
+  if(issues.length===0){
+    html+=`<tr><td>検証結果</td><td style="color:var(--success)">✅ 問題なし</td></tr>`;
+  } else {
+    html+=`<tr><td>検証結果</td><td style="color:var(--danger)">⚠️ ${issues.length}件の問題</td></tr>`;
+    issues.forEach(iss=>{html+=`<tr><td>問題</td><td style="color:var(--danger)">${iss}</td></tr>`;});
+  }
+  html+='</table>';
+  box.style.display='block';box.innerHTML=html;
+}
+
+// ===== CSV Export =====
+function exportCSV(){
+  const text=document.getElementById('csvData').value;
+  const blob=new Blob([text],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='data.csv';a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ===== Tool Sample Loader =====
+function loadToolSample(tool){
+  const samples={
+    pareto:"項目,値\n不良A,50\n不良B,25\n不良C,10\n不良D,8\n不良E,7",
+    hist:"値\n12\n15\n14\n18\n20\n22\n19\n17\n16\n21\n23\n13\n11\n25\n18\n20\n19\n17\n14\n16",
+    scatter:"X,Y\n1,2\n2,3\n3,5\n4,4\n5,6\n6,7\n7,8\n8,7\n9,9\n10,10",
+    control:"値\n10.2\n10.5\n9.8\n10.1\n10.3\n9.9\n10.4\n10.0\n9.7\n10.6\n10.2\n10.1\n9.9\n10.3\n10.0",
+    capability:"値\n10.2\n10.5\n9.8\n10.1\n10.3\n9.9\n10.4\n10.0\n9.7\n10.6\n10.2\n10.1\n9.9\n10.3\n10.0",
+    gage:"部品,測定者,値\n1,A,10.1\n1,A,10.2\n1,B,10.0\n1,B,10.1\n2,A,12.3\n2,A,12.4\n2,B,12.1\n2,B,12.2\n3,A,9.8\n3,A,9.9\n3,B,9.7\n3,B,9.8",
+    doe:"要因1,要因2,応答\n-1,-1,10\n1,-1,15\n-1,1,12\n1,1,20",
+    pca:"サンプル,品質,コスト,納期,安全性\nA,8,7,6,9\nB,7,8,7,8\nC,6,9,8,7\nD,9,6,9,6\nE,5,5,5,5",
+    pert:"作業,先行,日数\nA,,3\nB,A,2\nC,A,4\nD,B,3\nE,C,2\nF,D;E,1",
+    pdpc:"親,子\n目標:新製品開発,設計フェーズ\n設計フェーズ,試作フェーズ\n試作フェーズ,量産フェーズ\n試作フェーズ,問題:材料不足\n問題:材料不足,対策:代替材料検討\n量産フェーズ,問題:品質不良\n問題:品質不良,対策:検査強化"
+  };
+  if(samples[tool]){
+    document.getElementById('csvData').value=samples[tool];
+    parseCSV();
+    validateCSV();
+  }
+  // Also switch to the corresponding tool
+  const toolMap={pareto:'pareto',hist:'hist',scatter:'scatter',control:'control',capability:'capability',gage:'gage',doe:'doe',pca:'pca',pert:'pert',pdpc:'pdpc'};
+  if(toolMap[tool]){
+    const btn=document.querySelector(`.tool-item[data-tool="${toolMap[tool]}"]`);
+    if(btn)btn.click();
+  }
+}
+
+// Initial draw
+drawPareto();
+</script>
+</body>
+</html>
