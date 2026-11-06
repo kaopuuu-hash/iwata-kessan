@@ -1,8 +1,8 @@
-# iwata-kessan
+# secret-base
 
 個人制作の実験プロジェクトです。1990年代の個人ホームページ文化を再現した管理人ページと、磐田市のオープンデータ分析ページで構成されています。
 
-公開サイト: https://kaopuuu-hash.github.io/iwata-kessan/
+公開サイト: https://kaopuuu-hash.github.io/secret-base/
 
 - index.html / cyber-space.html：管理人ページ（トップ）
 - kessan.html：磐田市 令和7年度決算まとめ
