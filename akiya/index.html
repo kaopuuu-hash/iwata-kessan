@@ -81,7 +81,7 @@
   <div class="screen"><h4>2. 住宅・空き家統計分析</h4><p class="ok">実装済み — 空き家バンク6件を構造化。e-Stat 住宅・土地統計調査（令和5年）から磐田市の空き家7,840戸の種類別内訳・腐朽破損状況・建て方別・構造別を表示。</p></div>
   <div class="screen"><h4>3. 人口・世帯構造分析</h4><p class="ok">実装済み — 299地区の人口・年齢階層別データ（令和8年9月末、162,983人）。高齢化率30.1%。人口ピラミッド表示。</p></div>
   <div class="screen"><h4>4. GIS空間分析</h4><p class="ok">実装済み — Leafletによるインタラクティブマップ（メッシュ・道路・公園・レイヤー切り替え）。</p></div>
-  <div class="screen"><h4>5. 建物ストック分析</h4><p class="hold">未実装 — PLATEAU 3D都市モデル（CityGML）の取得・解析が必要。</p></div>
+  <div class="screen"><h4>5. 建物ストック分析</h4><p class="ok">実装済み — PLATEAU 2023の建物89,329棟を集計（用途別・建築年代別・メッシュ分布）。形状データは非掲載、集計値のみ表示。</p></div>
   <div class="screen"><h4>6. 空き家リスク分析</h4><p class="ok">実装済み — 3指標（高齢化率・人口減少率・空き家率）でリスクスコアを算出。299地区を3分類。4指標はデータ未取得のため欠損。</p></div>
   <div class="screen"><h4>7. 行政政策評価</h4><p class="hold">未実装 — 空き家バンク・補助金等のデータ取得が必要。</p></div>
   <div class="screen"><h4>8. データソース・データ品質管理</h4><p class="ok">実装済み — 下記のデータソース一覧を表示。</p></div>
@@ -257,10 +257,55 @@
 </section>
 
 </div><div class="panel" id="p-bld"><section>
-  <h2>建物ストック分析</h2>
-  <p class="hold">未実装 — PLATEAU 3D都市モデル（CityGML）の取得・解析が必要です。</p>
-  <p>建物形状・用途・建築年は PLATEAU 3D都市モデル（磐田市）を予定していましたが、CityGML 24.5GB / 3D Tiles 965MB は GitHub Pages での公開に適さないため、現時点では取得していません（データソース一覧にも明記）。</p>
-  <p class="note">代替として国土数値情報（土地利用・浸水・土砂）は取得済みで、GIS画面のレイヤーに土砂災害警戒区域を表示しています。</p>
+  <h2>建物ストック分析（PLATEAU 2023）</h2>
+  <p>国土交通省 PLATEAU 3D都市モデル（磐田市、2023年）の建物データ <b>89,329棟</b>を集計しました。建物そのものの形状データは掲載せず、集計値のみを表示します。総数は500mメッシュ別の集計（169区画）とも一致しています。</p>
+  <div class="two">
+    <div>
+      <h3>用途別（PLATEAUコードリストによる）</h3>
+      <table>
+        <tr><th>用途</th><th>棟数</th><th>割合</th></tr>
+        <tr><td>住宅</td><td>66,059</td><td>74.0%</td></tr>
+        <tr><td>工場</td><td>4,842</td><td>5.4%</td></tr>
+        <tr><td>文教厚生施設</td><td>3,224</td><td>3.6%</td></tr>
+        <tr><td>農林漁業用施設</td><td>2,780</td><td>3.1%</td></tr>
+        <tr><td>共同住宅</td><td>2,613</td><td>2.9%</td></tr>
+        <tr><td>不明</td><td>2,211</td><td>2.5%</td></tr>
+        <tr><td>運輸倉庫施設</td><td>2,133</td><td>2.4%</td></tr>
+        <tr><td>商業施設</td><td>1,876</td><td>2.1%</td></tr>
+        <tr><td>店舗等併用住宅</td><td>1,425</td><td>1.6%</td></tr>
+        <tr><td>業務施設</td><td>1,303</td><td>1.5%</td></tr>
+        <tr><td>官公庁施設</td><td>364</td><td>0.4%</td></tr>
+        <tr><td>その他</td><td>292</td><td>0.3%</td></tr>
+        <tr><td>店舗等併用共同住宅</td><td>136</td><td>0.2%</td></tr>
+        <tr><td>作業所併用住宅</td><td>34</td><td>0.0%</td></tr>
+        <tr><td>宿泊施設</td><td>25</td><td>0.0%</td></tr>
+        <tr><td>商業系複合施設</td><td>12</td><td>0.0%</td></tr>
+        <tr><td><b>合計</b></td><td><b>89,329</b></td><td><b>100%</b></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>建築年代別（判明分 80,887棟）</h3>
+      <table>
+        <tr><th>年代</th><th>棟数</th><th>割合</th></tr>
+        <tr><td>1960年代以前</td><td>5,129</td><td>6.3%</td></tr>
+        <tr><td>1960年代</td><td>4,482</td><td>5.5%</td></tr>
+        <tr><td>1970年代</td><td>15,215</td><td>18.8%</td></tr>
+        <tr><td>1980年代</td><td>16,449</td><td>20.3%</td></tr>
+        <tr><td>1990年代</td><td>16,176</td><td>20.0%</td></tr>
+        <tr><td>2000年代</td><td>13,304</td><td>16.4%</td></tr>
+        <tr><td>2010年代</td><td>10,132</td><td>12.5%</td></tr>
+        <tr><td><b>判明分 合計</b></td><td><b>80,887</b></td><td><b>100%</b></td></tr>
+      </table>
+      <p class="note">建築年不明（データ上「0001」）は 8,442棟（全体の9.5%）で、上表には含みません。割合は判明分に対するものです。「1960年代以前」には、最も古い年代へ値が寄っているとみられる分（1860年代に2,398棟が集中）を含むため、ひとまとめにしています。</p>
+    </div>
+  </div>
+  <h3>分布と読み取り</h3>
+  <ul>
+    <li>建物の空間的な集中度：Moran's I = 0.513（z = 12.25）で、市街地への強い集中が確認できます（500mメッシュ169区画、Getis-Ord のホットスポット25区画・コールドスポット12区画）</li>
+    <li>1970〜1990年代の建物が 47,840棟と、判明分の約59%を占めます。築40〜55年の層が厚く、今後の老朽化・空き家化の素地です</li>
+    <li>住宅系（住宅＋共同住宅＋併用住宅）が 70,267棟（78.7%）。工場 4,842棟（5.4%）は製造業の市の構成を反映しています</li>
+  </ul>
+  <p class="note">出典：国土交通省 PLATEAU 2023（磐田市）。集計値は分析パッケージ v0.2.0 の集計結果を用い、総数の二重照合（メッシュ集計との一致）を確認済み。建物の個別位置・形状は表示しません。</p>
 </section></div><div class="panel" id="p-risk"><section>
   <h2>空き家リスク分析（Phase 5）</h2>
   <p>仕様書の初期指標に基づくリスク評価モデルを実装。利用可能な指標のみでスコアを計算し、欠損はゼロとして扱わない。</p>
@@ -339,7 +384,7 @@
     <tr><td>空き家統計（e-Stat 住宅・土地統計調査）</td><td>総務省 住宅・土地統計調査</td><td class="ok">取得済み</td></tr>
     <tr><td>磐田市 公共施設一覧</td><td>静岡県オープンデータ</td><td class="ok">取得済み（別プロジェクトで利用）</td></tr>
     <tr><td>交流センター</td><td>磐田市公式</td><td class="ok">取得済み（22箇所）</td></tr>
-    <tr><td>建物形状・用途・建築年</td><td>PLATEAU 3D都市モデル（磐田市）</td><td class="no">不可能（CityGML 24.5GB / 3D Tiles 965MB は GitHub Pages に不適）</td></tr>
+    <tr><td>建物形状・用途・建築年</td><td>PLATEAU 3D都市モデル（磐田市、2023年）</td><td class="ok">取得済み（集計値のみ掲載。形状データは非掲載）</td></tr>
     <tr><td>国土数値情報（浸水・土砂）</td><td>国土数値情報 (nlftp.mlit.go.jp)</td><td class="ok">取得済み（洪水浸水 A31-20 + 土砂災害警戒 A33-20）</td></tr>
     <tr><td>不動産取引価格・地価公示</td><td>国土交通省 (reinfolib.mlit.go.jp)</td><td class="hold">要取得</td></tr>
     <tr><td>空き家バンク（全国版）</td><td>LIFULL・アットホーム等</td><td class="hold">要取得</td></tr>
@@ -363,7 +408,7 @@
     <tr><td>Phase 1</td><td>データ取得・GIS基盤・ダッシュボード骨格・マップ表示</td><td class="ok">完了</td></tr>
     <tr><td>Phase 2</td><td>e-Stat 空き家統計の取得・住宅ストック分析画面</td><td class="hold">部分完了（統計値はREADMEに記載）</td></tr>
     <tr><td>Phase 3</td><td>人口・世帯構造分析・町別人口の統合</td><td class="ok">完了（299地区、162,983人）</td></tr>
-    <tr><td>Phase 4</td><td>PLATEAU 建物ストック分析</td><td class="no">不可能（CityGML 24.5GB / 3D Tiles 965MB は GitHub Pages に不適）</td></tr>
+    <tr><td>Phase 4</td><td>PLATEAU 建物ストック分析</td><td class="ok">完了（集計値ベース：89,329棟の用途・年代・分布）</td></tr>
     <tr><td>Phase 4b</td><td>国土数値情報による代替（土地利用・浸水・土砂）</td><td class="hold">検討中</td></tr>
     <tr><td>Phase 5</td><td>空き家リスク分析モデルの実装</td><td class="hold">未着手</td></tr>
     <tr><td>Phase 6</td><td>空き家バンク・政策評価画面</td><td class="ok">部分完了（6件構造化）</td></tr>
