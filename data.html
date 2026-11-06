@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>地域データ置き場</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0b09;--ink:#faf5ec;--mut:#b8a88f;--acc:#e09a3c;--acc2:#c65b2e;--line:rgba(250,245,236,.14)}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Hiragino Kaku Gothic ProN','Hiragino Sans','Noto Sans JP','Yu Gothic UI','Yu Gothic',Meiryo,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.geo-bg{position:fixed;inset:0;pointer-events:none;opacity:.5;background-image:radial-gradient(circle at 12% 18%,rgba(224,154,60,.16) 0 90px,transparent 91px),radial-gradient(circle at 85% 12%,rgba(198,91,46,.14) 0 130px,transparent 131px),repeating-linear-gradient(0deg,transparent 0 47px,rgba(250,245,236,.05) 47px 48px),repeating-linear-gradient(90deg,transparent 0 47px,rgba(250,245,236,.05) 47px 48px)}
+.tri{position:fixed;right:-40px;bottom:10%;width:0;height:0;border-left:90px solid transparent;border-right:90px solid transparent;border-bottom:150px solid rgba(224,154,60,.12);pointer-events:none;transform:rotate(12deg)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 90px;position:relative}
+nav{position:sticky;top:0;z-index:10;background:rgba(13,11,9,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1080px;margin:0 auto;padding:12px 24px;display:flex;gap:12px;align-items:center;font-size:13px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--acc);display:inline-block}
+.sq{width:10px;height:10px;background:var(--acc2);display:inline-block}
+.hero{padding:70px 0 6px;max-width:780px}
+.kicker{display:flex;gap:10px;align-items:center;font-size:12px;letter-spacing:.18em;color:var(--acc);margin-bottom:16px}
+.kicker::after{content:"";height:1px;width:120px;background:var(--acc)}
+h1{font-size:clamp(26px,8.5vw,54px);font-weight:800;letter-spacing:-.02em;line-height:1.25;margin-bottom:14px;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
+h1 .o{color:transparent;-webkit-text-stroke:1.5px var(--acc);paint-order:stroke fill}
+.sub{color:var(--mut);font-size:16px;max-width:620px}
+.shapes{display:flex;gap:10px;margin-top:22px;align-items:center}
+.c1{width:44px;height:44px;border-radius:50%;background:var(--acc)}
+.c2{width:44px;height:44px;border-radius:50%;border:2px solid var(--acc)}
+.t1{width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:38px solid var(--acc2)}
+.bar{height:8px;width:min(280px,40vw);flex:none;background:repeating-linear-gradient(90deg,var(--acc) 0 18px,transparent 18px 28px);border-radius:4px}
+.sec{margin-top:46px}
+.sec-h{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.num{width:30px;height:30px;border-radius:50%;background:var(--acc);color:#14100a;font-weight:800;display:grid;place-content:center;font-size:14px}
+.sec-h h2{font-size:15px;letter-spacing:.1em}
+.sec-h::after{content:"";height:1px;flex:1;background:var(--line)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.link{background:rgba(250,245,236,.03);border:1px solid var(--line);border-radius:4px 20px 4px 20px;padding:18px 20px;display:block;position:relative;overflow:hidden}
+.link::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(var(--acc),var(--acc2))}
+.link:hover{border-color:var(--acc);transform:translateY(-2px)}
+.link b{font-size:15px;display:block;margin-bottom:4px}
+.link b .new{font-size:10px;background:var(--acc2);color:#fff;border-radius:4px;padding:2px 6px;margin-left:8px;vertical-align:2px}
+.link p{font-size:12.5px;color:var(--mut)}
+.foot{margin-top:54px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);display:flex;gap:10px;align-items:center}
+@media(max-width:760px){h1{font-size:36px}.grid{grid-template-columns:1fr}.tri{display:none}.geo-bg{opacity:.3}.bar{width:110px}.wrap{padding:0 18px 70px}}
+</style>
+</head>
+<body>
+<div class="geo-bg"></div><div class="tri"></div>
+<nav><div class="nav-in"><span class="dot"></span><b>地域データ置き場</b><span class="sq"></span><span style="margin-left:auto;font-size:11px;color:var(--mut)">●▲■ 幾何学デザイン</span></div></nav>
+<div class="wrap">
+<div class="hero">
+<div class="kicker">● 幾何学デザイン — 丸と三角と線</div>
+<h1>調べたものを<wbr><span class="o">置いておく場所。</span></h1>
+<p class="sub">磐田市を中心とした、決算・オープンデータ・分析ツールへの入口です。幾何学的なデザインで案内する構成にしています。</p>
+<div class="shapes"><div class="c1"></div><div class="c2"></div><div class="t1"></div><div class="bar"></div></div>
+</div>
+<div class="sec"><div class="sec-h"><div class="num">1</div><h2>決算・オープンデータ</h2></div><div class="grid">
+<a class="link" href="kessan.html"><b>磐田市 令和7年度決算まとめ</b><p>本編の入口。</p></a>
+<a class="link" href="dashboard.html"><b>磐田市オープンデータ ダッシュボード</b><p>数字を可視化して眺める。</p></a>
+<a class="link" href="analysis.html"><b>財政分析</b><p>決算の詳細分析。</p></a>
+<a class="link" href="method.html"><b>分析手法</b><p>数字の読み方。</p></a>
+<a class="link" href="sources.html"><b>出典・参考資料</b><p>出典追跡用。</p></a>
+</div></div>
+<div class="sec"><div class="sec-h"><div class="num">2</div><h2>近隣市町</h2></div><div class="grid">
+<a class="link" href="fukuroi.html"><b>袋井市</b><p>近隣比較に。</p></a>
+<a class="link" href="mori.html"><b>森町</b><p>近隣比較に。</p></a>
+<a class="link" href="kakegawa.html"><b>掛川市</b><p>近隣比較に。</p></a>
+</div></div>
+<div class="sec"><div class="sec-h"><div class="num">3</div><h2>分析・ツール</h2></div><div class="grid">
+<a class="link" href="lab/index.html"><b>静岡の気候 1940–2025</b><p>時系列分析。</p></a>
+<a class="link" href="qc-tool.html"><b>QC分析ツール v2</b><p>品質管理ツール。</p></a>
+<a class="link" href="akiya/index.html"><b>空き家・地域住宅ストック分析<span class="new">NEW!</span></b><p>空き家率と地域リスクの可視化。</p></a>
+</div></div>
+<div class="sec"><div class="sec-h"><div class="num">4</div><h2>デモ</h2></div><div class="grid">
+<a class="link" href="showcase.html"><b>Web Tech Showcase 2026</b><p>最新のWeb機能を1ページで試せる実験場。</p></a>
+</div></div>
+<div class="foot"><span class="dot"></span>個人による地域データの公開ページ ・ 茶系・幾何学デザイン<span style="margin-left:auto"><a href="index.html" style="text-decoration:underline">管理人の部屋（トップ）へ</a></span></div>
+</div>
+</body>
+</html>
