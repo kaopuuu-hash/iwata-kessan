@@ -72,7 +72,7 @@
 <section>
   <h2>プロジェクト概要</h2>
   <p>磐田市のオープンデータ、国の統計データ、地理空間データを統合し、空き家問題を地域単位で可視化・分析するWebシステムの <b>Phase 1 プロトタイプ</b>です。空き家専用のオープンデータが不足しているため、複数の公開データを結合して独自の分析基盤を構築する方針です。</p>
-  <p class="note">本 Phase 1 では、データ取得・GIS基盤・ダッシュボード骨格を構築しました。空き家実データ（e-Stat・PLATEAU・空き家バンク）の統合は Phase 2 以降で実施します。</p>
+  <p class="note">当初は Phase 1 としてデータ取得・GIS基盤・ダッシュボード骨格を構築し、その後 e-Stat 空き家統計・PLATEAU 建物集計・空き家バンクまで統合が進み、現在は8画面すべてが実装済みです。</p>
 </section>
 
 <section>
@@ -386,7 +386,7 @@
     <tr><td>交流センター</td><td>磐田市公式</td><td class="ok">取得済み（22箇所）</td></tr>
     <tr><td>建物形状・用途・建築年</td><td>PLATEAU 3D都市モデル（磐田市、2023年）</td><td class="ok">取得済み（集計値のみ掲載。形状データは非掲載）</td></tr>
     <tr><td>国土数値情報（浸水・土砂）</td><td>国土数値情報 (nlftp.mlit.go.jp)</td><td class="ok">取得済み（洪水浸水 A31-20 + 土砂災害警戒 A33-20）</td></tr>
-    <tr><td>不動産取引価格・地価公示</td><td>国土交通省 (reinfolib.mlit.go.jp)</td><td class="hold">要取得</td></tr>
+    <tr><td>不動産取引価格・地価公示</td><td>国土交通省 (reinfolib.mlit.go.jp)</td><td class="hold">地価公示は取得済み（2025年・30地点、集計は分析パッケージに収録）。取引価格は要取得</td></tr>
     <tr><td>空き家バンク（全国版）</td><td>LIFULL・アットホーム等</td><td class="hold">要取得</td></tr>
   </table>
 </section>
@@ -394,9 +394,11 @@
 <section>
   <h2>データ品質・検証</h2>
   <ul>
-    <li>元データと加工後データの件数照合：実施予定（Phase 2）</li>
-    <li>欠損値検査：実施予定</li>
+    <li>元データと加工後データの件数照合：実施済み（町別人口 162,983人を町別・年齢別・単年齢の3系統で一致確認。建物総数 89,329棟もメッシュ集計と一致）</li>
+    <li>欠損値検査：実施済み（町別人口・年齢の欠損0件。取得できていない指標は推測で埋めず「未取得」と明示）</li>
     <li>座標系検査：JGD2000 Zone8 → WGS84 変換済み、Leafletで表示確認済み</li>
+    <li>個人情報の扱い：空き家バンクの所在地は町名・丁目までに留め、電話番号は掲載していません（公開前のスキャンで確認）</li>
+    <li>リスクモデルの検証：2026-11-06に人口減少率の符号の取り違えと地区名照合方式を見直し、全地区を再計算しました</li>
     <li>データ未取得の項目は「未取得」と明示し、推測値は生成しない</li>
   </ul>
 </section>
@@ -406,13 +408,13 @@
   <table>
     <tr><th>Phase</th><th>内容</th><th>状態</th></tr>
     <tr><td>Phase 1</td><td>データ取得・GIS基盤・ダッシュボード骨格・マップ表示</td><td class="ok">完了</td></tr>
-    <tr><td>Phase 2</td><td>e-Stat 空き家統計の取得・住宅ストック分析画面</td><td class="hold">部分完了（統計値はREADMEに記載）</td></tr>
+    <tr><td>Phase 2</td><td>e-Stat 空き家統計の取得・住宅ストック分析画面</td><td class="ok">完了</td></tr>
     <tr><td>Phase 3</td><td>人口・世帯構造分析・町別人口の統合</td><td class="ok">完了（299地区、162,983人）</td></tr>
     <tr><td>Phase 4</td><td>PLATEAU 建物ストック分析</td><td class="ok">完了（集計値ベース：89,329棟の用途・年代・分布）</td></tr>
-    <tr><td>Phase 4b</td><td>国土数値情報による代替（土地利用・浸水・土砂）</td><td class="hold">検討中</td></tr>
-    <tr><td>Phase 5</td><td>空き家リスク分析モデルの実装</td><td class="hold">未着手</td></tr>
-    <tr><td>Phase 6</td><td>空き家バンク・政策評価画面</td><td class="ok">部分完了（6件構造化）</td></tr>
-    <tr><td>Phase 7</td><td>高度統計分析（Moran's I等）・品質保証</td><td class="hold">未着手</td></tr>
+    <tr><td>Phase 4b</td><td>国土数値情報による代替（土地利用・浸水・土砂）</td><td class="hold">部分完了（土砂災害レイヤーをGISに実装。浸水は未統合）</td></tr>
+    <tr><td>Phase 5</td><td>空き家リスク分析モデルの実装</td><td class="ok">完了（2026-11-06に符号修正＋厳密照合で再計算）</td></tr>
+    <tr><td>Phase 6</td><td>空き家バンク・政策評価画面</td><td class="ok">完了（バンク6件＋市の方針・補助を政策タブに実装）</td></tr>
+    <tr><td>Phase 7</td><td>高度統計分析（Moran's I等）・品質保証</td><td class="hold">部分完了（Moran's I を建物分布で実施。品質検査は本タブに記載）</td></tr>
   </table>
 </section>
 
