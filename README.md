@@ -11,8 +11,16 @@
 - method.html：分析手法
 - sources.html：出典・参考資料
 - seisaku.html：制作手法・このサイトについて（注記）
+- fukuroi.html：袋井市オープンデータ ダッシュボード
+- mori.html：森町オープンデータ ダッシュボード
+- kakegawa.html：掛川市オープンデータ ダッシュボード
+- showcase.html：Web Tech Showcase 2026（技術デモ集）
+- qc-tool.html：QC Analysis Tool v2（品質管理分析ツール）
+- teigen.html：日本の製造業を立て直す — 現場で働く一人の労働者からの提言
+- lab/：静岡の気候 1940-2025 分析・公共施設アクセス分析
+- akiya/：磐田市 空き家・地域住宅ストック統合分析（8画面ダッシュボード）
 
-最終更新：2026年11月3日
+最終更新：2026年11月6日
 
 ## 証明（このサイトの作り方）
 
@@ -38,6 +46,8 @@ flowchart LR
 - 磐田市公式ウェブサイト https://www.city.iwata.shizuoka.jp/
 - 袋井市公式ウェブサイト（人口表 Excel／避難所 PDF）
 - 森町公式ウェブサイト（人口統計表 PDF／避難所 PDF）
+- 掛川市公式ウェブサイト（オープンデータ）
+- 総務省 住宅・土地統計調査（e-Stat）／国土交通省 PLATEAU 3D都市モデル（空き家分析の原典）
 
 ### 計算式
 
