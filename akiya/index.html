@@ -271,7 +271,7 @@
         <tr><th>指標</th><th>仮配点</th><th>利用可能</th><th>データソース</th></tr>
         <tr><td>高齢化率</td><td>20</td><td class="ok">299/299</td><td>towns_age_202609.csv</td></tr>
         <tr><td>高齢単身世帯率</td><td>20</td><td class="no">0/299</td><td>未取得</td></tr>
-        <tr><td>人口減少率</td><td>15</td><td class="ok">208/299</td><td>地区別人口（R2 vs H22）</td></tr>
+        <tr><td>人口減少率</td><td>15</td><td class="ok">157/299</td><td>地区別人口（R2 vs H22）</td></tr>
         <tr><td>世帯数減少率</td><td>10</td><td class="no">0/299</td><td>未取得</td></tr>
         <tr><td>空き家率</td><td>20</td><td class="ok">299/299</td><td>磐田市全体 10.7%（参考値）</td></tr>
         <tr><td>災害リスク</td><td>10</td><td class="no">0/299</td><td>国土数値情報（浸水データ取得済み、未統合）</td></tr>
@@ -287,22 +287,22 @@
         <tr><td>住宅需要維持型</td><td>102</td></tr>
         <tr><td><b>合計</b></td><td><b>299</b></td></tr>
       </table>
-      <p class="note">平均リスクスコア: 55.3（0-100）。利用可能な3指標の加重平均で算出。※2026-11-06、人口減少率の符号の取り違え（人口が増加した地区を高リスクと誤判定していた）を修正し、全地区を再計算しました。</p>
+      <p class="note">平均リスクスコア: 54.5（0-100）。利用可能な3指標の加重平均で算出。※2026-11-06、人口減少率の符号の取り違え（人口が増加した地区を高リスクと誤判定していた）を修正し、制作者のモデル改訂（厳密照合のみ、部分一致は廃止）に合わせて全地区を再計算しました。人口減少率データのある地区は157地区です。</p>
     </div>
   </div>
   <h3>高リスク地区 Top 10</h3>
   <table>
     <tr><th>順位</th><th>地区</th><th>リスクスコア</th><th>高齢化率</th><th>人口</th></tr>
-    <tr><td>1</td><td>大平北</td><td>79.9</td><td>66.7%</td><td>39</td></tr>
-    <tr><td>2</td><td>万瀬</td><td>79.1</td><td>64.0%</td><td>25</td></tr>
-    <tr><td>3</td><td>虫生</td><td>78.0</td><td>64.3%</td><td>42</td></tr>
-    <tr><td>4</td><td>大平南</td><td>74.4</td><td>57.1%</td><td>49</td></tr>
-    <tr><td>5</td><td>寺谷新田</td><td>72.9</td><td>53.6%</td><td>56</td></tr>
-    <tr><td>6</td><td>大原新町</td><td>71.7</td><td>55.0%</td><td>411</td></tr>
-    <tr><td>7</td><td>篠原</td><td>71.5</td><td>55.2%</td><td>67</td></tr>
-    <tr><td>8</td><td>清水町</td><td>71.3</td><td>54.5%</td><td>33</td></tr>
-    <tr><td>9</td><td>大中瀬</td><td>71.3</td><td>53.0%</td><td>115</td></tr>
-    <tr><td>10</td><td>上南田</td><td>71.2</td><td>53.8%</td><td>39</td></tr>
+    <tr><td>1</td><td>大平北</td><td>81.1</td><td>66.7%</td><td>39</td></tr>
+    <tr><td>2</td><td>万瀬</td><td>80.3</td><td>64.0%</td><td>25</td></tr>
+    <tr><td>3</td><td>虫生</td><td>79.2</td><td>64.3%</td><td>42</td></tr>
+    <tr><td>4</td><td>大平南</td><td>75.7</td><td>57.1%</td><td>49</td></tr>
+    <tr><td>5</td><td>寺谷新田</td><td>74.2</td><td>53.6%</td><td>56</td></tr>
+    <tr><td>6</td><td>篠原</td><td>72.6</td><td>55.2%</td><td>67</td></tr>
+    <tr><td>7</td><td>清水町</td><td>72.5</td><td>54.5%</td><td>33</td></tr>
+    <tr><td>8</td><td>大中瀬</td><td>72.5</td><td>53.0%</td><td>115</td></tr>
+    <tr><td>9</td><td>上南田</td><td>72.4</td><td>53.8%</td><td>39</td></tr>
+    <tr><td>10</td><td>東新町三丁目</td><td>70.4</td><td>52.0%</td><td>448</td></tr>
   </table>
   <p class="note">仮配点であることを明記。欠損データの地区は利用可能な指標のみでスコアを計算。算出不能な指標は「未取得」と表示。重みは変更可能設計。分類は分析モデルによる仮説であり、確定的な行政評価として表示しない。</p>
 </section>
