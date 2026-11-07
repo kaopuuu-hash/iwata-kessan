@@ -17,6 +17,7 @@
 - showcase.html：Web Tech Showcase 2026（技術デモ集）
 - qc-tool.html：QC Analysis Tool v2（品質管理分析ツール）
 - teigen.html：日本の製造業を立て直す — 現場で働く一人の労働者からの提言
+- hdbe.html：尊厳境界倫理モデル（HDBE）— 人間の尊厳を護る実践的倫理体系
 - lab/：静岡の気候 1940-2025 分析・公共施設アクセス分析
 - akiya/：磐田市 空き家・地域住宅ストック統合分析（8画面ダッシュボード）
 - data.html：地域データ置き場（真面目な紹介用の入口・幾何学デザイン）
