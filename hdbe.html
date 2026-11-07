@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>尊厳境界倫理モデル（HDBE）</title>
+<style>
+  :root{--ink:#23272e;--sub:#5c6656;--line:#ddd8c8;--accent:#5a6e46;--accent2:#8a6d3b;--bg:#faf8f2;--card:#ffffff;--quote:#f1eddf}
+  @media (prefers-color-scheme: dark){:root{--ink:#e8e6df;--sub:#a8ad9f;--line:#3d4038;--accent:#a9bf8f;--accent2:#cdb27a;--bg:#1d1f1c;--card:#262824;--quote:#2b2d26}}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:880px;margin:0 auto;padding:24px 16px 56px}
+  header{text-align:center;padding:40px 12px 8px}
+  header .kicker{color:var(--accent);font-weight:700;letter-spacing:.18em;font-size:.82rem}
+  header h1{font-family:"Hiragino Mincho ProN","YuMincho","Yu Mincho",serif;font-size:2rem;margin:.35em 0 .15em;line-height:1.4}
+  header .en{color:var(--sub);font-size:.9rem;letter-spacing:.06em}
+  .core{background:var(--quote);border-left:5px solid var(--accent);border-radius:8px;padding:20px 22px;margin:28px 0 8px}
+  .core p{margin:0;font-family:"Hiragino Mincho ProN","YuMincho","Yu Mincho",serif;font-size:1.05rem;line-height:1.9}
+  .core .cap{margin-top:10px;font-size:.78rem;color:var(--sub);letter-spacing:.1em;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+  nav.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 22px;margin:22px 0 8px}
+  nav.toc h2{font-size:.85rem;letter-spacing:.12em;color:var(--sub);margin:0 0 8px}
+  nav.toc ol{margin:0;padding-left:1.4em;columns:2;column-gap:32px}
+  @media(max-width:640px){nav.toc ol{columns:1}}
+  nav.toc li{margin:3px 0}
+  nav.toc a{color:var(--accent);text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+  h2.sec{font-family:"Hiragino Mincho ProN","YuMincho","Yu Mincho",serif;font-size:1.4rem;border-bottom:2px solid var(--line);padding-bottom:6px;margin:44px 0 16px}
+  h2.sec .no{color:var(--accent);margin-right:.4em}
+  p{margin:0 0 12px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px 10px}
+  .card h3{font-family:"Hiragino Mincho ProN","YuMincho","Yu Mincho",serif;font-size:1.05rem;margin:0 0 6px}
+  .card p{font-size:.93rem}
+  .card ul{margin:4px 0 10px;padding-left:1.2em;font-size:.93rem}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;font-size:.95rem}
+  th{background:var(--quote);font-size:.82rem;letter-spacing:.08em}
+  tr:last-child td{border-bottom:none}
+  td.id{font-weight:700;color:var(--accent);white-space:nowrap}
+  td.name{font-weight:700;white-space:nowrap}
+  ul.list{margin:0 0 12px;padding-left:1.3em}
+  ul.list li{margin:5px 0}
+  .note{background:var(--quote);border-radius:8px;padding:12px 18px;font-size:.92rem}
+  .steps{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.steps{grid-template-columns:1fr}}
+  .step{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:10px;padding:14px 18px 8px}
+  .step h3{margin:0 0 4px;font-size:1rem}
+  .step p{font-size:.92rem}
+  ol.check{margin:0 0 12px;padding-left:1.5em}
+  ol.check li{margin:7px 0}
+  blockquote.core2{background:var(--quote);border-left:5px solid var(--accent2);border-radius:8px;padding:20px 22px;margin:0 0 12px}
+  blockquote.core2 p{margin:0;font-family:"Hiragino Mincho ProN","YuMincho","Yu Mincho",serif;font-size:1.05rem;line-height:1.9}
+  .final{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 22px}
+  .final .t{font-family:"Hiragino Mincho ProN","YuMincho","Yu Mincho",serif;font-weight:700;font-size:1.1rem;margin-bottom:8px}
+  footer{text-align:center;color:var(--sub);font-size:.82rem;margin-top:36px}
+  footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">実践的倫理体系</div>
+  <h1>尊厳境界倫理モデル</h1>
+  <div class="en">Human Dignity &amp; Boundary Ethics Model（HDBE）</div>
+</header>
+
+<div class="core">
+  <p>自分の魂の尊厳を護り、他者の魂の尊厳を侵さない。正義を他者への攻撃手段にせず、自らの行動を律する基準とする。不当な侵害には迎合せず、感情的報復にも走らず、適切な距離と制度的手段によって境界を護る。</p>
+  <div class="cap">最上位原則（CORE PRINCIPLE）</div>
+</div>
+
+<nav class="toc">
+  <h2>目次</h2>
+  <ol>
+    <li><a href="#s1">概念定義</a></li>
+    <li><a href="#s2">基本概念</a></li>
+    <li><a href="#s3">7つの基本原則</a></li>
+    <li><a href="#s4">卑怯な行為の分類</a></li>
+    <li><a href="#s5">境界防衛原則</a></li>
+    <li><a href="#s6">自己点検基準</a></li>
+    <li><a href="#s7">社会的展開</a></li>
+    <li><a href="#s8">最上位原則（Core Principle）</a></li>
+    <li><a href="#s9">最終定義</a></li>
+  </ol>
+</nav>
+
+<h2 class="sec" id="s1"><span class="no">1</span>概念定義</h2>
+<p>人間の尊厳を根本価値とし、自己と他者の尊厳領域を侵害しないこと、また不当な侵害を拒絶・防御することによって、健全な人間関係と社会秩序を形成するための実践的倫理体系である。</p>
+
+<h2 class="sec" id="s2"><span class="no">2</span>基本概念</h2>
+<div class="cards">
+  <div class="card">
+    <h3>① 魂の尊厳（Human Dignity）</h3>
+    <p>人間が本来的に持つ、他者の都合や価値観によって不当に侵害されてはならない根本的価値。</p>
+  </div>
+  <div class="card">
+    <h3>② 正直系・卑怯系（Orientation）</h3>
+    <p>人間の固定的な性格分類ではなく、日々の選択や行動に現れる方向性。</p>
+    <ul>
+      <li>正直系：自己対峙、勇気、誠実、自律、責任。</li>
+      <li>卑怯系：自己欺瞞、責任回避、他者依存、操作、支配。</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>③ 境界（Boundary）</h3>
+    <p>自己と他者の尊厳領域を区別し、相互の人格的価値を守るための心理的・社会的な線引き。</p>
+  </div>
+  <div class="card">
+    <h3>④ 卑怯の本質（Boundary Violation）</h3>
+    <p>他者の尊厳領域に不当に介入し、人格や自己決定権を侵害する行為。</p>
+  </div>
+  <div class="card">
+    <h3>⑤ 集合意識（Collective Consciousness）</h3>
+    <p>個人の価値観、判断、行動が集団の規範や社会のあり方に波及するという社会的概念。</p>
+  </div>
+</div>
+
+<h2 class="sec" id="s3"><span class="no">3</span>7つの基本原則</h2>
+<table>
+  <tr><th>ID</th><th>原則</th><th>定義</th></tr>
+  <tr><td class="id">P1</td><td class="name">尊厳原則</td><td>人間の尊厳を根本価値とする</td></tr>
+  <tr><td class="id">P2</td><td class="name">自省原則</td><td>自分の動機と行動を点検する</td></tr>
+  <tr><td class="id">P3</td><td class="name">境界原則</td><td>自他の尊厳領域を明確にする</td></tr>
+  <tr><td class="id">P4</td><td class="name">非侵害原則</td><td>正義や善を理由に他者を踏みにじらない</td></tr>
+  <tr><td class="id">P5</td><td class="name">自立原則</td><td>他者の承認や支配に依存しない</td></tr>
+  <tr><td class="id">P6</td><td class="name">防衛原則</td><td>不当な侵害には適切な防御を行う</td></tr>
+  <tr><td class="id">P7</td><td class="name">責任原則</td><td>自らの選択と行動に責任を持つ</td></tr>
+</table>
+
+<h2 class="sec" id="s4"><span class="no">4</span>卑怯な行為の分類</h2>
+<p>卑怯を性格評価だけで終わらせず、具体的な行動として観察する。</p>
+<ul class="list">
+  <li>人格否定・レッテル貼り</li>
+  <li>罪悪感の不当な植え付け</li>
+  <li>印象操作・情報操作</li>
+  <li>責任転嫁・責任回避</li>
+  <li>優越感を利用した他者支配</li>
+  <li>挑発による感情的反応の誘発</li>
+  <li>正義や善を利用した尊厳侵害</li>
+</ul>
+<p class="note">※ 行為の評価では、動機を決めつけず、具体的な言動・状況・影響・反復性を確認する。</p>
+
+<h2 class="sec" id="s5"><span class="no">5</span>境界防衛原則</h2>
+<p>不当な境界侵害に対しては、感情的な報復ではなく、段階的かつ合理的に対応する。</p>
+<div class="steps">
+  <div class="step">
+    <h3>心理的防衛</h3>
+    <p>挑発に反応せず、他者の評価に自己価値を委ねない。</p>
+  </div>
+  <div class="step">
+    <h3>関係的防衛</h3>
+    <p>距離を取り、接触を制限する。</p>
+  </div>
+  <div class="step">
+    <h3>記録的防衛</h3>
+    <p>事実、日時、発言、影響を記録する。</p>
+  </div>
+  <div class="step">
+    <h3>制度的防衛</h3>
+    <p>必要に応じて第三者、行政、専門家、法的制度を利用する。</p>
+  </div>
+</div>
+<p style="margin-top:14px">無反応は防御手段の一つであり、無抵抗や被害の放置を意味しない。</p>
+
+<h2 class="sec" id="s6"><span class="no">6</span>自己点検基準</h2>
+<p>日常の判断において、次の5つを確認する。</p>
+<ol class="check">
+  <li>自分の選択は誠実さに基づいているか。</li>
+  <li>自分の利益のために他者の尊厳を侵していないか。</li>
+  <li>相手の人格と具体的な行為を区別しているか。</li>
+  <li>他者の承認や優越感に依存していないか。</li>
+  <li>自分の行動と結果に責任を持っているか。</li>
+</ol>
+
+<h2 class="sec" id="s7"><span class="no">7</span>社会的展開</h2>
+<p>個人の自省と尊厳の尊重が、家庭、職場、地域、組織へと広がることで、相互信頼と健全な社会規範の形成につながる。</p>
+<p>ただし、社会問題は意識だけでなく、制度、経済、環境、権力構造など複数の要因から生じる。意識改革と制度改善を両輪として扱う。</p>
+
+<h2 class="sec" id="s8"><span class="no">8</span>最上位原則（Core Principle）</h2>
+<blockquote class="core2">
+  <p>自分の魂の尊厳を護り、他者の魂の尊厳を侵さない。正義を他者への攻撃手段にせず、自らの行動を律する基準とする。不当な侵害には迎合せず、感情的報復にも走らず、適切な距離と制度的手段によって境界を護る。</p>
+</blockquote>
+
+<h2 class="sec" id="s9"><span class="no">9</span>最終定義</h2>
+<div class="final">
+  <div class="t">尊厳境界倫理（Human Dignity &amp; Boundary Ethics）</div>
+  <p style="margin:0">自己と他者の尊厳を共通の価値基準とし、自省・非侵害・自立・責任・適切な防衛を通じて、人間の尊厳と社会の健全性を維持するための実践的倫理体系である。</p>
+</div>
+
+<footer>尊厳境界倫理モデル（HDBE）<br><a href="index.html">管理人のホームページへ</a></footer>
+
+</div>
+</body>
+</html>
